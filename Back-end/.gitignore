@@ -1,0 +1,5 @@
+dist/db/connetion.js
+src/db/connection.ts
+node_modules
+uploads
+public
