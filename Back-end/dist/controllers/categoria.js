@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteCategoria = exports.getOneCategoria = exports.updateCategoria = exports.newCategoria = exports.getCategoria = void 0;
 const { where } = require("sequelize");
 const categoria_1 = require("../models/categoria");
+
 const getCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const listCategoria = yield categoria_1.Categorias.findAll({ attributes: ['id_categoria', 'nombre_categoria', 'estado_categoria'] });
