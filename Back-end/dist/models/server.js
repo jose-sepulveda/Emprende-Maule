@@ -15,7 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const cors_1 = __importDefault(require("cors"));
 const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
-const emprendedor_1 = require("./emprendedor");
+const emprendedor_1 = __importDefault(require("../routes/emprendedor"));
+const emprendedor_2 = require("./emprendedor");
 class Server {
     constructor() {
         this.app = (0, express_1.default)();
@@ -30,7 +31,7 @@ class Server {
         });
     }
     routes() {
-        //
+        this.app.use('/api/emprendedor', emprendedor_1.default);
     }
     midlewares() {
         this.app.use('public', express_1.default.static(path_1.default.join(__dirname, '..', '..', 'public')));
@@ -40,7 +41,7 @@ class Server {
     dbConnect() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield emprendedor_1.Emprendedor.sync();
+                yield emprendedor_2.Emprendedor.sync();
             }
             catch (error) {
                 console.error('No se ha podido conectar a la base de datos');

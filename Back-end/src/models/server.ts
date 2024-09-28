@@ -2,6 +2,7 @@
 import cors from 'cors';
 import express, { Application } from 'express';
 import path from 'path';
+import routerEmprendedor from '../routes/emprendedor';
 import { Emprendedor } from './emprendedor';
 
 class Server {
@@ -24,7 +25,7 @@ class Server {
     }
 
     routes() {
-        //
+        this.app.use('/api/emprendedor', routerEmprendedor);
     }
 
     midlewares() {
