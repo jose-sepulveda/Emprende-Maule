@@ -24,6 +24,7 @@ class Server {
         this.midlewares();
         this.listen();
         this.dbConnect();
+        this.routes();
     }
     listen() {
         this.app.listen(this.port, () => {
@@ -34,13 +35,14 @@ class Server {
         this.app.use('/api/emprendedor', emprendedor_1.default);
     }
     midlewares() {
-        this.app.use('public', express_1.default.static(path_1.default.join(__dirname, '..', '..', 'public')));
+        this.app.use('/public', express_1.default.static(path_1.default.join(__dirname, '..', '..', 'public')));
         this.app.use(express_1.default.json());
         this.app.use((0, cors_1.default)());
     }
     dbConnect() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                console.log('Conectado a la base de datos');
                 yield emprendedor_2.Emprendedor.sync();
             }
             catch (error) {

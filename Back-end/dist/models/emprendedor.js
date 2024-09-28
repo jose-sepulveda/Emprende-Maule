@@ -9,7 +9,7 @@ const connection_1 = __importDefault(require("../database/connection"));
 exports.Emprendedor = connection_1.default.define('emprendedor', {
     "id_emprendedor": { type: sequelize_1.DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     "rut_emprendedor": { type: sequelize_1.DataTypes.STRING },
-    "contraseña": { type: sequelize_1.DataTypes.STRING },
+    "contrasena": { type: sequelize_1.DataTypes.STRING },
     "nombre_emprendedor": { type: sequelize_1.DataTypes.STRING },
     "apellido1_emprendedor": { type: sequelize_1.DataTypes.STRING },
     "apellido2_emprendedor": { type: sequelize_1.DataTypes.STRING },

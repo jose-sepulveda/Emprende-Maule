@@ -16,6 +16,7 @@ class Server {
         this.midlewares();
         this.listen()
         this.dbConnect()
+        this.routes()
     }
 
     listen() {
@@ -29,13 +30,14 @@ class Server {
     }
 
     midlewares() {
-        this.app.use('public', express.static(path.join(__dirname, '..', '..', 'public')));
+        this.app.use('/public', express.static(path.join(__dirname, '..', '..', 'public')));
         this.app.use(express.json());
         this.app.use(cors());
     }
 
     async dbConnect() {
         try {
+            console.log('Conectado a la base de datos')
             await Emprendedor.sync()
         } catch (error) {
             console.error('No se ha podido conectar a la base de datos');
