@@ -22,4 +22,6 @@ router.post('/new', upload.fields([
     { name: 'imagen_local', maxCount: 1 },
     { name: 'imagen_productos', maxCount: 1 },
 ]), emprendedor_1.crearEmprendedor);
+router.get('/list', emprendedor_1.getEmprendedores);
+router.get('/:rut_emprendedor', emprendedor_1.getEmprendedor);
 exports.default = router;

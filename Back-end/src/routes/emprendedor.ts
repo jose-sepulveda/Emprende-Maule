@@ -1,7 +1,7 @@
 import { Router } from "express";
 import multer from 'multer';
 import path from 'path';
-import { crearEmprendedor } from "../controllers/emprendedor";
+import { crearEmprendedor, getEmprendedor, getEmprendedores } from "../controllers/emprendedor";
 
 const router = Router();
 
@@ -21,5 +21,7 @@ router.post('/new', upload.fields([
     { name: 'imagen_local', maxCount: 1},
     { name: 'imagen_productos', maxCount: 1},
 ]), crearEmprendedor);
+router.get('/list', getEmprendedores);
+router.get('/:rut_emprendedor', getEmprendedor);
 
 export default router;

@@ -12,12 +12,41 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.crearEmprendedor = void 0;
+exports.getEmprendedor = exports.crearEmprendedor = exports.getEmprendedores = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const emprendedor_1 = require("../models/emprendedor");
 const googleDrive_1 = require("./googleDrive");
+const getEmprendedores = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const listEmprendedores = yield emprendedor_1.Emprendedor.findAll({
+            attributes: [
+                'rut_emprendedor',
+                'contrasena',
+                'nombre_emprendedor',
+                'apellido1_emprendedor',
+                'apellido2_emprendedor',
+                'direccion',
+                'telefono',
+                'correo_electronico',
+                'imagen_productos',
+                'imagen_local',
+                'comprobante',
+                'tipo_de_cuenta',
+                'numero_de_cuenta',
+                'estado_emprendedor',
+            ]
+        });
+        res.json(listEmprendedores);
+        return;
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al obtener los emprendedores' });
+    }
+});
+exports.getEmprendedores = getEmprendedores;
 const crearEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { rut_emprendedor, contrasena, nombre_emprendedor, apellido1_emprendedor, apellido2_emprendedor, direccion, telefono, correo_electronico, tipo_de_cuenta, numero_de_cuenta, estado_emprendedor } = req.body;
@@ -80,3 +109,37 @@ const crearEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.crearEmprendedor = crearEmprendedor;
+const getEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { rut_emprendedor } = req.params;
+    const rutEmprendedor = yield emprendedor_1.Emprendedor.findOne({
+        attributes: [
+            'rut_emprendedor',
+            'contrasena',
+            'nombre_emprendedor',
+            'apellido1_emprendedor',
+            'apellido2_emprendedor',
+            'direccion',
+            'telefono',
+            'correo_electronico',
+            'imagen_productos',
+            'imagen_local',
+            'comprobante',
+            'tipo_de_cuenta',
+            'numero_de_cuenta',
+            'estado_emprendedor',
+        ], where: { rut_emprendedor: rut_emprendedor }
+    });
+    if (!rutEmprendedor) {
+        res.status(404).json({ msg: 'El rut de este emprendedor no existe' });
+    }
+    try {
+        res.json(rutEmprendedor);
+    }
+    catch (error) {
+        res.status(400).json({
+            msg: 'Ha ocurrido un error',
+            error
+        });
+    }
+});
+exports.getEmprendedor = getEmprendedor;
