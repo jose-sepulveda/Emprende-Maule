@@ -33,8 +33,6 @@ export const uploadFileToDrive = async (filePath: string, fileName: string, mime
 
         console.log('Archivo subido exitosamente: ', response.data.id);
 
-        await listFiles();
-
         return response.data.id;
     } catch (error) {
         if (error instanceof Error) {
@@ -49,22 +47,3 @@ export const uploadFileToDrive = async (filePath: string, fileName: string, mime
         
     }
 }
-
-const listFiles = async () => {
-    try {
-        const auth = new google.auth.GoogleAuth({
-            keyFile: path.resolve(__dirname, '../config/credencial.json'),
-            scopes: ['https://www.googleapis.com/auth/drive.readonly']
-        });
-        
-        const drive = google.drive({ version: 'v3', auth });
-        const response = await drive.files.list({
-            pageSize: 10,
-            fields: 'nextPageToken, files(id, name)',
-        });
-
-        console.log('Archivos en Drive:', response.data.files);
-    } catch (error) {
-        console.error('Error al listar archivos en Drive: ', error);
-    }
-};
