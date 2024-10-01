@@ -1,7 +1,7 @@
 import { Router } from "express";
 import multer from 'multer';
 import path from 'path';
-import { crearEmprendedor, getEmprendedor, getEmprendedores } from "../controllers/emprendedor";
+import { crearEmprendedor, getEmprendedor, getEmprendedores, updateEmprendedor } from "../controllers/emprendedor";
 
 const router = Router();
 
@@ -23,5 +23,6 @@ router.post('/new', upload.fields([
 ]), crearEmprendedor);
 router.get('/list', getEmprendedores);
 router.get('/:rut_emprendedor', getEmprendedor);
+router.put('/:rut_emprendedor', updateEmprendedor);
 
 export default router;

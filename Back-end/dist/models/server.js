@@ -19,8 +19,9 @@ const emprendedor_1 = __importDefault(require("../routes/emprendedor"));
 const emprendedor_2 = require("./emprendedor");
 class Server {
     constructor() {
+        var _a;
         this.app = (0, express_1.default)();
-        this.port = process.env.PORT || '3000';
+        this.port = (_a = process.env.PORT) !== null && _a !== void 0 ? _a : '3000';
         this.midlewares();
         this.listen();
         this.dbConnect();

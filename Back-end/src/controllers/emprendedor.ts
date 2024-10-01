@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { RequestHandler, Response } from "express";
+import { Request, RequestHandler, Response } from "express";
 import fs from 'fs';
 import path from 'path';
 import { Emprendedor } from "../models/emprendedor";
@@ -135,5 +135,67 @@ export const getEmprendedor: RequestHandler = async(req: MulterRequest, res: Res
             msg: 'Ha ocurrido un error',
             error
         })
+    }
+}
+
+export const updateEmprendedor = async(req: Request, res: Response) => {
+    const {rut_emprendedor} = req.params;
+
+    const {
+        contrasena,
+        nombre_emprendedor,
+        apellido1_emprendedor,
+        apellido2_emprendedor,
+        direccion,
+        telefono,
+        correo_electronico,
+        tipo_de_cuenta,
+        numero_de_cuenta,
+    } = req.body;
+
+    try {
+        const rutEmprendedor = await Emprendedor.findOne({where: {rut_emprendedor: rut_emprendedor}});
+
+        if (!rutEmprendedor) {
+            return res.status(404).json({
+                msg: 'El rut '+rut_emprendedor+ 'de este emprendedor no existe'
+            })
+        }
+
+        if (contrasena) {
+            const hashedPassword = await bcrypt.hash(contrasena, 10);
+            await Emprendedor.update({
+                "contrasena": hashedPassword,
+                "nombre_emprendedor": nombre_emprendedor,
+                "apellido1_emprendedor": apellido1_emprendedor,
+                "apellido2_emprendedor": apellido2_emprendedor,
+                "direccion": direccion,
+                "telefono": telefono,
+                "correo_electronico": correo_electronico,
+                "tipo_de_cuenta": tipo_de_cuenta,
+                "numero_de_cuenta": numero_de_cuenta,
+            }, { where: {rut_emprendedor: rut_emprendedor}});
+
+            
+            return res.json({msg: 'Se ha actualizado el emprendedor con rut: ', rut_emprendedor});
+          } else {
+            await Emprendedor.update({
+                "nombre_emprendedor": nombre_emprendedor,
+                "apellido1_emprendedor": apellido1_emprendedor,
+                "apellido2_emprendedor": apellido2_emprendedor,
+                "direccion": direccion,
+                "telefono": telefono,
+                "correo_electronico": correo_electronico,
+                "tipo_de_cuenta": tipo_de_cuenta,
+                "numero_de_cuenta": numero_de_cuenta,
+            }, { where: {rut_emprendedor: rut_emprendedor}});
+
+            
+            return res.json({msg: 'Se ha actualizado el emprendedor con rut: ', rut_emprendedor});
+          }
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ msg: 'Error al actualizar el emprendedor'});
     }
 }

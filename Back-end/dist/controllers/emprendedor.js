@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getEmprendedor = exports.crearEmprendedor = exports.getEmprendedores = void 0;
+exports.updateEmprendedor = exports.getEmprendedor = exports.crearEmprendedor = exports.getEmprendedores = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
@@ -143,3 +143,48 @@ const getEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.getEmprendedor = getEmprendedor;
+const updateEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { rut_emprendedor } = req.params;
+    const { contrasena, nombre_emprendedor, apellido1_emprendedor, apellido2_emprendedor, direccion, telefono, correo_electronico, tipo_de_cuenta, numero_de_cuenta, } = req.body;
+    try {
+        const rutEmprendedor = yield emprendedor_1.Emprendedor.findOne({ where: { rut_emprendedor: rut_emprendedor } });
+        if (!rutEmprendedor) {
+            return res.status(404).json({
+                msg: 'El rut ' + rut_emprendedor + 'de este emprendedor no existe'
+            });
+        }
+        if (contrasena) {
+            const hashedPassword = yield bcrypt_1.default.hash(contrasena, 10);
+            yield emprendedor_1.Emprendedor.update({
+                "contrasena": hashedPassword,
+                "nombre_emprendedor": nombre_emprendedor,
+                "apellido1_emprendedor": apellido1_emprendedor,
+                "apellido2_emprendedor": apellido2_emprendedor,
+                "direccion": direccion,
+                "telefono": telefono,
+                "correo_electronico": correo_electronico,
+                "tipo_de_cuenta": tipo_de_cuenta,
+                "numero_de_cuenta": numero_de_cuenta,
+            }, { where: { rut_emprendedor: rut_emprendedor } });
+            return res.json({ msg: 'Se ha actualizado el emprendedor con rut: ', rut_emprendedor });
+        }
+        else {
+            yield emprendedor_1.Emprendedor.update({
+                "nombre_emprendedor": nombre_emprendedor,
+                "apellido1_emprendedor": apellido1_emprendedor,
+                "apellido2_emprendedor": apellido2_emprendedor,
+                "direccion": direccion,
+                "telefono": telefono,
+                "correo_electronico": correo_electronico,
+                "tipo_de_cuenta": tipo_de_cuenta,
+                "numero_de_cuenta": numero_de_cuenta,
+            }, { where: { rut_emprendedor: rut_emprendedor } });
+            return res.json({ msg: 'Se ha actualizado el emprendedor con rut: ', rut_emprendedor });
+        }
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ msg: 'Error al actualizar el emprendedor' });
+    }
+});
+exports.updateEmprendedor = updateEmprendedor;

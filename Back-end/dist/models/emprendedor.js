@@ -21,7 +21,7 @@ exports.Emprendedor = connection_1.default.define('emprendedor', {
     "comprobante": { type: sequelize_1.DataTypes.STRING },
     "tipo_de_cuenta": { type: sequelize_1.DataTypes.STRING },
     "numero_de_cuenta": { type: sequelize_1.DataTypes.INTEGER },
-    "estado_emprendedor": { type: sequelize_1.DataTypes.BOOLEAN }
+    "estado_emprendedor": { type: sequelize_1.DataTypes.STRING }
 }, {
     timestamps: false,
     freezeTableName: true

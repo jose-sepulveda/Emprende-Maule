@@ -24,4 +24,5 @@ router.post('/new', upload.fields([
 ]), emprendedor_1.crearEmprendedor);
 router.get('/list', emprendedor_1.getEmprendedores);
 router.get('/:rut_emprendedor', emprendedor_1.getEmprendedor);
+router.put('/:rut_emprendedor', emprendedor_1.updateEmprendedor);
 exports.default = router;

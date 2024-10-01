@@ -16,7 +16,7 @@ export const Emprendedor = sequelize.define('emprendedor', {
     "comprobante": {type: DataTypes.STRING},
     "tipo_de_cuenta": {type: DataTypes.STRING},
     "numero_de_cuenta": {type: DataTypes.INTEGER},
-    "estado_emprendedor": {type: DataTypes.BOOLEAN}
+    "estado_emprendedor": {type: DataTypes.STRING}
 },
 {
     timestamps: false,
