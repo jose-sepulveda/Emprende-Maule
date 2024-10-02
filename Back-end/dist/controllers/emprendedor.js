@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteEmprendedor = exports.updateEmprendedor = exports.getEmprendedor = exports.crearEmprendedor = exports.getEmprendedores = void 0;
+exports.deleteEmprendedor = exports.updateEmprendedor = exports.updatePassword = exports.getEmprendedor = exports.crearEmprendedor = exports.getEmprendedores = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
@@ -143,6 +143,48 @@ const getEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.getEmprendedor = getEmprendedor;
+const updatePassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { rut_emprendedor, contrasena } = req.body;
+    console.log('RUT recibido:', rut_emprendedor);
+    console.log('Contraseña recibida:', contrasena);
+    if (!rut_emprendedor) {
+        return res.status(400).json({
+            msg: 'Por favor, ingrese un Rut valido',
+        });
+    }
+    if (!contrasena) {
+        return res.status(400).json({
+            msg: 'Por favor, ingrese una nueva contraseña',
+        });
+    }
+    try {
+        const emprendedor = yield emprendedor_1.Emprendedor.findOne({ where: { rut_emprendedor: rut_emprendedor } });
+        if (!emprendedor) {
+            return res.status(404).json({
+                msg: 'Emprendedor no encontrado',
+            });
+        }
+        const antigua_contraseña = emprendedor.getDataValue('contrasena');
+        const compara_contrasenas = yield bcrypt_1.default.compare(contrasena, antigua_contraseña);
+        if (compara_contrasenas) {
+            return res.status(400).json({
+                msg: 'La nueva contraseña no puede ser igual al anterior',
+            });
+        }
+        const hashedPassword = yield bcrypt_1.default.hash(contrasena, 10);
+        yield emprendedor_1.Emprendedor.update({ contrasena: hashedPassword }, { where: { rut_emprendedor: rut_emprendedor } });
+        return res.status(200).json({
+            msg: 'Contraseña actualizada correctamente',
+        });
+    }
+    catch (error) {
+        console.error('Error al actualizar la contraseña', error);
+        return res.status(500).json({
+            msg: 'Error actualizando la contraseña. Intentelo mas tarde',
+        });
+    }
+});
+exports.updatePassword = updatePassword;
 const updateEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { rut_emprendedor } = req.params;
     const { contrasena, nombre_emprendedor, apellido1_emprendedor, apellido2_emprendedor, direccion, telefono, correo_electronico, tipo_de_cuenta, numero_de_cuenta, } = req.body;

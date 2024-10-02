@@ -26,4 +26,5 @@ router.get('/list', emprendedor_1.getEmprendedores);
 router.get('/:rut_emprendedor', emprendedor_1.getEmprendedor);
 router.put('/:rut_emprendedor', emprendedor_1.updateEmprendedor);
 router.delete('/:rut_emprendedor', emprendedor_1.deleteEmprendedor);
+router.patch('/password', emprendedor_1.updatePassword);
 exports.default = router;

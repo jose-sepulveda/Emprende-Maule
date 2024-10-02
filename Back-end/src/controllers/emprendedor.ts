@@ -138,6 +138,61 @@ export const getEmprendedor: RequestHandler = async(req: MulterRequest, res: Res
     }
 }
 
+export const updatePassword = async(req: Request, res: Response) => {
+
+    const {rut_emprendedor, contrasena} = req.body;
+
+    console.log('RUT recibido:', rut_emprendedor);
+    console.log('Contraseña recibida:', contrasena);
+
+    if (!rut_emprendedor) {
+        return res.status(400).json({
+            msg: 'Por favor, ingrese un Rut valido',
+        });
+    }
+
+    if (!contrasena) {
+        return res.status(400).json({
+            msg: 'Por favor, ingrese una nueva contraseña',
+        });
+    }
+
+    try {
+        const emprendedor = await Emprendedor.findOne({where: {rut_emprendedor: rut_emprendedor}});
+
+        if (!emprendedor) {
+            return res.status(404).json({
+                msg: 'Emprendedor no encontrado',
+            });
+        }
+
+        const antigua_contraseña = emprendedor.getDataValue('contrasena');
+        const compara_contrasenas = await bcrypt.compare(contrasena, antigua_contraseña);
+
+        if (compara_contrasenas) {
+            return res.status(400).json({
+                msg: 'La nueva contraseña no puede ser igual al anterior',
+            });
+        }
+
+        const hashedPassword = await bcrypt.hash(contrasena, 10);
+
+        await Emprendedor.update(
+            { contrasena: hashedPassword},
+            { where: {rut_emprendedor: rut_emprendedor} }
+        );
+
+        return res.status(200).json({
+            msg: 'Contraseña actualizada correctamente',
+        })
+    } catch (error) {
+        console.error('Error al actualizar la contraseña', error);
+        return res.status(500).json({
+            msg: 'Error actualizando la contraseña. Intentelo mas tarde',
+        })
+    }
+}
+
 export const updateEmprendedor = async(req: Request, res: Response) => {
     const {rut_emprendedor} = req.params;
 
