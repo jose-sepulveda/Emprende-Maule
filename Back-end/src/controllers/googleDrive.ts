@@ -47,3 +47,23 @@ export const uploadFileToDrive = async (filePath: string, fileName: string, mime
         
     }
 }
+
+export const deleteFileFromDrive = async (fileId: string): Promise<void> => {
+    try {
+        const auth = new google.auth.GoogleAuth({
+            keyFile: path.join(__dirname, '../config/credencial.json'),
+            scopes: ['https://www.googleapis.com/auth/drive']
+        });
+
+        const drive = google.drive({ version: 'v3', auth});
+
+        await drive.files.delete({
+            fileId,
+        });
+
+        console.log(`Archivo con ID ${fileId} eliminado de Google Drive `);
+    } catch (error) {
+        console.error(`Error eliminando el archivo con ID ${fileId}`, error);
+        throw new Error(`Error eliminando archivo de Google Drive: ${fileId}`);
+    }
+}

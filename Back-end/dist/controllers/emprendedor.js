@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateEmprendedor = exports.getEmprendedor = exports.crearEmprendedor = exports.getEmprendedores = void 0;
+exports.deleteEmprendedor = exports.updateEmprendedor = exports.getEmprendedor = exports.crearEmprendedor = exports.getEmprendedores = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
@@ -188,3 +188,31 @@ const updateEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.updateEmprendedor = updateEmprendedor;
+const deleteEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { rut_emprendedor } = req.params;
+    try {
+        const emprendedor = yield emprendedor_1.Emprendedor.findOne({ where: { rut_emprendedor: rut_emprendedor } });
+        if (!emprendedor) {
+            return res.status(404).json({ msg: 'Emprendedor no encontrado' });
+        }
+        const comprobanteId = emprendedor.getDataValue('comprobante');
+        const imagenLocalId = emprendedor.getDataValue('imagen_local');
+        const imagenProductosId = emprendedor.getDataValue('imagen_productos');
+        if (comprobanteId) {
+            yield (0, googleDrive_1.deleteFileFromDrive)(comprobanteId);
+        }
+        if (imagenLocalId) {
+            yield (0, googleDrive_1.deleteFileFromDrive)(imagenLocalId);
+        }
+        if (imagenProductosId) {
+            yield (0, googleDrive_1.deleteFileFromDrive)(imagenProductosId);
+        }
+        yield emprendedor.destroy();
+        return res.json({ msg: 'Emprendedor y sus archivos eliminados correctamente' });
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ msg: 'Error eliminando al emprendedor' });
+    }
+});
+exports.deleteEmprendedor = deleteEmprendedor;

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.uploadFileToDrive = void 0;
+exports.deleteFileFromDrive = exports.uploadFileToDrive = void 0;
 const fs_1 = __importDefault(require("fs"));
 const googleapis_1 = require("googleapis");
 const path_1 = __importDefault(require("path"));
@@ -54,3 +54,21 @@ const uploadFileToDrive = (filePath, fileName, mimeType) => __awaiter(void 0, vo
     }
 });
 exports.uploadFileToDrive = uploadFileToDrive;
+const deleteFileFromDrive = (fileId) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const auth = new googleapis_1.google.auth.GoogleAuth({
+            keyFile: path_1.default.join(__dirname, '../config/credencial.json'),
+            scopes: ['https://www.googleapis.com/auth/drive']
+        });
+        const drive = googleapis_1.google.drive({ version: 'v3', auth });
+        yield drive.files.delete({
+            fileId,
+        });
+        console.log(`Archivo con ID ${fileId} eliminado de Google Drive `);
+    }
+    catch (error) {
+        console.error(`Error eliminando el archivo con ID ${fileId}`, error);
+        throw new Error(`Error eliminando archivo de Google Drive: ${fileId}`);
+    }
+});
+exports.deleteFileFromDrive = deleteFileFromDrive;

@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import { Emprendedor } from "../models/emprendedor";
 import { MulterRequest } from '../services/types';
-import { uploadFileToDrive } from './googleDrive';
+import { deleteFileFromDrive, uploadFileToDrive } from './googleDrive';
 
 export const getEmprendedores: RequestHandler = async(req: MulterRequest, res: Response): Promise<void> => {
     try{
@@ -197,5 +197,37 @@ export const updateEmprendedor = async(req: Request, res: Response) => {
     } catch (error) {
         console.error(error);
         return res.status(500).json({ msg: 'Error al actualizar el emprendedor'});
+    }
+}
+
+export const deleteEmprendedor = async(req: Request, res: Response) => {
+    const {rut_emprendedor} = req.params;
+
+    try {
+        const emprendedor = await Emprendedor.findOne({where: {rut_emprendedor: rut_emprendedor}});
+        if (!emprendedor) {
+            return res.status(404).json({msg: 'Emprendedor no encontrado'});
+        }
+
+        const comprobanteId = emprendedor.getDataValue('comprobante');
+        const imagenLocalId = emprendedor.getDataValue('imagen_local');
+        const imagenProductosId = emprendedor.getDataValue('imagen_productos');
+
+        if (comprobanteId) {
+            await deleteFileFromDrive(comprobanteId);
+        }
+        if (imagenLocalId) {
+            await deleteFileFromDrive(imagenLocalId);
+        }
+        if (imagenProductosId) {
+            await deleteFileFromDrive(imagenProductosId);
+        }
+
+        await emprendedor.destroy();
+
+        return res.json({ msg: 'Emprendedor y sus archivos eliminados correctamente'});
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ msg: 'Error eliminando al emprendedor'});
     }
 }
