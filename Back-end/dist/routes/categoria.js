@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value:true });
+Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const categoria_1 = require("../controllers/categoria");
 const router = (0, express_1.Router)();

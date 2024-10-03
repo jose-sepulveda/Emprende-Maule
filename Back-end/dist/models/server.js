@@ -16,7 +16,9 @@ const cors_1 = __importDefault(require("cors"));
 const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
 const emprendedor_1 = __importDefault(require("../routes/emprendedor"));
+const categoria_1 = __importDefault(require("../routes/categoria"));
 const emprendedor_2 = require("./emprendedor");
+const categoria_2 = require("./categoria");
 class Server {
     constructor() {
         var _a;
@@ -34,6 +36,7 @@ class Server {
     }
     routes() {
         this.app.use('/api/emprendedor', emprendedor_1.default);
+        this.app.use('/api/categoria', categoria_1.default);
     }
     midlewares() {
         this.app.use('/public', express_1.default.static(path_1.default.join(__dirname, '..', '..', 'public')));
@@ -45,6 +48,7 @@ class Server {
             try {
                 console.log('Conectado a la base de datos');
                 yield emprendedor_2.Emprendedor.sync();
+                yield categoria_2.Categorias.sync();
             }
             catch (error) {
                 console.error('No se ha podido conectar a la base de datos');

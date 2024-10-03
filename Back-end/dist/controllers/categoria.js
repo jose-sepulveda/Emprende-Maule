@@ -10,9 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteCategoria = exports.getOneCategoria = exports.updateCategoria = exports.newCategoria = exports.getCategoria = void 0;
-const { where } = require("sequelize");
 const categoria_1 = require("../models/categoria");
-
 const getCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const listCategoria = yield categoria_1.Categorias.findAll({ attributes: ['id_categoria', 'nombre_categoria', 'estado_categoria'] });
@@ -20,11 +18,10 @@ const getCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
     catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Error al obtener las categorias.'});
-    }  
+        res.status(500).json({ error: 'Error al obtener las categorias.' });
+    }
 });
 exports.getCategoria = getCategoria;
-
 const newCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { nombre_categoria, estado_categoria } = req.body;
     try {
@@ -44,7 +41,6 @@ const newCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.newCategoria = newCategoria;
-
 const updateCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_categoria } = req.params;
     const { nombre_categoria, estado_categoria } = req.body;
@@ -58,7 +54,7 @@ const updateCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function
         yield categoria_1.Categorias.update({
             nombre_categoria: nombre_categoria,
             estado_categoria: estado_categoria
-        }, { where: { id_categoria: id_categoria} });
+        }, { where: { id_categoria: id_categoria } });
         return res.json({
             message: 'Categoria' + id_categoria + 'actualiazada correctamente'
         });
@@ -71,7 +67,6 @@ const updateCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.updateCategoria = updateCategoria;
-
 const getOneCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_categoria } = req.params;
     const idCategoria = yield categoria_1.Categorias.findOne({ where: { id_categoria: id_categoria } });
@@ -92,7 +87,6 @@ const getOneCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.getOneCategoria = getOneCategoria;
-
 const deleteCategoria = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_categoria } = req.params;
     const idCategoria = yield categoria_1.Categorias.findOne({ where: { id_categoria: id_categoria } });
