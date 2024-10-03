@@ -2,5 +2,4 @@ dist/config/credencial.json
 dist/database/connection.js
 src/database/connection.ts
 node_modules
-uploads
 public
