@@ -4,8 +4,10 @@ import express, { Application } from 'express';
 import path from 'path';
 import routerEmprendedor from '../routes/emprendedor';
 import routerCategoria from '../routes/categoria';
+import routerProducto from '../routes/producto';
 import { Emprendedor } from './emprendedor';
 import { Categorias } from './categoria';
+import { Productos } from './producto';
 
 class Server {
     private app: Application;
@@ -30,6 +32,7 @@ class Server {
     routes() {
         this.app.use('/api/emprendedor', routerEmprendedor);
         this.app.use('/api/categoria', routerCategoria);
+        this.app.use('/api/producto', routerProducto);
     }
 
     midlewares() {
@@ -42,7 +45,8 @@ class Server {
         try {
             console.log('Conectado a la base de datos')
             await Emprendedor.sync()
-            await Categorias.sync();
+            await Categorias.sync()
+            await Productos.sync();
         } catch (error) {
             console.error('No se ha podido conectar a la base de datos');
         }
