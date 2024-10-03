@@ -3,6 +3,7 @@ import { Request, RequestHandler, Response } from "express";
 import fs from 'fs';
 import path from 'path';
 import { Emprendedor } from "../models/emprendedor";
+import { sendEmail } from '../services/mail';
 import { MulterRequest } from '../services/types';
 import { deleteFileFromDrive, uploadFileToDrive } from './googleDrive';
 
@@ -37,7 +38,7 @@ export const getEmprendedores: RequestHandler = async(req: MulterRequest, res: R
 export const crearEmprendedor : RequestHandler = async (req: MulterRequest, res: Response): Promise<void> => {
 
     try {
-        const { rut_emprendedor, contrasena, nombre_emprendedor, apellido1_emprendedor, apellido2_emprendedor, direccion, telefono, correo_electronico, tipo_de_cuenta, numero_de_cuenta, estado_emprendedor} = req.body;
+        const { rut_emprendedor, contrasena, nombre_emprendedor, apellido1_emprendedor, apellido2_emprendedor, direccion, telefono, correo_electronico, tipo_de_cuenta, numero_de_cuenta} = req.body;
 
         const emprendedor = await Emprendedor.findOne({ where: {rut_emprendedor: rut_emprendedor}})
         const emprededorCorreo = await Emprendedor.findOne({ where: {correo_electronico: correo_electronico}});
@@ -90,7 +91,7 @@ export const crearEmprendedor : RequestHandler = async (req: MulterRequest, res:
             "comprobante": comprobanteFileId,
             "tipo_de_cuenta": tipo_de_cuenta,
             "numero_de_cuenta": numero_de_cuenta,
-            "estado_emprendedor": estado_emprendedor,
+            "estado_emprendedor": 'Pendiente',
         })
         res.status(201).json({
             message: 'Emprendedor creado exitosamente',
@@ -285,4 +286,75 @@ export const deleteEmprendedor = async(req: Request, res: Response) => {
         console.error(error);
         return res.status(500).json({ msg: 'Error eliminando al emprendedor'});
     }
+}
+
+export const updateEstadoEmprendedor = async (req: Request, res: Response) => {
+    const { rut_emprendedor, nuevoEstado} = req.body;
+    console.log("Nuevo estado: ", nuevoEstado);
+
+    try {
+        const emprendedor = await Emprendedor.findOne({ where: { rut_emprendedor}});
+
+        if (!emprendedor) {
+            return res.status(404).json({
+                msg: 'Emprendedor no encontrado'
+            });
+        }
+
+        const estadoActual = emprendedor.getDataValue('estado_emprendedor');
+        if (estadoActual !== 'Pendiente') {
+            return res.status(400).json({
+                msg: 'El emprendedor no esta en estado pendiente',
+            });
+        }
+
+        if (nuevoEstado === 'Aprobado') {
+
+            await sendEmail(
+                emprendedor.getDataValue('correo_electronico'),
+                'Cuenta Aprobada',
+                `Hola ${emprendedor.getDataValue('nombre_emprendedor')}.
+                Tu cuenta ha sido aprobada exitosamente.
+                ¡Bienvenido a Emprende Maule!`);
+
+            await emprendedor.update({ estado_emprendedor: nuevoEstado});
+
+            return res.status(200).json({
+                msg: 'Estado actualizado a Aprovedo y correo enviado',
+            });
+        }
+
+        if (nuevoEstado == 'Rechazado') {
+            await deleteFileFromDrive(emprendedor.getDataValue('comprobante'));
+            console.log(`Archivo con ID ${emprendedor.getDataValue('comprobante')} eliminado`);
+            await deleteFileFromDrive(emprendedor.getDataValue('imagen_local'));
+            console.log(`Archivo con ID ${emprendedor.getDataValue('imagen_local')} eliminado`);
+            await deleteFileFromDrive(emprendedor.getDataValue('imagen_productos'));
+            console.log(`Archivo con ID ${emprendedor.getDataValue('imagen_productos')} eliminado`);
+
+            await sendEmail(
+                emprendedor.getDataValue('correo_electronico'),
+                'Cuenta Rechazada',
+                `Hola ${emprendedor.getDataValue('nombre_emprendedor')},
+                Lamentamos informarte que tu cuenta fue rechazada porque no cumplia con los requisitos para el registro`
+            );
+
+            await Emprendedor.destroy({ where: {rut_emprendedor}});
+
+            return res.status(200).json({
+                msg: 'Estado actualizado a Rechazado, archivos eliminados y correo enviado',
+            });
+                
+        }
+
+        return res.status(400).json({msg: 'Estado no valido'});
+    
+    } catch (error) {
+        console.error('Error al acualizar el estado del emprendedor: ', error);
+        return res.status(500).json({
+            msg: 'Error al actualizar el estado. Inténtalo más tarde.',
+        })
+    }
+
+        
 }

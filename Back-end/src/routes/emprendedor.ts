@@ -1,7 +1,7 @@
 import { Router } from "express";
 import multer from 'multer';
 import path from 'path';
-import { crearEmprendedor, deleteEmprendedor, getEmprendedor, getEmprendedores, updateEmprendedor, updatePassword } from "../controllers/emprendedor";
+import { crearEmprendedor, deleteEmprendedor, getEmprendedor, getEmprendedores, updateEmprendedor, updateEstadoEmprendedor, updatePassword } from "../controllers/emprendedor";
 
 const router = Router();
 
@@ -26,5 +26,6 @@ router.get('/:rut_emprendedor', getEmprendedor);
 router.put('/:rut_emprendedor', updateEmprendedor);
 router.delete('/:rut_emprendedor', deleteEmprendedor);
 router.patch('/password', updatePassword);
+router.patch('/estado', updateEstadoEmprendedor);
 
 export default router;

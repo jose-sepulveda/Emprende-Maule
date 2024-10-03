@@ -12,11 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteEmprendedor = exports.updateEmprendedor = exports.updatePassword = exports.getEmprendedor = exports.crearEmprendedor = exports.getEmprendedores = void 0;
+exports.updateEstadoEmprendedor = exports.deleteEmprendedor = exports.updateEmprendedor = exports.updatePassword = exports.getEmprendedor = exports.crearEmprendedor = exports.getEmprendedores = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const emprendedor_1 = require("../models/emprendedor");
+const mail_1 = require("../services/mail");
 const googleDrive_1 = require("./googleDrive");
 const getEmprendedores = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -49,7 +50,7 @@ const getEmprendedores = (req, res) => __awaiter(void 0, void 0, void 0, functio
 exports.getEmprendedores = getEmprendedores;
 const crearEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { rut_emprendedor, contrasena, nombre_emprendedor, apellido1_emprendedor, apellido2_emprendedor, direccion, telefono, correo_electronico, tipo_de_cuenta, numero_de_cuenta, estado_emprendedor } = req.body;
+        const { rut_emprendedor, contrasena, nombre_emprendedor, apellido1_emprendedor, apellido2_emprendedor, direccion, telefono, correo_electronico, tipo_de_cuenta, numero_de_cuenta } = req.body;
         const emprendedor = yield emprendedor_1.Emprendedor.findOne({ where: { rut_emprendedor: rut_emprendedor } });
         const emprededorCorreo = yield emprendedor_1.Emprendedor.findOne({ where: { correo_electronico: correo_electronico } });
         if (emprendedor) {
@@ -93,7 +94,7 @@ const crearEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, functio
             "comprobante": comprobanteFileId,
             "tipo_de_cuenta": tipo_de_cuenta,
             "numero_de_cuenta": numero_de_cuenta,
-            "estado_emprendedor": estado_emprendedor,
+            "estado_emprendedor": 'Pendiente',
         });
         res.status(201).json({
             message: 'Emprendedor creado exitosamente',
@@ -258,3 +259,52 @@ const deleteEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.deleteEmprendedor = deleteEmprendedor;
+const updateEstadoEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { rut_emprendedor, nuevoEstado } = req.body;
+    console.log("Nuevo estado: ", nuevoEstado);
+    try {
+        const emprendedor = yield emprendedor_1.Emprendedor.findOne({ where: { rut_emprendedor } });
+        if (!emprendedor) {
+            return res.status(404).json({
+                msg: 'Emprendedor no encontrado'
+            });
+        }
+        const estadoActual = emprendedor.getDataValue('estado_emprendedor');
+        if (estadoActual !== 'Pendiente') {
+            return res.status(400).json({
+                msg: 'El emprendedor no esta en estado pendiente',
+            });
+        }
+        if (nuevoEstado === 'Aprobado') {
+            yield (0, mail_1.sendEmail)(emprendedor.getDataValue('correo_electronico'), 'Cuenta Aprobada', `Hola ${emprendedor.getDataValue('nombre_emprendedor')}.
+                Tu cuenta ha sido aprobada exitosamente.
+                ¡Bienvenido a Emprende Maule!`);
+            yield emprendedor.update({ estado_emprendedor: nuevoEstado });
+            return res.status(200).json({
+                msg: 'Estado actualizado a Aprovedo y correo enviado',
+            });
+        }
+        if (nuevoEstado == 'Rechazado') {
+            yield (0, googleDrive_1.deleteFileFromDrive)(emprendedor.getDataValue('comprobante'));
+            console.log(`Archivo con ID ${emprendedor.getDataValue('comprobante')} eliminado`);
+            yield (0, googleDrive_1.deleteFileFromDrive)(emprendedor.getDataValue('imagen_local'));
+            console.log(`Archivo con ID ${emprendedor.getDataValue('imagen_local')} eliminado`);
+            yield (0, googleDrive_1.deleteFileFromDrive)(emprendedor.getDataValue('imagen_productos'));
+            console.log(`Archivo con ID ${emprendedor.getDataValue('imagen_productos')} eliminado`);
+            yield (0, mail_1.sendEmail)(emprendedor.getDataValue('correo_electronico'), 'Cuenta Rechazada', `Hola ${emprendedor.getDataValue('nombre_emprendedor')},
+                Lamentamos informarte que tu cuenta fue rechazada porque no cumplia con los requisitos para el registro`);
+            yield emprendedor_1.Emprendedor.destroy({ where: { rut_emprendedor } });
+            return res.status(200).json({
+                msg: 'Estado actualizado a Rechazado, archivos eliminados y correo enviado',
+            });
+        }
+        return res.status(400).json({ msg: 'Estado no valido' });
+    }
+    catch (error) {
+        console.error('Error al acualizar el estado del emprendedor: ', error);
+        return res.status(500).json({
+            msg: 'Error al actualizar el estado. Inténtalo más tarde.',
+        });
+    }
+});
+exports.updateEstadoEmprendedor = updateEstadoEmprendedor;
