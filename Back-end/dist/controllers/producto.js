@@ -13,12 +13,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getProductosByEmprendedor = exports.updateImagen = exports.getProductosByCategoria = exports.updateProducto = exports.deleteProducto = exports.getProductos = exports.getProducto = exports.newProducto = void 0;
-const producto_1 = require("../models/producto");
-const categoria_1 = require("../models/categoria");
-const sequelize_1 = __importDefault(require("sequelize"));
-const googleDrive_1 = require("./googleDrive");
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
+const sequelize_1 = __importDefault(require("sequelize"));
+const categoria_1 = require("../models/categoria");
+const producto_1 = require("../models/producto");
+const googleDrive_1 = require("../services/googleDrive");
 const newProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { nombre_producto, precio_producto, descripcion_producto, id_categoria, cantidad_disponible, cantidad_total } = req.body;
     const imagenFile = req.file;

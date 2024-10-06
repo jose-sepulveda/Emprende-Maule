@@ -1,11 +1,12 @@
 import bcrypt from 'bcrypt';
 import { Request, RequestHandler, Response } from "express";
 import fs from 'fs';
+import jwt from 'jsonwebtoken';
 import path from 'path';
 import { Emprendedor } from "../models/emprendedor";
+import { deleteFileFromDrive, uploadFileToDrive } from '../services/googleDrive';
 import { sendEmail } from '../services/mail';
 import { MulterRequest } from '../services/types';
-import { deleteFileFromDrive, uploadFileToDrive } from './googleDrive';
 
 export const getEmprendedores: RequestHandler = async(req: MulterRequest, res: Response): Promise<void> => {
     try{
@@ -137,6 +138,34 @@ export const getEmprendedor: RequestHandler = async(req: MulterRequest, res: Res
             error
         })
     }
+}
+
+export const loginEmprendedor = async(req: Request, res: Response) => {
+    const { correo_electronico, contrasena} = req.body;
+
+    const emprendedor = await Emprendedor.findOne({where: {correo_electronico: correo_electronico}});
+
+    if (!emprendedor) {
+        return res.status(401).json({
+            msg: 'El correo ingresado no es valido'
+        })
+    }
+
+    const emprendedorPassword = await bcrypt.compare(contrasena, emprendedor.dataValues.contrasena);
+    if (!emprendedorPassword) {
+        return res.status(401).json({
+            msg: 'Contraseña Incorrecta'
+        })
+    }
+
+    const rol = 'emprendedor';
+    const id_emprendedor = emprendedor.dataValues.id_emprendedor;
+    const token = jwt.sign({
+        correo: correo_electronico,
+        role: rol
+    }, process.env.SECRET_KEY || 'ACCESS');
+
+    res.json({ token, rol: rol, id_emprendedor: id_emprendedor})
 }
 
 export const updatePassword = async(req: Request, res: Response) => {

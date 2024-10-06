@@ -1,7 +1,8 @@
 import { Router } from "express";
 import multer from 'multer';
 import path from 'path';
-import { crearEmprendedor, deleteEmprendedor, getEmprendedor, getEmprendedores, updateEmprendedor, updateEstadoEmprendedor, updatePassword } from "../controllers/emprendedor";
+import { crearEmprendedor, deleteEmprendedor, getEmprendedor, getEmprendedores, loginEmprendedor, updateEmprendedor, updateEstadoEmprendedor, updatePassword } from "../controllers/emprendedor";
+import auth from '../middlewares/auth';
 
 const router = Router();
 
@@ -21,11 +22,12 @@ router.post('/new', upload.fields([
     { name: 'imagen_local', maxCount: 1},
     { name: 'imagen_productos', maxCount: 1},
 ]), crearEmprendedor);
-router.get('/list', getEmprendedores);
-router.get('/:rut_emprendedor', getEmprendedor);
-router.put('/:rut_emprendedor', updateEmprendedor);
-router.delete('/:rut_emprendedor', deleteEmprendedor);
-router.patch('/password', updatePassword);
-router.patch('/estado', updateEstadoEmprendedor);
+router.post('/login', loginEmprendedor);
+router.get('/list', auth, getEmprendedores);
+router.get('/:rut_emprendedor', auth, getEmprendedor);
+router.put('/:rut_emprendedor',auth, updateEmprendedor);
+router.delete('/:rut_emprendedor', auth, deleteEmprendedor);
+router.patch('/password', auth, updatePassword);
+router.patch('/estado', auth, updateEstadoEmprendedor);
 
 export default router;

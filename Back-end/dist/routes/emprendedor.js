@@ -7,6 +7,7 @@ const express_1 = require("express");
 const multer_1 = __importDefault(require("multer"));
 const path_1 = __importDefault(require("path"));
 const emprendedor_1 = require("../controllers/emprendedor");
+const auth_1 = __importDefault(require("../middlewares/auth"));
 const router = (0, express_1.Router)();
 const storage = multer_1.default.diskStorage({
     destination: (req, file, cb) => {
@@ -22,10 +23,11 @@ router.post('/new', upload.fields([
     { name: 'imagen_local', maxCount: 1 },
     { name: 'imagen_productos', maxCount: 1 },
 ]), emprendedor_1.crearEmprendedor);
-router.get('/list', emprendedor_1.getEmprendedores);
-router.get('/:rut_emprendedor', emprendedor_1.getEmprendedor);
-router.put('/:rut_emprendedor', emprendedor_1.updateEmprendedor);
-router.delete('/:rut_emprendedor', emprendedor_1.deleteEmprendedor);
-router.patch('/password', emprendedor_1.updatePassword);
-router.patch('/estado', emprendedor_1.updateEstadoEmprendedor);
+router.post('/login', emprendedor_1.loginEmprendedor);
+router.get('/list', auth_1.default, emprendedor_1.getEmprendedores);
+router.get('/:rut_emprendedor', auth_1.default, emprendedor_1.getEmprendedor);
+router.put('/:rut_emprendedor', auth_1.default, emprendedor_1.updateEmprendedor);
+router.delete('/:rut_emprendedor', auth_1.default, emprendedor_1.deleteEmprendedor);
+router.patch('/password', auth_1.default, emprendedor_1.updatePassword);
+router.patch('/estado', auth_1.default, emprendedor_1.updateEstadoEmprendedor);
 exports.default = router;

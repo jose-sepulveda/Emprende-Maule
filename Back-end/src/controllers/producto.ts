@@ -1,10 +1,10 @@
-import { Request, Response, NextFunction } from "express";
-import { Productos } from "../models/producto";
-import { Categorias } from "../models/categoria";
-import sequelize from "sequelize";
-import { uploadFileToDrive, deleteFileFromDrive } from "./googleDrive";
+import { Request, Response } from "express";
 import fs from "fs";
 import path from "path";
+import sequelize from "sequelize";
+import { Categorias } from "../models/categoria";
+import { Productos } from "../models/producto";
+import { uploadFileToDrive } from "../services/googleDrive";
 
 export const newProducto = async(req: Request, res: Response) =>{
     const {nombre_producto, precio_producto, descripcion_producto, id_categoria, cantidad_disponible, cantidad_total} = req.body;

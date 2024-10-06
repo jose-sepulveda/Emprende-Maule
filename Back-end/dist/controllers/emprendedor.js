@@ -12,13 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateEstadoEmprendedor = exports.deleteEmprendedor = exports.updateEmprendedor = exports.updatePassword = exports.getEmprendedor = exports.crearEmprendedor = exports.getEmprendedores = void 0;
+exports.updateEstadoEmprendedor = exports.deleteEmprendedor = exports.updateEmprendedor = exports.updatePassword = exports.loginEmprendedor = exports.getEmprendedor = exports.crearEmprendedor = exports.getEmprendedores = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const fs_1 = __importDefault(require("fs"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const path_1 = __importDefault(require("path"));
 const emprendedor_1 = require("../models/emprendedor");
+const googleDrive_1 = require("../services/googleDrive");
 const mail_1 = require("../services/mail");
-const googleDrive_1 = require("./googleDrive");
 const getEmprendedores = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const listEmprendedores = yield emprendedor_1.Emprendedor.findAll({
@@ -144,6 +145,29 @@ const getEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.getEmprendedor = getEmprendedor;
+const loginEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { correo_electronico, contrasena } = req.body;
+    const emprendedor = yield emprendedor_1.Emprendedor.findOne({ where: { correo_electronico: correo_electronico } });
+    if (!emprendedor) {
+        return res.status(401).json({
+            msg: 'El correo ingresado no es valido'
+        });
+    }
+    const emprendedorPassword = yield bcrypt_1.default.compare(contrasena, emprendedor.dataValues.contrasena);
+    if (!emprendedorPassword) {
+        return res.status(401).json({
+            msg: 'Contraseña Incorrecta'
+        });
+    }
+    const rol = 'emprendedor';
+    const id_emprendedor = emprendedor.dataValues.id_emprendedor;
+    const token = jsonwebtoken_1.default.sign({
+        correo: correo_electronico,
+        role: rol
+    }, process.env.SECRET_KEY || 'ACCESS');
+    res.json({ token, rol: rol, id_emprendedor: id_emprendedor });
+});
+exports.loginEmprendedor = loginEmprendedor;
 const updatePassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { rut_emprendedor, contrasena } = req.body;
     console.log('RUT recibido:', rut_emprendedor);
