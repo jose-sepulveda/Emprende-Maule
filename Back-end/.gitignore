@@ -3,3 +3,4 @@ dist/database/connection.js
 src/database/connection.ts
 node_modules
 public
+uploads

@@ -27,7 +27,7 @@ const newProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             return res.status(400).json({ message: "La imagen es requerida" });
         }
         const imagePath = path_1.default.join(__dirname, '../uploads', imagenFile.filename);
-        const imagenId = yield (0, googleDrive_1.uploadFileToDrive)(imagePath, imagenFile.originalname, 'image/jpeg');
+        const imagenId = yield (0, googleDrive_1.uploadPhoToToDrive)(imagePath, imagenFile.originalname, 'image/jpeg');
         fs_1.default.unlinkSync(imagePath);
         yield producto_1.Productos.create({
             "nombre_producto": nombre_producto,
@@ -202,7 +202,7 @@ const updateImagen = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             return res.status(404).json({ message: "Producto no encontrado" });
         }
         const imagePath = path_1.default.join(__dirname, '../uploads', imagenFile.filename);
-        const newImageId = yield (0, googleDrive_1.uploadFileToDrive)(imagePath, imagenFile.originalname, 'image/jpeg');
+        const newImageId = yield (0, googleDrive_1.uploadPhoToToDrive)(imagePath, imagenFile.originalname, 'image/jpeg');
         fs_1.default.unlinkSync(imagePath);
         yield producto_1.Productos.update({ imagen: newImageId }, { where: { cod_producto } });
         return res.json({ message: "Imagen del producto actualizada correctamente" });

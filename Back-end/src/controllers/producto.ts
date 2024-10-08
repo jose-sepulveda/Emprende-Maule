@@ -4,7 +4,7 @@ import path from "path";
 import sequelize from "sequelize";
 import { Categorias } from "../models/categoria";
 import { Productos } from "../models/producto";
-import { uploadFileToDrive } from "../services/googleDrive";
+import { uploadPhoToToDrive} from "../services/googleDrive";
 
 export const newProducto = async(req: Request, res: Response) =>{
     const {nombre_producto, precio_producto, descripcion_producto, id_categoria, cantidad_disponible, cantidad_total} = req.body;
@@ -16,7 +16,7 @@ export const newProducto = async(req: Request, res: Response) =>{
         }
         
         const imagePath = path.join(__dirname, '../uploads', imagenFile.filename);
-        const imagenId = await uploadFileToDrive(imagePath, imagenFile.originalname,'image/jpeg');
+        const imagenId = await uploadPhoToToDrive(imagePath, imagenFile.originalname,'image/jpeg');
         fs.unlinkSync(imagePath);
 
         await Productos.create({
@@ -194,7 +194,7 @@ export const updateImagen = async (req: Request, res: Response) => {
         }
 
         const imagePath = path.join(__dirname, '../uploads', imagenFile.filename);
-        const newImageId = await uploadFileToDrive(imagePath, imagenFile.originalname, 'image/jpeg');
+        const newImageId = await uploadPhoToToDrive(imagePath, imagenFile.originalname, 'image/jpeg');
         fs.unlinkSync(imagePath);
 
         await Productos.update({ imagen: newImageId }, { where: {cod_producto} });
