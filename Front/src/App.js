@@ -8,6 +8,14 @@ import {CrearCuentaPage} from './pages/CrearCuentaPage';
 import {CrearCuentaE} from './pages/CrearCuentaE';
 import {CrearCuentaC } from './pages/CrearCuentaC';
 
+import { AdminPage } from './pages/AdminPage';
+import { GestionCategorias } from './pages/GestionCategorias.js';
+
+
+import { ClientePage } from './pages/ClientePage';
+import { EmprendedorPage } from './pages/EmprendedorPage.js';
+
+
 function App() {
   return (
     <HashRouter>
@@ -18,6 +26,14 @@ function App() {
         <Route path="/login" element={<LoginPage />}/> 
         <Route path="/crearCuentaE" element={<CrearCuentaE/>}/>
         <Route path="/crearCuentaC" element={<CrearCuentaC/>}/>
+
+        <Route path="/adminPage" element={<AdminPage/>}/>
+        <Route path="/gestionCategorias" element={<GestionCategorias/>}/>
+        
+        <Route path="/clientePage" element={<ClientePage/>}/>
+        <Route path="/emprendedorPage" element={<EmprendedorPage/>}/>
+
+
 
         <Route path="*" element={<p>Ups...La ruta no existe</p>}/> 
       </Routes>
