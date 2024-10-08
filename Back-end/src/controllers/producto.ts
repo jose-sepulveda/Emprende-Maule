@@ -5,9 +5,10 @@ import sequelize from "sequelize";
 import { Categorias } from "../models/categoria";
 import { Productos } from "../models/producto";
 import { uploadPhoToToDrive} from "../services/googleDrive";
+import { Emprendedor } from "../models/emprendedor";
 
 export const newProducto = async(req: Request, res: Response) =>{
-    const {nombre_producto, precio_producto, descripcion_producto, id_categoria, cantidad_disponible, cantidad_total} = req.body;
+    const {nombre_producto, precio_producto, descripcion_producto, id_categoria, cantidad_disponible} = req.body;
     const imagenFile = req.file;
 
     try{
@@ -25,8 +26,7 @@ export const newProducto = async(req: Request, res: Response) =>{
             "descripcion_producto": descripcion_producto,
             "id_categoria": id_categoria,
             "imagen": imagenId,
-            "cantidad_disponible": cantidad_disponible,
-            "cantidad_total": cantidad_total
+            "cantidad_disponible": cantidad_disponible
         });
         return res.status(201).json({
             message: 'Producto creado correctamente'
@@ -48,7 +48,7 @@ export const getProducto = async(req: Request, res: Response) =>{
                 message: "El producto no existe"
         });
     }
-    const producto = await Productos.findOne({attributes:['cod_producto','nombre_producto','precio_producto','descripcion_producto',[sequelize.col('categoria.nombre_categoria'), 'nombre_categoria'],'cantidad_disponible', 'cantidad_total','imagen','cod_producto'],
+    const producto = await Productos.findOne({attributes:['cod_producto','nombre_producto','precio_producto','descripcion_producto',[sequelize.col('categoria.nombre_categoria'), 'nombre_categoria'],'cantidad_disponible','imagen','cod_producto'],
         include: [
             {
                 model: Categorias,
@@ -70,7 +70,7 @@ export const getProducto = async(req: Request, res: Response) =>{
 
 export const getProductos = async(req: Request, res: Response) =>{
     try{
-        const listaProductos = await Productos.findAll({attributes:['cod_producto','nombre_producto','precio_producto','descripcion_producto',[sequelize.col('categoria.nombre_categoria'), 'nombre_categoria'],'cantidad_disponible', 'cantidad_total','imagen','cod_producto'],
+        const listaProductos = await Productos.findAll({attributes:['cod_producto','nombre_producto','precio_producto','descripcion_producto',[sequelize.col('categoria.nombre_categoria'), 'nombre_categoria'],'cantidad_disponible','imagen','cod_producto'],
         include: [
             {
                 model: Categorias,
@@ -158,7 +158,7 @@ export const getProductosByCategoria = async(req: Request, res: Response) => {
     try{
         const productos = await Productos.findAll({
             where: {id_categoria: id_categoria},
-            attributes: ['cod_producto','nombre_producto','precio_producto','descripcion_producto','cantidad_disponible', 'cantidad_total', 'imagen'],
+            attributes: ['cod_producto','nombre_producto','precio_producto','descripcion_producto','cantidad_disponible', 'imagen'],
             include: [{
                 model: Categorias,
                 attributes: ['nombre_categoria'],
@@ -213,14 +213,75 @@ export const getProductosByEmprendedor = async (req: Request, res: Response) => 
     const {id_emprendedor} = req.params;
 
     try{
-        const productos = await Productos.findAll({ where: {id_emprendedor} });
+        const productos = await Productos.findAll({
+            where: {id_emprendedor},
+            attributes: ['cod_producto','nombre_producto','precio_producto','descripcion_producto','cantidad_disponible', 'imagen'],
+            include: [
+                {
+                    model: Categorias,
+                    attributes: ['nombre_categoria'],
+                },
+                {
+                    model: Emprendedor,
+                    attributes: ['nombre_emprendedor'],
+                }
+            ]
+        });
 
-        if (!productos || productos.length === 0) {
-            return res.status(404).json({ message: 'No hay productos para este emprendedor' });
+        if(!productos || productos.length === 0) {
+            return res.status(204).json();
         }
 
         res.json(productos);
-    } catch (error) {
-        res.status(500).json({ message: "Error al consultar productos por emprendedor", error});
+
+    } catch(error) {
+        console.error("Error al consultar productos por emprendedor:", error);
+        return res.status(500).json({ message: "Error al consultar productos por emprendedor", error});
+    }
+};
+
+export const updateProductoConDescuento = async (req: Request, res: Response) => {
+    const {cod_producto} = req.params;
+    const {precio_producto, descuento} = req.body;
+
+    try {
+        if (descuento < 0 || descuento > 100) {
+            return res.status(400).json({ message: 'Descuento debe ser entre 0 y 100%' });
+        }
+
+        const producto = await Productos.findOne({ where: {cod_producto}});
+
+        if(!producto) {
+            return res.status(404).json({ message: "Producto no encontrado" });
+        }
+
+        const precioFinal = precio_producto ? precio_producto : producto.get('precio_producto');
+
+        const precio_descuento = precioFinal - (precioFinal * (descuento / 100));
+
+        await Productos.update({
+            precio_producto: precioFinal,
+            descuento: descuento,
+            precio_descuento: precio_descuento
+        }, {
+            where: {cod_producto}
+        });
+        
+        return res.json({
+            message: 'Producto actualizado correctamente',
+            data: {
+                cod_producto,
+                precio_producto: precioFinal,
+                descuento,
+                precio_descuento
+            }
+        });
+
+    } catch(error) {
+        console.error('Error al actualizar el producto con descuento:', error);
+        return res.status(500).json({
+            message: 'Ocurrio un error al actualizar el producto con descuento',
+            error
+        });
     }
 };

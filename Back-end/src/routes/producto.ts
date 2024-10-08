@@ -1,6 +1,6 @@
 import { Router } from "express";
 import multer from "multer";
-import { deleteProducto, getProducto, getProductos, newProducto, updateProducto, updateImagen, getProductosByCategoria, getProductosByEmprendedor } from "../controllers/producto";
+import { deleteProducto, getProducto, getProductos, newProducto, updateProducto, updateImagen, getProductosByCategoria, getProductosByEmprendedor, updateProductoConDescuento } from "../controllers/producto";
 import path from 'path';
 
 const router = Router();
@@ -24,5 +24,6 @@ router.put('/:cod_producto',updateProducto);
 router.patch('/:cod_producto/updateImagen', upload.single('imagen'), updateImagen);
 router.get('/categoria/:id_categoria', getProductosByCategoria);
 router.get('/emprendedor/:id_emprendedor', getProductosByEmprendedor);
+router.put('/:cod_producto/descuento', updateProductoConDescuento);
 
 export default router;

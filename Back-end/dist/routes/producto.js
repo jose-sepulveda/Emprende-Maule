@@ -25,4 +25,5 @@ router.put('/:cod_producto', producto_1.updateProducto);
 router.patch('/:cod_producto/updateImagen', upload.single('imagen'), producto_1.updateImagen);
 router.get('/categoria/:id_categoria', producto_1.getProductosByCategoria);
 router.get('/emprendedor/:id_emprendedor', producto_1.getProductosByEmprendedor);
+router.put('/:cod_producto/descuento', producto_1.updateProductoConDescuento);
 exports.default = router;
