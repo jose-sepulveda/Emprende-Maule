@@ -1,10 +1,13 @@
-function CrearCuentaC(){
-    return <>
-        <h3>Crear cuenta Cliente</h3>
-        <h3>Completa los datos para crear tu cuenta</h3>
-        
-    </>
+//CREAR CUENTA CLIENTE 
+import React from 'react';
+import FormCrearCliente from '../components/FormCrearCliente'; // Importa el formulario
+
+function CrearCuentaC() {
+    return (
+        <>
+            <FormCrearCliente />
+        </>
+    );
 }
 
-
-export {CrearCuentaC};
+export { CrearCuentaC };
