@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { createCliente } from '../services/crearCliente';
 import '../Styles/formCliente.css';
 
-
 const FormCrearCliente = () => {
   const [formData, setFormData] = useState({
     rut_cliente: '',
@@ -47,53 +46,53 @@ const FormCrearCliente = () => {
   };
 
   return (
-    <div className='containerFormCrearCliente'>
+    <div className='fc-containerFormCrearCliente'>
       <h2>Crear Cuenta Cliente</h2>
       {mensaje && <p>{mensaje}</p>}
-      <form onSubmit={handleSubmit}>
-        <div className="containerInput">
-            <div>
-                <label>Nombre</label>
-                <input type="text" name="nombre_cliente" value={formData.nombre_cliente} onChange={handleInputChange} required />
-            </div>
-        <div>
-            <label>Apellido Paterno</label>
-            <input type="text" name="apellido1_cliente" value={formData.apellido1_cliente} onChange={handleInputChange} required />
-        </div>
-        </div>
-
-        <div className="containerInput">
-            <div>
-                <label>Apellido Materno</label>
-                <input type="text" name="apellido2_cliente" value={formData.apellido2_cliente} onChange={handleInputChange} required/>
-            </div>
-            <div>
-                <label>RUT</label>
-                <input type="text" name="rut_cliente" value={formData.rut_cliente} onChange={handleInputChange} required/>
-            </div>
+      <form className='fc-form' onSubmit={handleSubmit}>
+        <div className="fc-containerInput">
+          <div>
+            <label className='fc-label'>Nombre</label>
+            <input className='fc-input' type="text" name="nombre_cliente" value={formData.nombre_cliente} onChange={handleInputChange} required />
+          </div>
+          <div>
+            <label className='fc-label'>Apellido Paterno</label>
+            <input className='fc-input' type="text" name="apellido1_cliente" value={formData.apellido1_cliente} onChange={handleInputChange} required />
+          </div>
         </div>
 
-        <div className="containerInput">
-        <div>
-            <label>Contraseña</label>
-            <input type="password" name="contrasena" value={formData.contrasena} onChange={handleInputChange} required/>
+        <div className="fc-containerInput">
+          <div>
+            <label className='fc-label'>Apellido Materno</label>
+            <input className='fc-input' type="text" name="apellido2_cliente" value={formData.apellido2_cliente} onChange={handleInputChange} required/>
+          </div>
+          <div>
+            <label className='fc-label'>RUT</label>
+            <input className='fc-input' type="text" name="rut_cliente" value={formData.rut_cliente} onChange={handleInputChange} required/>
+          </div>
         </div>
-                   <div>
-            <label>Teléfono</label>
-            <input type="text" name="telefono" value={formData.telefono} onChange={handleInputChange} required />
-            </div>
+
+        <div className="fc-containerInput">
+          <div>
+            <label className='fc-label'>Contraseña</label>
+            <input className='fc-input' type="password" name="contrasena" value={formData.contrasena} onChange={handleInputChange} required/>
+          </div>
+          <div>
+            <label className='fc-label'>Teléfono</label>
+            <input className='fc-input' type="text" name="telefono" value={formData.telefono} onChange={handleInputChange} required />
+          </div>
         </div>
 
         <div>
-            <label>Dirección</label>
-            <input type="text" name="direccion" value={formData.direccion} onChange={handleInputChange} required />
+          <label className='fc-label'>Dirección</label>
+          <input className='fcc-input' type="text" name="direccion" value={formData.direccion} onChange={handleInputChange} required />
         </div>
         <div>
-            <label>Correo</label>
-            <input type="email" name="correo" value={formData.correo} onChange={handleInputChange} required />
+          <label className='fc-label'>Correo</label>
+          <input className='fcc-input' type="email" name="correo" value={formData.correo} onChange={handleInputChange} required />
         </div>
-        <button type="submit">Crear Cliente</button>
-        </form>
+        <button className='fc-button' type="submit">Crear Cliente</button>
+      </form>
     </div>
   );
 };
