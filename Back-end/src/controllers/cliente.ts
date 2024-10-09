@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, response, Response } from "express";
 import {Cliente} from '../models/cliente';
 import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken";
@@ -203,5 +203,49 @@ export const resetContrasena = async (req: Request, res: Response) => {
         });
     }
 };
+
+export const getClienteById = async (req: Request, res: Response) => {
+    const { id_cliente} = req.params;
+
+    try{
+        const cliente = await Cliente.findOne({where: {id_cliente: id_cliente}});
+
+        if(!cliente){
+            return res.status(404).json({
+                msg: 'El cliente no existe'
+            });
+        }
+
+        return res.json(cliente);
+
+    } catch (error) {
+        return res.status(500).json({
+            msg: 'Error al obtener el cliente',
+            error
+        });
+    }
+};
+
+export const getClientes = async (req: Request, res: Response) => {
+    try{
+        const clientes = await Cliente.findAll();
+
+        if(!clientes || clientes.length === 0) {
+            return res.status(404).json({
+                msg: 'No hay clientes'
+            });
+        }
+
+        return res.json(clientes);
+
+    } catch (error) {
+        return res.status(500).json({
+            msg: 'Error al obtener los clientes',
+            error
+        });
+    }
+};
+
+
 
 

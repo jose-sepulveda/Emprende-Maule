@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginAdmin = exports.updateAdmin = exports.deleteAdmin = exports.newAdmin = void 0;
+exports.getAdministradores = exports.getAdminById = exports.loginAdmin = exports.updateAdmin = exports.deleteAdmin = exports.newAdmin = void 0;
 const administrador_1 = require("../models/administrador");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -119,3 +119,40 @@ const loginAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     res.json({ token, rol: rol, id_administrador: id_administrador });
 });
 exports.loginAdmin = loginAdmin;
+const getAdminById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_administrador } = req.params;
+    try {
+        const administrador = yield administrador_1.Administrador.findOne({ where: { id_administrador: id_administrador } });
+        if (!administrador) {
+            return res.status(404).json({
+                msg: 'El administrador no existe'
+            });
+        }
+        return res.json(administrador);
+    }
+    catch (error) {
+        return res.status(500).json({
+            msg: 'Error al obtener el administrador',
+            error
+        });
+    }
+});
+exports.getAdminById = getAdminById;
+const getAdministradores = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const administradores = yield administrador_1.Administrador.findAll();
+        if (!administradores || administradores.length === 0) {
+            return res.status(404).json({
+                msg: 'No hay administradores'
+            });
+        }
+        return res.json(administradores);
+    }
+    catch (error) {
+        return res.status(500).json({
+            msg: 'Error al obtener los administradores',
+            error
+        });
+    }
+});
+exports.getAdministradores = getAdministradores;

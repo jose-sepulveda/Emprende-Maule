@@ -125,5 +125,46 @@ export const loginAdmin = async (req: Request, res: Response) => {
 
     res.json({ token, rol: rol, id_administrador: id_administrador });
 };
-  
+
+export const getAdminById = async (req: Request, res: Response) => {
+    const { id_administrador} = req.params;
+
+    try{
+        const administrador = await Administrador.findOne({where: {id_administrador: id_administrador}});
+
+        if(!administrador){
+            return res.status(404).json({
+                msg: 'El administrador no existe'
+            });
+        }
+
+        return res.json(administrador);
+
+    } catch (error) {
+        return res.status(500).json({
+            msg: 'Error al obtener el administrador',
+            error
+        });
+    }
+};
+
+export const getAdministradores = async (req: Request, res: Response) => {
+    try{
+        const administradores = await Administrador.findAll();
+
+        if(!administradores || administradores.length === 0) {
+            return res.status(404).json({
+                msg: 'No hay administradores'
+            });
+        }
+
+        return res.json(administradores);
+
+    } catch (error) {
+        return res.status(500).json({
+            msg: 'Error al obtener los administradores',
+            error
+        });
+    }
+};
 
