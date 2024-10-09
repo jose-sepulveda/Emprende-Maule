@@ -8,4 +8,6 @@ router.post('/login', cliente_1.loginCliente);
 router.delete('/:id_cliente', cliente_1.deleteCliente);
 router.put('/:id_cliente', cliente_1.updateCliente);
 router.post('/reset', cliente_1.resetContrasena);
+router.get('/list', cliente_1.getClientes);
+router.get('/:id_cliente', cliente_1.getClienteById);
 exports.default = router;
