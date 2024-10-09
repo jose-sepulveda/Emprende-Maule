@@ -6,10 +6,12 @@ import routerEmprendedor from '../routes/emprendedor';
 import routerCategoria from '../routes/categoria';
 import routerProducto from '../routes/producto';
 import routerCliente from '../routes/cliente';
+import routerAdministrador from '../routes/administrador';
 import { Emprendedor } from './emprendedor';
 import { Categorias } from './categoria';
 import { Productos } from './producto';
 import { Cliente } from './cliente';
+import { Administrador } from './administrador';
 
 class Server {
     private app: Application;
@@ -36,6 +38,7 @@ class Server {
         this.app.use('/api/categoria', routerCategoria);
         this.app.use('/api/producto', routerProducto);
         this.app.use('/api/cliente', routerCliente);
+        this.app.use('/api/administrador', routerAdministrador);
     }
 
     midlewares() {
@@ -50,7 +53,8 @@ class Server {
             await Emprendedor.sync()
             await Categorias.sync()
             await Productos.sync()
-            await Cliente.sync();
+            await Cliente.sync()
+            await Administrador.sync();
         } catch (error) {
             console.error('No se ha podido conectar a la base de datos');
         }
