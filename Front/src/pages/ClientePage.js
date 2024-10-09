@@ -1,6 +1,6 @@
 function ClientePage(){
     return <>
-        <h3>AdminPage  </h3>
+        <h3>ClientePage  </h3>
     </>
 }
 

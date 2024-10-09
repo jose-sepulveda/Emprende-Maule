@@ -21,6 +21,6 @@ function CrearCuentaPage(){
 
 const routes = [];
 
-routes.push({to:"/crearCuentaE", text:"Crear cuenta Emprendedor"})
-routes.push({to:"/crearCuentaC", text:"Crear cuenta Cliente"})
+//routes.push({to:"/formCrearE", text:"Crear cuenta Emprendedor"})
+routes.push({to:"/formCrearC", text:"Crear cuenta Cliente"})
 export {CrearCuentaPage};
