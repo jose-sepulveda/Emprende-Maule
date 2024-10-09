@@ -2,6 +2,13 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:3000/api/cliente';
 
+
+// Obtener todos los clientes
+export const getClientes = () => axios.get(`${API_URL}/list`);
+
+// Obtener un cliente por su ID
+export const getClienteById = (id_cliente) => axios.get(`${API_URL}/${id_cliente}`);
+
 // Crear un nuevo cliente
 export const createCliente = (cliente) => axios.post(`${API_URL}/`, cliente);
 
@@ -16,3 +23,4 @@ export const loginCliente = (credentials) => axios.post(`${API_URL}/login`, cred
 
 // Restablecer contraseña de cliente
 export const resetContrasena = (correo, nuevaContrasena) => axios.post(`${API_URL}/reset`, { correo, nuevaContrasena });
+
