@@ -117,9 +117,14 @@ const carroLocal = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         if (!carro) {
             carro = yield carro_1.Carro.create({ id_cliente }, { transaction: transaccion });
         }
+        let totalCarro = carro.dataValues.total || 0;
         for (const producto of productos) {
+            if (!producto.cod_producto || !producto.cantidad) {
+                yield transaccion.rollback();
+                return res.status(400).json({ msg: "Formato de producto incorrecto. Cada producto debe tener 'cod_producto' y 'cantidad'" });
+            }
             let carroProductos = yield carro_productos_1.Carro_productos.findOne({
-                where: { id_carro: carro === null || carro === void 0 ? void 0 : carro.dataValues.id_carro, cod_producto: producto.dataValues.cod_producto },
+                where: { id_carro: carro === null || carro === void 0 ? void 0 : carro.dataValues.id_carro, cod_producto: producto.cod_producto },
                 transaction: transaccion
             });
             let idProducto = yield producto_1.Productos.findOne({ where: { cod_producto: producto.cod_producto }, transaction: transaccion });
@@ -139,6 +144,7 @@ const carroLocal = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                     subtotal: subtotalCarroActual + (precioFinal * producto.cantidad)
                 }, { transaction: transaccion });
                 yield carroProductos.save({ transaction: transaccion });
+                totalCarro += precioFinal * producto.cantidad;
             }
             else {
                 yield carro_productos_1.Carro_productos.create({
@@ -147,8 +153,10 @@ const carroLocal = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                     cantidad: producto.cantidad,
                     subtotal: producto.cantidad * precioFinal
                 }, { transaction: transaccion });
+                totalCarro += producto.cantidad * precioFinal;
             }
         }
+        yield carro.update({ total: totalCarro }, { transaction: transaccion });
         yield transaccion.commit();
         res.json({ msg: "Carro actualizado correctamente" });
     }

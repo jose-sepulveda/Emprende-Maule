@@ -5,7 +5,7 @@ const router = Router();
 
 router.get('/list', getCarros);
 router.post('/', newCarro);
-router.get('/:id_carro', getCarro);
+router.get('/:id_cliente', getCarro);
 router.put('/:id_carro', updateCarro);
 router.delete('/:id_carro', deletCarro);
 
