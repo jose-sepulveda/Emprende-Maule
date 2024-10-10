@@ -17,24 +17,32 @@ import { GestionClientes } from './pages/GestionClientes.js';
 import { ClientePage } from './pages/ClientePage';
 import { EmprendedorPage } from './pages/EmprendedorPage.js';
 
+import { AuthProvider } from '../../Front/src/Auth/AuthContext.js';
 
 function App() {
   return (
+
     <HashRouter>
       <Menu />
       <Routes>
       <Route path="/" element={<InicioPage/>}/> 
         
+        {/*Pagina de inicio*/}
         <Route path="/login" element={<LoginPage />}/> 
         
+        {/*crear cuentas cliente y emprendedor*/}
         <Route path="/crearCuenta" element={<CrearCuentaPage />}/> 
         <Route path="/formCrearC" element={<FormCrearCliente/>}/> 
 
+        {/*Administrador*/}
         <Route path="/adminPage" element={<AdminPage/>}/>
         <Route path="/gestionCategorias" element={<GestionCategorias/>}/>
         <Route path="/gestionClientes" element={<GestionClientes/>}/>
         
+        {/*Cliente*/}
         <Route path="/clientePage" element={<ClientePage/>}/>
+
+        {/*Emprendedor*/}
         <Route path="/emprendedorPage" element={<EmprendedorPage/>}/>
 
 
@@ -45,6 +53,7 @@ function App() {
           Chile, 2024
       </footer>
     </HashRouter>
+
 
   );
 }
