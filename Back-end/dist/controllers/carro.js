@@ -56,7 +56,7 @@ const newCarro = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             const subTotal = precioFinal * cantidad;
             const carroActual = yield carro_1.Carro.findOne({
                 attributes: ['total'],
-                where: { id_carror: idCarro },
+                where: { id_carro: idCarro },
                 transaction: transaccion,
             });
             const totalActual = carroActual === null || carroActual === void 0 ? void 0 : carroActual.dataValues.total;

@@ -56,7 +56,7 @@ export const newCarro = async(req: Request, res: Response) => {
 
             const carroActual = await Carro.findOne({
                 attributes: ['total'],
-                where: { id_carror: idCarro},
+                where: { id_carro: idCarro},
                 transaction: transaccion,
             });
 
