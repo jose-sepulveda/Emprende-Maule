@@ -24,6 +24,7 @@ const getEmprendedores = (req, res) => __awaiter(void 0, void 0, void 0, functio
     try {
         const listEmprendedores = yield emprendedor_1.Emprendedor.findAll({
             attributes: [
+                'id_emprendedor',
                 'rut_emprendedor',
                 'contrasena',
                 'nombre_emprendedor',
@@ -115,6 +116,7 @@ const getEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, function*
     const { rut_emprendedor } = req.params;
     const rutEmprendedor = yield emprendedor_1.Emprendedor.findOne({
         attributes: [
+            'id_emprendedor',
             'rut_emprendedor',
             'contrasena',
             'nombre_emprendedor',

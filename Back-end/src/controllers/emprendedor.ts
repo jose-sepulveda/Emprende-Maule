@@ -12,6 +12,7 @@ export const getEmprendedores: RequestHandler = async(req: MulterRequest, res: R
     try{
         const listEmprendedores = await Emprendedor.findAll({
             attributes: [
+                'id_emprendedor',
                 'rut_emprendedor',
                 'contrasena',
                 'nombre_emprendedor',
@@ -111,6 +112,7 @@ export const getEmprendedor: RequestHandler = async(req: MulterRequest, res: Res
     const {rut_emprendedor} = req.params;
     const rutEmprendedor = await Emprendedor.findOne({
         attributes: [
+            'id_emprendedor',
             'rut_emprendedor',
             'contrasena',
             'nombre_emprendedor',

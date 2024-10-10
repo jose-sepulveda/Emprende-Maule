@@ -15,14 +15,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const cors_1 = __importDefault(require("cors"));
 const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
-const emprendedor_1 = __importDefault(require("../routes/emprendedor"));
+const carro_1 = __importDefault(require("../routes/carro"));
+const carro_productos_1 = __importDefault(require("../routes/carro_productos"));
 const categoria_1 = __importDefault(require("../routes/categoria"));
-const producto_1 = __importDefault(require("../routes/producto"));
 const cliente_1 = __importDefault(require("../routes/cliente"));
-const emprendedor_2 = require("./emprendedor");
+const emprendedor_1 = __importDefault(require("../routes/emprendedor"));
+const producto_1 = __importDefault(require("../routes/producto"));
+const carro_2 = require("./carro");
+const carro_productos_2 = require("./carro_productos");
 const categoria_2 = require("./categoria");
-const producto_2 = require("./producto");
 const cliente_2 = require("./cliente");
+const emprendedor_2 = require("./emprendedor");
+const producto_2 = require("./producto");
 class Server {
     constructor() {
         var _a;
@@ -43,6 +47,8 @@ class Server {
         this.app.use('/api/categoria', categoria_1.default);
         this.app.use('/api/producto', producto_1.default);
         this.app.use('/api/cliente', cliente_1.default);
+        this.app.use('/api/carro', carro_1.default);
+        this.app.use('/api/carro_productos', carro_productos_1.default);
     }
     midlewares() {
         this.app.use('/public', express_1.default.static(path_1.default.join(__dirname, '..', '..', 'public')));
@@ -57,6 +63,8 @@ class Server {
                 yield categoria_2.Categorias.sync();
                 yield producto_2.Productos.sync();
                 yield cliente_2.Cliente.sync();
+                yield carro_2.Carro.sync();
+                yield carro_productos_2.Carro_productos.sync();
             }
             catch (error) {
                 console.error('No se ha podido conectar a la base de datos');
