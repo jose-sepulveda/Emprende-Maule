@@ -40,8 +40,8 @@ class Server {
         this.app.use('/api/categoria', routerCategoria);
         this.app.use('/api/producto', routerProducto);
         this.app.use('/api/cliente', routerCliente);
-        this.app.use('/carro', routerCarro)
-        this.app.use('/carro_productos', routerCarroProductos);
+        this.app.use('/api/carro', routerCarro)
+        this.app.use('/api/carro_productos', routerCarroProductos);
     }
 
     midlewares() {
@@ -53,12 +53,12 @@ class Server {
     async dbConnect() {
         try {
             console.log('Conectado a la base de datos')
-            await Emprendedor.sync()
-            await Categorias.sync()
-            await Productos.sync()
-            await Cliente.sync();
-            await Carro.sync();
-            await Carro_productos.sync();
+            await Emprendedor.sync({ alter: true })
+            await Categorias.sync({ alter: true })
+            await Productos.sync({ alter: true })
+            await Cliente.sync({ alter: true });
+            await Carro.sync({ alter: true });
+            await Carro_productos.sync({ alter: true });
         } catch (error) {
             console.error('No se ha podido conectar a la base de datos');
         }
