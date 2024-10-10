@@ -2,6 +2,8 @@
 import cors from 'cors';
 import express, { Application } from 'express';
 import path from 'path';
+import routerCarro from '../routes/carro';
+import routerCarroProductos from '../routes/carro_productos';
 import routerCategoria from '../routes/categoria';
 import routerCliente from '../routes/cliente';
 import routerEmprendedor from '../routes/emprendedor';
@@ -36,6 +38,8 @@ class Server {
         this.app.use('/api/categoria', routerCategoria);
         this.app.use('/api/producto', routerProducto);
         this.app.use('/api/cliente', routerCliente);
+        this.app.use('/carro', routerCarro)
+        this.app.use('/carro_productos', routerCarroProductos);
     }
 
     midlewares() {
