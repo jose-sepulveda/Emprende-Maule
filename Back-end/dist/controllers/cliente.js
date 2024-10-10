@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetContrasena = exports.loginCliente = exports.updateCliente = exports.deleteCliente = exports.newCliente = void 0;
+exports.getClientes = exports.getClienteById = exports.resetContrasena = exports.loginCliente = exports.updateCliente = exports.deleteCliente = exports.newCliente = void 0;
 const cliente_1 = require("../models/cliente");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -184,3 +184,40 @@ const resetContrasena = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.resetContrasena = resetContrasena;
+const getClienteById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_cliente } = req.params;
+    try {
+        const cliente = yield cliente_1.Cliente.findOne({ where: { id_cliente: id_cliente } });
+        if (!cliente) {
+            return res.status(404).json({
+                msg: 'El cliente no existe'
+            });
+        }
+        return res.json(cliente);
+    }
+    catch (error) {
+        return res.status(500).json({
+            msg: 'Error al obtener el cliente',
+            error
+        });
+    }
+});
+exports.getClienteById = getClienteById;
+const getClientes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const clientes = yield cliente_1.Cliente.findAll();
+        if (!clientes || clientes.length === 0) {
+            return res.status(404).json({
+                msg: 'No hay clientes'
+            });
+        }
+        return res.json(clientes);
+    }
+    catch (error) {
+        return res.status(500).json({
+            msg: 'Error al obtener los clientes',
+            error
+        });
+    }
+});
+exports.getClientes = getClientes;
