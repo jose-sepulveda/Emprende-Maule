@@ -8,6 +8,8 @@ import routerCategoria from '../routes/categoria';
 import routerCliente from '../routes/cliente';
 import routerEmprendedor from '../routes/emprendedor';
 import routerProducto from '../routes/producto';
+import { Carro } from './carro';
+import { Carro_productos } from './carro_productos';
 import { Categorias } from './categoria';
 import { Cliente } from './cliente';
 import { Emprendedor } from './emprendedor';
@@ -55,6 +57,8 @@ class Server {
             await Categorias.sync()
             await Productos.sync()
             await Cliente.sync();
+            await Carro.sync();
+            await Carro_productos.sync();
         } catch (error) {
             console.error('No se ha podido conectar a la base de datos');
         }
