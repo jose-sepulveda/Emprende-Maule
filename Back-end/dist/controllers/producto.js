@@ -21,7 +21,7 @@ const producto_1 = require("../models/producto");
 const googleDrive_1 = require("../services/googleDrive");
 const emprendedor_1 = require("../models/emprendedor");
 const newProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { nombre_producto, precio_producto, descripcion_producto, id_categoria, cantidad_disponible } = req.body;
+    const { nombre_producto, precio_producto, descripcion_producto, id_categoria, cantidad_disponible, descuento } = req.body;
     const imagenFile = req.file;
     try {
         if (!imagenFile) {
@@ -30,13 +30,22 @@ const newProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const imagePath = path_1.default.join(__dirname, '../uploads', imagenFile.filename);
         const imagenId = yield (0, googleDrive_1.uploadPhoToToDrive)(imagePath, imagenFile.originalname, 'image/jpeg');
         fs_1.default.unlinkSync(imagePath);
+        let precio_descuento = null;
+        if (descuento) {
+            if (descuento < 0 || descuento > 100) {
+                return res.status(400).json({ message: 'Descuentro debe ser entre 0 y 100%' });
+            }
+            precio_descuento = precio_producto - (precio_producto * (descuento / 100));
+        }
         yield producto_1.Productos.create({
             "nombre_producto": nombre_producto,
             "precio_producto": precio_producto,
             "descripcion_producto": descripcion_producto,
             "id_categoria": id_categoria,
             "imagen": imagenId,
-            "cantidad_disponible": cantidad_disponible
+            "cantidad_disponible": cantidad_disponible,
+            "descuento": descuento || null,
+            "precio_descuento": precio_descuento
         });
         return res.status(201).json({
             message: 'Producto creado correctamente'

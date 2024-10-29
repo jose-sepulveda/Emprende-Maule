@@ -5,7 +5,7 @@ const carro_1 = require("../controllers/carro");
 const router = (0, express_1.Router)();
 router.get('/list', carro_1.getCarros);
 router.post('/', carro_1.newCarro);
-router.get('/:id_carro', carro_1.getCarro);
+router.get('/:id_cliente', carro_1.getCarro);
 router.put('/:id_carro', carro_1.updateCarro);
 router.delete('/:id_carro', carro_1.deletCarro);
 exports.default = router;

@@ -121,9 +121,15 @@ export const carroLocal= async(req: Request, res: Response) => {
             carro = await Carro.create({ id_cliente }, {transaction: transaccion});
         }
 
+        let totalCarro = carro.dataValues.total || 0; 
+
         for (const producto of productos) {
+            if (!producto.cod_producto || !producto.cantidad) {
+                await transaccion.rollback();
+                return res.status(400).json({ msg: "Formato de producto incorrecto. Cada producto debe tener 'cod_producto' y 'cantidad'" });
+            }
             let carroProductos = await Carro_productos.findOne({
-                where: { id_carro: carro?.dataValues.id_carro, cod_producto: producto.dataValues.cod_producto},
+                where: { id_carro: carro?.dataValues.id_carro, cod_producto: producto.cod_producto},
                 transaction: transaccion
             });
 
@@ -148,6 +154,8 @@ export const carroLocal= async(req: Request, res: Response) => {
                 }, { transaction: transaccion });
 
                 await carroProductos.save({ transaction: transaccion });
+
+                totalCarro += precioFinal * producto.cantidad;
             } else {
                 await Carro_productos.create({
                     id_carro: carro?.dataValues.id_carro,
@@ -155,8 +163,12 @@ export const carroLocal= async(req: Request, res: Response) => {
                     cantidad: producto.cantidad,
                     subtotal: producto.cantidad * precioFinal
                 }, { transaction: transaccion });
+
+                totalCarro += producto.cantidad * precioFinal
             }
         }
+
+        await carro.update({ total: totalCarro }, { transaction: transaccion });
 
         await transaccion.commit();
         res.json({ msg: "Carro actualizado correctamente"});

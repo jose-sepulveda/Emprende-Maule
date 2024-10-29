@@ -21,12 +21,14 @@ const categoria_1 = __importDefault(require("../routes/categoria"));
 const cliente_1 = __importDefault(require("../routes/cliente"));
 const emprendedor_1 = __importDefault(require("../routes/emprendedor"));
 const producto_1 = __importDefault(require("../routes/producto"));
+const resena_1 = __importDefault(require("../routes/resena"));
 const carro_2 = require("./carro");
 const carro_productos_2 = require("./carro_productos");
 const categoria_2 = require("./categoria");
 const cliente_2 = require("./cliente");
 const emprendedor_2 = require("./emprendedor");
 const producto_2 = require("./producto");
+const resena_2 = require("./resena");
 class Server {
     constructor() {
         var _a;
@@ -49,6 +51,7 @@ class Server {
         this.app.use('/api/cliente', cliente_1.default);
         this.app.use('/api/carro', carro_1.default);
         this.app.use('/api/carro_productos', carro_productos_1.default);
+        this.app.use('/api/resena', resena_1.default);
     }
     midlewares() {
         this.app.use('/public', express_1.default.static(path_1.default.join(__dirname, '..', '..', 'public')));
@@ -65,6 +68,7 @@ class Server {
                 yield cliente_2.Cliente.sync({ alter: true });
                 yield carro_2.Carro.sync({ alter: true });
                 yield carro_productos_2.Carro_productos.sync({ alter: true });
+                yield resena_2.Resena.sync({ alter: true });
             }
             catch (error) {
                 console.error('No se ha podido conectar a la base de datos');
