@@ -15,7 +15,7 @@ const GestionClientes = () => {
       setClientes(sortedClientes);
     } catch (error) {
       console.error('Error al cargar clientes:', error);
-      alert('Error al cargar clientes');
+      //alert('Error al cargar clientes');
     }
   };
 
@@ -27,7 +27,7 @@ const GestionClientes = () => {
         cargarClientes(); 
       } catch (error) {
         console.error('Error al eliminar cliente:', error);
-        alert('Error al eliminar cliente');
+        //alert('Error al eliminar cliente');
       }
     }
   };
@@ -39,7 +39,6 @@ const GestionClientes = () => {
       <table>
         <thead>
           <tr>
-            <th>ID</th>
             <th>Nombre</th>
             <th>Apellidos</th>
             <th>Acciones</th>
@@ -48,7 +47,6 @@ const GestionClientes = () => {
         <tbody>
           {clientes.map((cliente) => (
             <tr key={cliente.id_cliente}>
-              <td>{cliente.id_cliente}</td>
               <td>{cliente.nombre_cliente} {cliente.apellido1_cliente} {cliente.apellido2_cliente}</td>
               <td>{cliente.correo}</td>
               <td>

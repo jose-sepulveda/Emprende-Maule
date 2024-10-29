@@ -8,16 +8,16 @@ import {LoginPage} from './pages/LoginPage';
 import {CrearCuentaPage} from './pages/CrearCuentaPage';
 import FormCrearCliente from './components/FormCrearCliente.js'; //formulario crear cliente
 
-
 import { AdminPage } from './pages/AdminPage';
 import { GestionCategorias } from './pages/GestionCategorias.js';
 import { GestionClientes } from './pages/GestionClientes.js';
-
+import { GestionAdmin } from './pages/GestionAdmin.js';
 
 import { ClientePage } from './pages/ClientePage';
-import { EmprendedorPage } from './pages/EmprendedorPage.js';
 
-import { AuthProvider } from '../../Front/src/Auth/AuthContext.js';
+import { EmprendedorPage } from './pages/EmprendedorPage.js';
+import { GestionProducto } from './pages/GestionProducto.js';
+
 
 function App() {
   return (
@@ -38,12 +38,15 @@ function App() {
         <Route path="/adminPage" element={<AdminPage/>}/>
         <Route path="/gestionCategorias" element={<GestionCategorias/>}/>
         <Route path="/gestionClientes" element={<GestionClientes/>}/>
-        
+        <Route path="/gestionAdmin" element={<GestionAdmin/>}/>
+
         {/*Cliente*/}
         <Route path="/clientePage" element={<ClientePage/>}/>
 
         {/*Emprendedor*/}
         <Route path="/emprendedorPage" element={<EmprendedorPage/>}/>
+        <Route path="/gestionProducto" element={<GestionProducto/>}/>
+
 
 
 

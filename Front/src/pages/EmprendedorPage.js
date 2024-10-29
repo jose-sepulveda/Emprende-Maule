@@ -1,6 +1,6 @@
 function EmprendedorPage(){
     return <>
-        <h3>AdminPage  </h3>
+        <h3>emprendedor Page  </h3>
     </>
 }
 
