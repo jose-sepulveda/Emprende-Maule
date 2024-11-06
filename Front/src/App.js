@@ -8,13 +8,17 @@ import {LoginPage} from './pages/LoginPage';
 import {CrearCuentaPage} from './pages/CrearCuentaPage';
 import FormCrearCliente from './components/FormCrearCliente.js'; //formulario crear cliente
 
+//Admin
 import { AdminPage } from './pages/AdminPage';
 import { GestionCategorias } from './pages/GestionCategorias.js';
 import { GestionClientes } from './pages/GestionClientes.js';
 import { GestionAdmin } from './pages/GestionAdmin.js';
 
+//cliente
 import { ClientePage } from './pages/ClientePage';
 
+
+//emprendedor
 import { EmprendedorPage } from './pages/EmprendedorPage.js';
 import { GestionProducto } from './pages/GestionProducto.js';
 
