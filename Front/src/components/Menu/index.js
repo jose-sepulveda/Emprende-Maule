@@ -39,4 +39,8 @@ const routes = [];
 routes.push({to:"/", text:"Inicio"})
 routes.push({to:"/crearCuenta", text:"Crear cuenta"})
 routes.push({to:"/login", text:"Iniciar sesión"})
+routes.push({to:"/gestionProducto", text:"Gestion Productos"})
+routes.push({to:"/gestionClientes", text:"Gestion Clientes"})
+routes.push({to:"/gestionCategorias", text:"Gestion Categorias"})
+
 export {Menu}

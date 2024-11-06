@@ -23,6 +23,7 @@ import { EmprendedorPage } from './pages/EmprendedorPage.js';
 import { GestionProducto } from './pages/GestionProducto.js';
 
 
+
 function App() {
   return (
 
