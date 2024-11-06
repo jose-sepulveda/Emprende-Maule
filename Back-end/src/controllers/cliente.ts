@@ -167,43 +167,75 @@ export const loginCliente = async(req: Request, res: Response) =>{
     res.json({token, rol: rol, id_cliente: id_cliente})
 };
 
-export const resetContrasena = async (req: Request, res: Response) => {
-    const { correo, nuevaContrasena} = req.body;
+export const recuperarContrasena = async (req: Request, res: Response) => {
+    const { correo } = req.body;
 
     try {
-        const cliente = await Cliente.findOne({ where: { correo: correo } });
+        const cliente = await Cliente.findOne({ where: { correo } });
 
         if (!cliente) {
             return res.status(400).json({
-                msg: 'No se encontró un cliente con ese correo'
+                msg: 'No se encontró un cliente con ese correo',
+            });
+        }
+
+        const token = jwt.sign({correo}, process.env.SECRET_KEY || 'ACCESS', {expiresIn: '1h' });
+
+        const link = `http://localhost:3000/reset-password/${token}`; 
+
+        await sendEmail(
+            correo,
+            'Recuperación de contraseña',
+            `Haz clic en el siguiente enlace para recuperar tu contraseña: ${link}`
+        );
+
+        return res.status(200).json({
+            msg: 'Se envió un enlace de recuperación de contraseña a tu correo',
+        });
+    } catch (error) {
+        console.error('Error al enviar el correo:', error);
+        return res.status(500).json({
+            msg: 'Error al enviar el correo. Inténtalo más tarde.',
+        });
+    }
+};
+
+export const resetPasswordToken = async (req: Request, res: Response) => {
+    const { token } = req.params;
+    const { nuevaContrasena } = req.body;
+
+    try {
+        const decoded: any = jwt.verify(token, process.env.SECRET_KEY || 'ACCESS');
+
+        const cliente = await Cliente.findOne({ where: { correo: decoded.correo } });
+
+        if (!cliente) {
+            return res.status(400).json({
+                msg: 'No se encontró un cliente con ese correo',
             });
         }
 
         const hashedPassword = await bcrypt.hash(nuevaContrasena, 10);
 
-        await Cliente.update(
-            { contrasena: hashedPassword },
-            { where: { correo: correo } }
-        );
+        await Cliente.update({contrasena: hashedPassword}, {where: { correo: decoded.correo } });
 
         await sendEmail(
-            correo,
+            decoded.correo,
             'Contraseña restablecida',
             'Tu contraseña ha sido restablecida exitosamente.'
         );
 
         return res.status(200).json({
-            msg: 'Se ha restablecido la contraseña exitosamente'
+            msg: 'Se ha restablecido la contraseña exitosamente',
         });
-
     } catch (error) {
-        console.error('Error al restablecer la contraseña: ', error);
+        console.error('Error al restablecer la contraseña:', error);
         return res.status(500).json({
-            msg: 'Error al restablecer la contraseña. Inténtalo más tarde.'
+            msg: 'Error al restablecer la contraseña. Inténtalo más tarde.',
         });
     }
 };
-
+        
 export const getClienteById = async (req: Request, res: Response) => {
     const { id_cliente} = req.params;
 

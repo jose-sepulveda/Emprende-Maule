@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getClientes = exports.getClienteById = exports.resetContrasena = exports.loginCliente = exports.updateCliente = exports.deleteCliente = exports.newCliente = void 0;
+exports.getClientes = exports.getClienteById = exports.resetPasswordToken = exports.recuperarContrasena = exports.loginCliente = exports.updateCliente = exports.deleteCliente = exports.newCliente = void 0;
 const cliente_1 = require("../models/cliente");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -160,30 +160,56 @@ const loginCliente = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     res.json({ token, rol: rol, id_cliente: id_cliente });
 });
 exports.loginCliente = loginCliente;
-const resetContrasena = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { correo, nuevaContrasena } = req.body;
+const recuperarContrasena = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { correo } = req.body;
     try {
-        const cliente = yield cliente_1.Cliente.findOne({ where: { correo: correo } });
+        const cliente = yield cliente_1.Cliente.findOne({ where: { correo } });
         if (!cliente) {
             return res.status(400).json({
-                msg: 'No se encontró un cliente con ese correo'
+                msg: 'No se encontró un cliente con ese correo',
             });
         }
-        const hashedPassword = yield bcrypt_1.default.hash(nuevaContrasena, 10);
-        yield cliente_1.Cliente.update({ contrasena: hashedPassword }, { where: { correo: correo } });
-        yield (0, mail_1.sendEmail)(correo, 'Contraseña restablecida', 'Tu contraseña ha sido restablecida exitosamente.');
+        const token = jsonwebtoken_1.default.sign({ correo }, process.env.SECRET_KEY || 'ACCESS', { expiresIn: '1h' });
+        const link = `http://localhost:3000/reset-password/${token}`;
+        yield (0, mail_1.sendEmail)(correo, 'Recuperación de contraseña', `Haz clic en el siguiente enlace para recuperar tu contraseña: ${link}`);
         return res.status(200).json({
-            msg: 'Se ha restablecido la contraseña exitosamente'
+            msg: 'Se envió un enlace de recuperación de contraseña a tu correo',
         });
     }
     catch (error) {
-        console.error('Error al restablecer la contraseña: ', error);
+        console.error('Error al enviar el correo:', error);
         return res.status(500).json({
-            msg: 'Error al restablecer la contraseña. Inténtalo más tarde.'
+            msg: 'Error al enviar el correo. Inténtalo más tarde.',
         });
     }
 });
-exports.resetContrasena = resetContrasena;
+exports.recuperarContrasena = recuperarContrasena;
+const resetPasswordToken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { token } = req.params;
+    const { nuevaContrasena } = req.body;
+    try {
+        const decoded = jsonwebtoken_1.default.verify(token, process.env.SECRET_KEY || 'ACCESS');
+        const cliente = yield cliente_1.Cliente.findOne({ where: { correo: decoded.correo } });
+        if (!cliente) {
+            return res.status(400).json({
+                msg: 'No se encontró un cliente con ese correo',
+            });
+        }
+        const hashedPassword = yield bcrypt_1.default.hash(nuevaContrasena, 10);
+        yield cliente_1.Cliente.update({ contrasena: hashedPassword }, { where: { correo: decoded.correo } });
+        yield (0, mail_1.sendEmail)(decoded.correo, 'Contraseña restablecida', 'Tu contraseña ha sido restablecida exitosamente.');
+        return res.status(200).json({
+            msg: 'Se ha restablecido la contraseña exitosamente',
+        });
+    }
+    catch (error) {
+        console.error('Error al restablecer la contraseña:', error);
+        return res.status(500).json({
+            msg: 'Error al restablecer la contraseña. Inténtalo más tarde.',
+        });
+    }
+});
+exports.resetPasswordToken = resetPasswordToken;
 const getClienteById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_cliente } = req.params;
     try {
