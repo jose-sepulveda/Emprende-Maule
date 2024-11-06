@@ -42,5 +42,6 @@ routes.push({to:"/login", text:"Iniciar sesión"})
 routes.push({to:"/gestionProducto", text:"Gestion Productos"})
 routes.push({to:"/gestionClientes", text:"Gestion Clientes"})
 routes.push({to:"/gestionCategorias", text:"Gestion Categorias"})
+routes.push({to:"/gestionEmprendedores", text:"Gestion Emprededores"})
 
 export {Menu}
