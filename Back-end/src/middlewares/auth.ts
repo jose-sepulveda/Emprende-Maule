@@ -12,7 +12,7 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
             next()
         } catch (error) {
             res.status(401).json({
-                mgs: 'Token no valido'
+                msg: 'Token no valido'
             })
         }
     } else {
