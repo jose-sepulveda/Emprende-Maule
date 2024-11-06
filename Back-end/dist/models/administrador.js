@@ -12,7 +12,8 @@ exports.Administrador = connection_1.default.define('administrador', {
     "contrasena": { type: sequelize_1.DataTypes.STRING },
     "nombre_administrador": { type: sequelize_1.DataTypes.STRING },
     "apellido1_administrador": { type: sequelize_1.DataTypes.STRING },
-    "apellido2_administrador": { type: sequelize_1.DataTypes.STRING }
+    "apellido2_administrador": { type: sequelize_1.DataTypes.STRING },
+    "correo": { type: sequelize_1.DataTypes.STRING }
 }, {
     timestamps: false,
     freezeTableName: true

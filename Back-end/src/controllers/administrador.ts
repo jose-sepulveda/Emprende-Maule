@@ -2,10 +2,11 @@ import { Request, Response } from "express";
 import { Administrador } from "../models/administrador";
 import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken";
+import { sendEmail } from "../services/mail";
 import sequelize from "sequelize";
 
 export const newAdmin = async(req: Request, res: Response) =>{
-    const {rut_administrador, contrasena, nombre_administrador, apellido1_administrador, apellido2_administrador} = req.body;
+    const {rut_administrador, contrasena, nombre_administrador, apellido1_administrador, apellido2_administrador, correo} = req.body;
 
     const administrador = await Administrador.findOne({where: { rut_administrador: rut_administrador}})
 
@@ -23,7 +24,8 @@ export const newAdmin = async(req: Request, res: Response) =>{
             "contrasena": hashedpassword,
             "nombre_administrador": nombre_administrador,
             "apellido1_administrador": apellido1_administrador,
-            "apellido2_administrador": apellido2_administrador
+            "apellido2_administrador": apellido2_administrador,
+            "correo": correo,
         })
         return res.status(201).json({
             msg: 'Administrador creado exitosamente'
@@ -168,3 +170,73 @@ export const getAdministradores = async (req: Request, res: Response) => {
     }
 };
 
+export const recuperarContrasena = async (req: Request, res: Response) => {
+    const {correo} = req.body;
+
+    try{
+        const administrador = await Administrador.findOne({where: {correo}});
+
+        if(!administrador){
+            return res.status(400).json({
+                msg: 'No se encontró un administrador con ese correo'
+            });
+        }
+
+        const token = jwt.sign({correo}, process.env.SECRET_KEY || 'ACCESS', {expiresIn: '1h'});
+
+        const link = `http://localhost:3000/reset-password/${token}`;
+
+        await sendEmail(
+            correo,
+            'Recuperación de contraseña',
+            `Haz clic en el siguiente enlace para recuperar tu contraseña: ${link}`
+        );
+
+        return res.status(200).json({
+            msg: 'Se envió un enlace de recuperación de contraseña a tu correo'
+        });
+
+    } catch (error) {
+        console.error('Error al enviar el correo:', error);
+        return res.status(500).json({
+            msg: 'Error al enviar el correo. Inténtalo más tarde.',
+        });
+    }
+};
+
+export const resetPasswordAdmin = async (req: Request, res: Response) => {
+    const { token } = req.params;
+    const { nuevaContrasena} = req.body;
+
+    try{
+        const decoded: any = jwt.verify(token, process.env.SECRET_KEY || 'ACCESS');
+
+        const administrador = await Administrador.findOne({where: {correo: decoded.correo}});
+
+        if (!administrador) {
+            return res.status(400).json({
+                msg: 'No se encontró un administrador con ese correo',
+            });
+        }
+
+        const hashedPassword = await bcrypt.hash(nuevaContrasena,10);
+
+        await Administrador.update({contrasena: hashedPassword}, {where: { correo: decoded.correo }});
+
+        await sendEmail(
+            decoded.correo,
+            'Contraseña restablecida',
+            'Tu contraseña ha sido restablecida exitosamente.'
+        );
+
+        return res.status(200).json({
+            msg: 'Se ha restablecido la contraseña exitosamente',
+        });
+
+    } catch (error) {
+        console.error('Error al restablecer la contraseña:', error);
+        return res.status(500).json({
+            msg: 'Error al restablecer la contraseña. Inténtalo más tarde.',
+        });
+    }
+};
