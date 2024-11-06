@@ -13,6 +13,7 @@ import { AdminPage } from './pages/AdminPage';
 import { GestionCategorias } from './pages/GestionCategorias.js';
 import { GestionClientes } from './pages/GestionClientes.js';
 import { GestionAdmin } from './pages/GestionAdmin.js';
+import {GestionEmprendedores } from './pages/GestionEmprendedores.js';
 
 //cliente
 import { ClientePage } from './pages/ClientePage';
@@ -44,6 +45,7 @@ function App() {
         <Route path="/gestionCategorias" element={<GestionCategorias/>}/>
         <Route path="/gestionClientes" element={<GestionClientes/>}/>
         <Route path="/gestionAdmin" element={<GestionAdmin/>}/>
+        <Route path= "/gestionEmprendedores" element= {<GestionEmprendedores/>}/>
 
         {/*Cliente*/}
         <Route path="/clientePage" element={<ClientePage/>}/>
