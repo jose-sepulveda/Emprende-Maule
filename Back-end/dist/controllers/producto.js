@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateProductoConDescuento = exports.getProductosByEmprendedor = exports.updateImagen = exports.getProductosByCategoria = exports.updateProducto = exports.deleteProducto = exports.getProductos = exports.getProducto = exports.newProducto = void 0;
+exports.updateImagenYDescuento = exports.getProductosByEmprendedor = exports.getProductosByCategoria = exports.updateProducto = exports.deleteProducto = exports.getProductos = exports.getProducto = exports.newProducto = void 0;
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const sequelize_1 = __importDefault(require("sequelize"));
@@ -199,32 +199,6 @@ const getProductosByCategoria = (req, res) => __awaiter(void 0, void 0, void 0, 
     }
 });
 exports.getProductosByCategoria = getProductosByCategoria;
-const updateImagen = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { cod_producto } = req.params;
-    const imagenFile = req.file;
-    if (!imagenFile) {
-        return res.status(400).json({ message: "La imagen es requerida " });
-    }
-    try {
-        const producto = yield producto_1.Productos.findOne({ where: { cod_producto } });
-        if (!producto) {
-            return res.status(404).json({ message: "Producto no encontrado" });
-        }
-        const imagePath = path_1.default.join(__dirname, '../uploads', imagenFile.filename);
-        const newImageId = yield (0, googleDrive_1.uploadPhoToToDrive)(imagePath, imagenFile.originalname, 'image/jpeg');
-        fs_1.default.unlinkSync(imagePath);
-        yield producto_1.Productos.update({ imagen: newImageId }, { where: { cod_producto } });
-        return res.json({ message: "Imagen del producto actualizada correctamente" });
-    }
-    catch (error) {
-        console.error(error);
-        res.status(500).json({
-            message: 'Ocurrio un error al actualizar la imagen del producto',
-            error
-        });
-    }
-});
-exports.updateImagen = updateImagen;
 const getProductosByEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_emprendedor } = req.params;
     try {
@@ -253,42 +227,51 @@ const getProductosByEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0
     }
 });
 exports.getProductosByEmprendedor = getProductosByEmprendedor;
-const updateProductoConDescuento = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const updateImagenYDescuento = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { cod_producto } = req.params;
     const { precio_producto, descuento } = req.body;
+    const imagenFile = req.file;
     try {
-        if (descuento < 0 || descuento > 100) {
-            return res.status(400).json({ message: 'Descuento debe ser entre 0 y 100%' });
+        if (descuento && (descuento < 0 || descuento > 100)) {
+            return res.status(400).json({ message: 'Descuentro debe ser entre 0 y 100%' });
         }
         const producto = yield producto_1.Productos.findOne({ where: { cod_producto } });
         if (!producto) {
             return res.status(404).json({ message: "Producto no encontrado" });
         }
-        const precioFinal = precio_producto ? precio_producto : producto.get('precio_producto');
-        const precio_descuento = precioFinal - (precioFinal * (descuento / 100));
+        let newImageId = producto.get('imagen');
+        if (imagenFile) {
+            const imagePath = path_1.default.join(__dirname, '../uploads', imagenFile.filename);
+            newImageId = yield (0, googleDrive_1.uploadPhoToToDrive)(imagePath, imagenFile.originalname, 'image/jpeg');
+            fs_1.default.unlinkSync(imagePath);
+        }
+        const precioFinal = precio_producto || producto.get('precio_producto');
+        const precio_descuento = descuento ? precioFinal - (precioFinal * (descuento / 100)) : producto.get('precio_descuento');
         yield producto_1.Productos.update({
             precio_producto: precioFinal,
-            descuento: descuento,
-            precio_descuento: precio_descuento
+            descuento,
+            precio_descuento,
+            imagen: newImageId
         }, {
             where: { cod_producto }
         });
         return res.json({
-            message: 'Producto actualizado correctamente',
+            msg: 'Producto actualizado correctamente',
             data: {
                 cod_producto,
                 precio_producto: precioFinal,
                 descuento,
-                precio_descuento
+                precio_descuento,
+                imagen: newImageId
             }
         });
     }
     catch (error) {
-        console.error('Error al actualizar el producto con descuento:', error);
+        console.error('Error al actualizar el producto:', error);
         return res.status(500).json({
-            message: 'Ocurrio un error al actualizar el producto con descuento',
+            msg: 'Ocurrio un error al actualizar el producto',
             error
         });
     }
 });
-exports.updateProductoConDescuento = updateProductoConDescuento;
+exports.updateImagenYDescuento = updateImagenYDescuento;

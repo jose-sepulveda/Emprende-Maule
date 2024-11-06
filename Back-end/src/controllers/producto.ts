@@ -189,37 +189,6 @@ export const getProductosByCategoria = async(req: Request, res: Response) => {
     }
 };
 
-export const updateImagen = async (req: Request, res: Response) => {
-    const {cod_producto} = req.params;
-    const imagenFile = req.file;
-
-    if(!imagenFile) {
-        return res.status(400).json({message: "La imagen es requerida "});
-    }
-
-    try{
-        const producto = await Productos.findOne({ where: {cod_producto} });
-
-        if(!producto) {
-            return res.status(404).json({ message: "Producto no encontrado" });
-        }
-
-        const imagePath = path.join(__dirname, '../uploads', imagenFile.filename);
-        const newImageId = await uploadPhoToToDrive(imagePath, imagenFile.originalname, 'image/jpeg');
-        fs.unlinkSync(imagePath);
-
-        await Productos.update({ imagen: newImageId }, { where: {cod_producto} });
-
-        return res.json({ message: "Imagen del producto actualizada correctamente" });
-    } catch(error) {
-        console.error(error);
-        res.status(500).json({
-            message: 'Ocurrio un error al actualizar la imagen del producto',
-            error
-        });
-    }
-};
-
 export const getProductosByEmprendedor = async (req: Request, res: Response) => {
     const {id_emprendedor} = req.params;
 
@@ -251,48 +220,58 @@ export const getProductosByEmprendedor = async (req: Request, res: Response) => 
     }
 };
 
-export const updateProductoConDescuento = async (req: Request, res: Response) => {
+export const updateImagenYDescuento = async (req: Request, res: Response) => {
     const {cod_producto} = req.params;
     const {precio_producto, descuento} = req.body;
+    const imagenFile = req.file;
 
     try {
-        if (descuento < 0 || descuento > 100) {
-            return res.status(400).json({ message: 'Descuento debe ser entre 0 y 100%' });
+        if (descuento && (descuento < 0 || descuento > 100)) {
+            return res.status(400).json({ message: 'Descuentro debe ser entre 0 y 100%' });
         }
 
-        const producto = await Productos.findOne({ where: {cod_producto}});
-
-        if(!producto) {
+        const producto = await Productos.findOne({ where: {cod_producto} });
+        if (!producto) {
             return res.status(404).json({ message: "Producto no encontrado" });
         }
 
-        const precioFinal = precio_producto ? precio_producto : producto.get('precio_producto');
+        let newImageId = producto.get('imagen');
+        if (imagenFile) {
+            const imagePath = path.join(__dirname, '../uploads', imagenFile.filename);
+            newImageId = await uploadPhoToToDrive(imagePath, imagenFile.originalname, 'image/jpeg');
+            fs.unlinkSync(imagePath);
+        }
 
-        const precio_descuento = precioFinal - (precioFinal * (descuento / 100));
+        const precioFinal = precio_producto || producto.get('precio_producto');
+        const precio_descuento = descuento ? precioFinal - (precioFinal * (descuento / 100)) : producto.get('precio_descuento');
 
         await Productos.update({
             precio_producto: precioFinal,
-            descuento: descuento,
-            precio_descuento: precio_descuento
+            descuento,
+            precio_descuento,
+            imagen: newImageId
         }, {
-            where: {cod_producto}
+            where: { cod_producto }
         });
-        
+
         return res.json({
-            message: 'Producto actualizado correctamente',
+            msg: 'Producto actualizado correctamente',
             data: {
                 cod_producto,
                 precio_producto: precioFinal,
                 descuento,
-                precio_descuento
+                precio_descuento,
+                imagen: newImageId
             }
         });
 
-    } catch(error) {
-        console.error('Error al actualizar el producto con descuento:', error);
+    } catch (error) {
+        console.error('Error al actualizar el producto:', error);
         return res.status(500).json({
-            message: 'Ocurrio un error al actualizar el producto con descuento',
+            msg: 'Ocurrio un error al actualizar el producto',
             error
         });
     }
 };
+
+

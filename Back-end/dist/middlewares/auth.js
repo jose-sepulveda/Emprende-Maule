@@ -14,7 +14,7 @@ const auth = (req, res, next) => {
         }
         catch (error) {
             res.status(401).json({
-                mgs: 'Token no valido'
+                msg: 'Token no valido'
             });
         }
     }
