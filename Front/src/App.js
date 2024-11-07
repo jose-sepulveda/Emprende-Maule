@@ -20,6 +20,7 @@ import { ClientePage } from './pages/ClientePage';
 
 
 //emprendedor
+import { ToastContainer } from 'react-toastify';
 import { AuthProvider } from './Auth/AuthContext.js';
 import LoginAministrador from './components/LoginAministrador.js';
 import LoginCliente from './components/LoginCliente.js';
@@ -70,6 +71,7 @@ function App() {
             Chile, 2024
         </footer>
       </HashRouter>
+      <ToastContainer position="top-center" autoClose={1000} />
     </AuthProvider>
 
   );
