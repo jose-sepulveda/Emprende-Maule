@@ -13,9 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getClientes = exports.getClienteById = exports.resetPasswordToken = exports.recuperarContrasena = exports.loginCliente = exports.updateCliente = exports.deleteCliente = exports.newCliente = void 0;
-const cliente_1 = require("../models/cliente");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const cliente_1 = require("../models/cliente");
 const mail_1 = require("../services/mail");
 const newCliente = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { rut_cliente, contrasena, nombre_cliente, apellido1_cliente, apellido2_cliente, direccion, telefono, correo } = req.body;
@@ -155,7 +155,8 @@ const loginCliente = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     const id_cliente = cliente.dataValues.id_cliente;
     const token = jsonwebtoken_1.default.sign({
         correo: correo,
-        role: rol
+        role: rol,
+        id_cliente: id_cliente
     }, process.env.SECRET_KEY || 'ACCESS');
     res.json({ token, rol: rol, id_cliente: id_cliente });
 });

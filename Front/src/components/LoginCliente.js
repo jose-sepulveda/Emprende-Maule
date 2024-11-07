@@ -22,7 +22,7 @@ const LoginCliente = () => {
         try {
             const response = await loginCliente({ correo, contrasena });
             // Almacena el token y redirige
-            if (response && response.token) {
+            if (response && response.data.token) {
                 setToken(response.data.token);
                 navigate("/");
             } else {

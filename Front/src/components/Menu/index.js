@@ -26,6 +26,10 @@ function Menu(){
         if (decodedToken.role === "emprendedor") {
             routes.push({to:"/gestionCategorias", text:"Gestion Categorias"})
         }
+
+        if (decodedToken.role === "cliente") {
+            routes.push({to:"/gestionProducto", text:"Gestion Productos"})
+        }
     }
 
     const cerrarSesion = () => {

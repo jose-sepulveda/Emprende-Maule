@@ -1,8 +1,8 @@
-import { Request, response, Response } from "express";
-import {Cliente} from '../models/cliente';
 import bcrypt from 'bcrypt';
+import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import {sendEmail} from '../services/mail';
+import { Cliente } from '../models/cliente';
+import { sendEmail } from '../services/mail';
 
 export const newCliente = async(req: Request, res: Response) =>{
     const {rut_cliente, contrasena, nombre_cliente, apellido1_cliente, apellido2_cliente, direccion, telefono, correo} = req.body;
@@ -161,7 +161,8 @@ export const loginCliente = async(req: Request, res: Response) =>{
     const id_cliente = cliente.dataValues.id_cliente;
     const token = jwt.sign({
         correo: correo,
-        role: rol
+        role: rol,
+        id_cliente: id_cliente
     }, process.env.SECRET_KEY || 'ACCESS');
 
     res.json({token, rol: rol, id_cliente: id_cliente})

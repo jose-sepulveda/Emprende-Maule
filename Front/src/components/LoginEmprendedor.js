@@ -23,7 +23,6 @@ const LoginEmprendedor = () => {
             if (response && response.data.token) {
                 setToken(response.data.token);
                 navigate("/");
-                console.log(response.data.token)
             } else {
                 toast.error("Usuario no existe. Por favor registrarse");
                 console.error("Usuario no existe. Por favor registrarse");

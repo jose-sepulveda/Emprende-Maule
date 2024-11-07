@@ -1,0 +1,128 @@
+/* Contenedor principal */
+.form-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Título del formulario */
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Estilos del formulario */
+form {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+/* Contenedor de cada campo */
+form > div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+/* Campos que ocupan 2 columnas */
+form > div:nth-child(7) {
+    grid-column: span 2;
+}
+
+/* Tipo de cuenta y número de cuenta en su propia fila */
+form > div:nth-child(9),  /* Tipo de cuenta */
+form > div:nth-child(10) { /* Número de cuenta */
+    grid-column: span 3;
+}
+
+/* Contenedor para los botones de archivo */
+.file-uploads {
+    grid-column: span 3;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+/* Labels */
+label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+}
+
+/* Inputs */
+input {
+    padding: 8px 12px;
+    border: 1px solid #D1D5DB;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+input:focus {
+    border-color: #F97316;
+    box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.1);
+}
+
+/* Estilos específicos para inputs tipo file */
+input[type="file"] {
+    display: none;
+}
+
+/* Botones para upload */
+.file-uploads label {
+    background-color: #F97316;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.2s;
+}
+
+.file-uploads label:hover {
+    background-color: #EA580C;
+}
+
+/* Botón de submit */
+button[type="submit"] {
+    grid-column: 1 / -1;
+    background-color: #F97316;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 10px;
+}
+
+button[type="submit"]:hover {
+    background-color: #EA580C;
+}
+
+/* Media query para dispositivos móviles */
+@media (max-width: 768px) {
+    form {
+        grid-template-columns: 1fr;
+    }
+
+    form > div:nth-child(7),
+    form > div:nth-child(9),
+    form > div:nth-child(10) {
+        grid-column: 1;
+    }
+
+    .file-uploads {
+        grid-template-columns: 1fr;
+    }
+}

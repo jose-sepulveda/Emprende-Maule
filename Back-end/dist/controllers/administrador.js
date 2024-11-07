@@ -13,9 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.resetPasswordAdmin = exports.recuperarContrasena = exports.getAdministradores = exports.getAdminById = exports.loginAdmin = exports.updateAdmin = exports.deleteAdmin = exports.newAdmin = void 0;
-const administrador_1 = require("../models/administrador");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const administrador_1 = require("../models/administrador");
 const mail_1 = require("../services/mail");
 const newAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { rut_administrador, contrasena, nombre_administrador, apellido1_administrador, apellido2_administrador, correo } = req.body;
@@ -116,7 +116,8 @@ const loginAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const id_administrador = administrador.dataValues.id_administrador;
     const token = jsonwebtoken_1.default.sign({
         rut_administrador: rut_administrador,
-        role: rol
+        role: rol,
+        id_administrador: id_administrador
     }, process.env.SECRET_KEY || 'ACCESS', { expiresIn: '1h' });
     res.json({ token, rol: rol, id_administrador: id_administrador });
 });

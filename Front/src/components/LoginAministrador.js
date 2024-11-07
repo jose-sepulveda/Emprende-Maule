@@ -1,6 +1,9 @@
 import React from 'react'
 
 const LoginAministrador = () => {
+
+  const 
+
   return (
     <div>
       Login Administrador

@@ -1,9 +1,8 @@
-import { Request, Response } from "express";
-import { Administrador } from "../models/administrador";
 import bcrypt from 'bcrypt';
+import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import { Administrador } from "../models/administrador";
 import { sendEmail } from "../services/mail";
-import sequelize from "sequelize";
 
 export const newAdmin = async(req: Request, res: Response) =>{
     const {rut_administrador, contrasena, nombre_administrador, apellido1_administrador, apellido2_administrador, correo} = req.body;
@@ -122,7 +121,8 @@ export const loginAdmin = async (req: Request, res: Response) => {
     const id_administrador = administrador.dataValues.id_administrador;
     const token = jwt.sign({
         rut_administrador: rut_administrador,
-        role: rol
+        role: rol,
+        id_administrador: id_administrador
     }, process.env.SECRET_KEY || 'ACCESS', {expiresIn: '1h'});
 
     res.json({ token, rol: rol, id_administrador: id_administrador });

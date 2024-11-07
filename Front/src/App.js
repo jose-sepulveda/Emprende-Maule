@@ -22,6 +22,7 @@ import { ClientePage } from './pages/ClientePage';
 //emprendedor
 import { ToastContainer } from 'react-toastify';
 import { AuthProvider } from './Auth/AuthContext.js';
+import FormCrearEmprendedor from './components/FormCrearEmprendedor.js';
 import LoginAministrador from './components/LoginAministrador.js';
 import LoginCliente from './components/LoginCliente.js';
 import LoginEmprendedor from './components/LoginEmprendedor.js';
@@ -44,6 +45,7 @@ function App() {
           {/*crear cuentas cliente y emprendedor*/}
           <Route path="/crearCuenta" element={<CrearCuentaPage />}/> 
           <Route path="/formCrearC" element={<FormCrearCliente/>}/> 
+          <Route path='/formCrearE' element={<FormCrearEmprendedor/>}/>
 
           {/*Administrador*/}
           <Route path='/login-administrador'element={<LoginAministrador/>}/>
