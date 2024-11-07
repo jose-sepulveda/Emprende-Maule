@@ -164,7 +164,8 @@ export const loginEmprendedor = async(req: Request, res: Response) => {
     const id_emprendedor = emprendedor.dataValues.id_emprendedor;
     const token = jwt.sign({
         correo: correo_electronico,
-        role: rol
+        role: rol,
+        id_emprendedor: id_emprendedor
     }, process.env.SECRET_KEY || 'ACCESS');
 
     res.json({ token, rol: rol, id_emprendedor: id_emprendedor})

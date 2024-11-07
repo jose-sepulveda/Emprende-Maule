@@ -165,7 +165,8 @@ const loginEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, functio
     const id_emprendedor = emprendedor.dataValues.id_emprendedor;
     const token = jsonwebtoken_1.default.sign({
         correo: correo_electronico,
-        role: rol
+        role: rol,
+        id_emprendedor: id_emprendedor
     }, process.env.SECRET_KEY || 'ACCESS');
     res.json({ token, rol: rol, id_emprendedor: id_emprendedor });
 });
