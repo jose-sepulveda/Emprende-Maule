@@ -1,20 +1,18 @@
-// src/services/productoService.js
-
 import axios from 'axios';
 
-const API_URL = 'http://localhost:4000/api/productos'; // Reemplaza con tu URL de backend
+const API_URL = 'http://localhost:3000/api/producto';
 
-// Función para crear un nuevo producto
-export const crearProducto = async (productoData) => {
-  try {
-    const response = await axios.post(`${API_URL}/`, productoData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error al crear el producto:', error);
-    throw error;
-  }
-};
+// Obtener todos los productos
+export const getProductos = () => axios.get(`${API_URL}/list`);
+
+// Obtener un producto por su ID
+export const getProductoById = (id_producto) => axios.get(`${API_URL}/${id_producto}`);
+
+// Crear un nuevo producto
+export const createProducto = (productoData) => axios.post(API_URL, productoData);
+
+// Actualizar un producto existente
+export const updateProducto = (id_producto, productoData) => axios.put(`${API_URL}/${id_producto}`, productoData);
+
+// Eliminar un producto
+export const deleteProducto = (id_producto) => axios.delete(`${API_URL}/${id_producto}`);
