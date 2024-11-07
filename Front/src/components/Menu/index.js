@@ -25,7 +25,6 @@ function Menu(){
         // Emprendedor
         if (decodedToken.role === "emprendedor") {
             routes.push({to:"/gestionCategorias", text:"Gestion Categorias"})
-            routes.push({to:"/gestionEmprendedores", text:"Gestion Emprededores"})
         }
     }
 
