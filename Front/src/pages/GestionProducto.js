@@ -1,6 +1,6 @@
 // src/pages/GestionProductos.js
 import React from 'react';
-import CrearProducto from '../components/NewProducto';
+import CrearProducto from '../components/CrearProducto';
 
 const GestionProducto = () => {
   return (
