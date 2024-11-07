@@ -7,7 +7,8 @@ export const Administrador = sequelize.define('administrador',{
     "contrasena": {type: DataTypes.STRING},
     "nombre_administrador": {type: DataTypes.STRING},
     "apellido1_administrador": {type: DataTypes.STRING},
-    "apellido2_administrador": {type: DataTypes.STRING}
+    "apellido2_administrador": {type: DataTypes.STRING},
+    "correo": {type: DataTypes.STRING}
 
 },
 {
