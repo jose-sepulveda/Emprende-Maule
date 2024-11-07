@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateEstadoEmprendedor = exports.deleteEmprendedor = exports.updateEmprendedor = exports.updatePassword = exports.loginEmprendedor = exports.getEmprendedor = exports.crearEmprendedor = exports.getEmprendedores = void 0;
+exports.resetPassword = exports.recuperarContrasena = exports.updateEstadoEmprendedor = exports.deleteEmprendedor = exports.updateEmprendedor = exports.updatePassword = exports.loginEmprendedor = exports.getEmprendedor = exports.crearEmprendedor = exports.getEmprendedores = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const fs_1 = __importDefault(require("fs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -308,7 +308,7 @@ const updateEstadoEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, 
                 ¡Bienvenido a Emprende Maule!`);
             yield emprendedor.update({ estado_emprendedor: nuevoEstado });
             return res.status(200).json({
-                msg: 'Estado actualizado a Aprovedo y correo enviado',
+                msg: 'Estado actualizado a Aprovado y correo enviado',
             });
         }
         if (nuevoEstado == 'Rechazado') {
@@ -335,3 +335,47 @@ const updateEstadoEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, 
     }
 });
 exports.updateEstadoEmprendedor = updateEstadoEmprendedor;
+const recuperarContrasena = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { correo_electronico } = req.body;
+    try {
+        const emprendedor = yield emprendedor_1.Emprendedor.findOne({ where: { correo_electronico } });
+        if (!emprendedor) {
+            return res.status(404).json({ msg: 'No existe un emprendedor con ese correo' });
+        }
+        const token = jsonwebtoken_1.default.sign({ correo_electronico }, process.env.SECRET_KEY || 'ACCESS', { expiresIn: '1h' });
+        const link = `http://localhost:3000/reset-password/${token}`;
+        yield (0, mail_1.sendEmail)(correo_electronico, 'Recuperar contraseña', `Haz clic en el siguiente enlace para recuperar tu contraseña: ${link}`);
+        return res.status(200).json({ msg: 'Se envio un enlace de recuperacion de contraseña a tu correo' });
+    }
+    catch (error) {
+        console.error('Error al enviar el correo:', error);
+        return res.status(500).json({ msg: 'Error al enviar el correo' });
+    }
+});
+exports.recuperarContrasena = recuperarContrasena;
+const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { token } = req.params;
+    const { nuevaContrasena } = req.body;
+    try {
+        const decoded = jsonwebtoken_1.default.verify(token, process.env.SECRET_KEY || 'ACCESS');
+        const emprendedor = yield emprendedor_1.Emprendedor.findOne({ where: { correo_electronico: decoded.correo_electronico } });
+        if (!emprendedor) {
+            return res.status(400).json({
+                msg: 'No se encontró un emprendedor con ese correo',
+            });
+        }
+        const hashedPassword = yield bcrypt_1.default.hash(nuevaContrasena, 10);
+        yield emprendedor_1.Emprendedor.update({ contrasena: hashedPassword }, { where: { correo_electronico: decoded.correo_electronico } });
+        yield (0, mail_1.sendEmail)(decoded.correo_electronico, 'Contraseña restablecida', 'Tu contraseña ha sido restablecida exitosamente.');
+        return res.status(200).json({
+            msg: 'Se ha restablecido la contraseña exitosamente',
+        });
+    }
+    catch (error) {
+        console.error('Error al restablecer la contraseña:', error);
+        return res.status(500).json({
+            msg: 'Error al restablecer la contraseña. Inténtalo más tarde.',
+        });
+    }
+});
+exports.resetPassword = resetPassword;

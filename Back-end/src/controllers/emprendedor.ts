@@ -352,7 +352,7 @@ export const updateEstadoEmprendedor = async (req: Request, res: Response) => {
             await emprendedor.update({ estado_emprendedor: nuevoEstado});
 
             return res.status(200).json({
-                msg: 'Estado actualizado a Aprovedo y correo enviado',
+                msg: 'Estado actualizado a Aprovado y correo enviado',
             });
         }
 
@@ -390,3 +390,66 @@ export const updateEstadoEmprendedor = async (req: Request, res: Response) => {
 
         
 }
+
+export const recuperarContrasena = async (req: Request, res: Response) => {
+    const { correo_electronico } = req.body;
+
+    try {
+        const emprendedor = await Emprendedor.findOne({ where: { correo_electronico } });
+
+        if (!emprendedor) {
+            return res.status(404).json({ msg: 'No existe un emprendedor con ese correo' });
+        }
+
+        const token = jwt.sign({ correo_electronico }, process.env.SECRET_KEY || 'ACCESS', { expiresIn: '1h' });
+
+        const link = `http://localhost:3000/reset-password/${token}`;
+
+        await sendEmail(
+            correo_electronico,
+            'Recuperar contraseña',
+            `Haz clic en el siguiente enlace para recuperar tu contraseña: ${link}`
+        );
+
+        return res.status(200).json({ msg: 'Se envio un enlace de recuperacion de contraseña a tu correo' });
+    } catch (error) {
+        console.error('Error al enviar el correo:', error);
+        return res.status(500).json({ msg: 'Error al enviar el correo' });
+    }
+};
+
+export const resetPassword = async (req: Request, res: Response) => {
+    const { token } = req.params;
+    const { nuevaContrasena } = req.body;
+
+    try {
+        const decoded: any = jwt.verify(token, process.env.SECRET_KEY || 'ACCESS');
+
+        const emprendedor = await Emprendedor.findOne({ where: { correo_electronico: decoded.correo_electronico } });
+
+        if (!emprendedor) {
+            return res.status(400).json({
+                msg: 'No se encontró un emprendedor con ese correo',
+            });
+        }
+
+        const hashedPassword = await bcrypt.hash(nuevaContrasena, 10);
+
+        await Emprendedor.update({ contrasena: hashedPassword }, { where: { correo_electronico: decoded.correo_electronico } });
+
+        await sendEmail(
+            decoded.correo_electronico,
+            'Contraseña restablecida',
+            'Tu contraseña ha sido restablecida exitosamente.'
+        );
+
+        return res.status(200).json({
+            msg: 'Se ha restablecido la contraseña exitosamente',
+        });
+    } catch (error) {
+        console.error('Error al restablecer la contraseña:', error);
+        return res.status(500).json({
+            msg: 'Error al restablecer la contraseña. Inténtalo más tarde.',
+        });
+    }
+};
