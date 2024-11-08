@@ -1,5 +1,5 @@
 import { jwtDecode } from "jwt-decode";
-import { useContext } from "react";
+import React from "react";
 import { FaShoppingCart } from 'react-icons/fa';
 import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Auth/AuthContext";
@@ -8,26 +8,26 @@ import '../../Styles/menu.css';
 
 function Menu(){
 
-    const { auth, logout } = useContext(AuthContext);
-    let decodedToken = null;
+    const { auth, logout } = React.useContext(AuthContext);
     const navigate = useNavigate();
+    const routes = [{ to: "/", text: "Inicio" }];
 
     if (auth.token) {
-        console.log(auth.token)
-        decodedToken = jwtDecode(auth.token);
-        console.log(decodedToken.role);
-
-        routes.splice(0, routes.length);
-
-        // General
-        routes.push({to:"/", text:"Inicio"})
-        routes.push({to:"/crearCuenta", text:"Crear cuenta"})
-        routes.push({to:"/login", text:"Iniciar sesión"})
-
+        const decodedToken = jwtDecode(auth.token);
+        
+        // Admin
+        if (decodedToken.role === "admin") {
+            routes.push(
+                { to: "/gestionCategorias", text: "Gestion Categorias" },
+                { to: "/gestionClientes", text: "Gestion Clientes" },
+                { to: "/gestionEmprendedores", text: "Gestion Emprendedores" }
+            );
+        }
+ 
 
         // Emprendedor
         if (decodedToken.role === "emprendedor") {
-            routes.push({to:"/gestionProducto", text:"Gestion Productos"})
+            routes.push({to:"/gestionProducto", text:"Gestion Productos"});
            
         }
 
@@ -36,14 +36,12 @@ function Menu(){
 
         }
 
-        //Admin
-        if (decodedToken.role === "admin") {
-            routes.push({to:"/gestionCategorias", text:"Gestion Categorias"})
-            routes.push({to:"/gestionClientes", text:"Gestion Clientes"})
-            routes.push({to:"/gestionEmprendedores", text:"Gestion Emprededores"})
-            
-        }
-
+    } else {
+        // general
+        routes.push(
+            { to: "/crearCuenta", text: "Crear cuenta" },
+            { to: "/login", text: "Iniciar sesión" }
+        );
     }
 
     const cerrarSesion = () => {

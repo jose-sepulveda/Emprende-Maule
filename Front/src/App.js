@@ -21,13 +21,15 @@ import { ClientePage } from './pages/ClientePage';
 
 //emprendedor
 import { ToastContainer } from 'react-toastify';
-import { AuthProvider } from './Auth/AuthContext.js';
 import FormCrearEmprendedor from './components/FormCrearEmprendedor.js';
 import LoginAministrador from './components/LoginAministrador.js';
 import LoginCliente from './components/LoginCliente.js';
 import LoginEmprendedor from './components/LoginEmprendedor.js';
 import { EmprendedorPage } from './pages/EmprendedorPage.js';
 import { GestionProducto } from './pages/GestionProducto.js';
+
+import { AuthProvider } from './Auth/AuthContext';
+import { PrivateRoute } from './Auth/PrivateRoute';
 
 
 
@@ -37,7 +39,7 @@ function App() {
       <HashRouter>
         <Menu />
         <Routes>
-        <Route path="/" element={<InicioPage/>}/> 
+          <Route path="/" element={<InicioPage/>}/> 
           
           {/*Pagina de inicio*/}
           <Route path="/login" element={<LoginPage />}/> 
@@ -48,23 +50,21 @@ function App() {
           <Route path='/formCrearE' element={<FormCrearEmprendedor/>}/>
 
           {/*Administrador*/}
-          <Route path='/login-administrador'element={<LoginAministrador/>}/>
+          <Route path='/login-administrador'element={<LoginAministrador/>}/> 
           <Route path="/adminPage" element={<AdminPage/>}/>
-          <Route path="/gestionCategorias" element={<GestionCategorias/>}/>
-          <Route path="/gestionClientes" element={<GestionClientes/>}/>
-          <Route path="/gestionAdmin" element={<GestionAdmin/>}/>
-          <Route path= "/gestionEmprendedores" element= {<GestionEmprendedores/>}/>
+          <Route path="/gestionCategorias" element={<PrivateRoute><GestionCategorias/></PrivateRoute>}/>
+          <Route path="/gestionClientes" element={<PrivateRoute><GestionClientes/></PrivateRoute>}/>
+          <Route path="/gestionAdmin" element={<PrivateRoute><GestionAdmin/></PrivateRoute>}/>
+          <Route path= "/gestionEmprendedores" element= {<PrivateRoute><GestionEmprendedores/></PrivateRoute>}/>
 
           {/*Cliente*/}
           <Route path='/login-cliente' element={<LoginCliente/>}/>
-          <Route path="/clientePage" element={<ClientePage/>}/>
+          <Route path="/clientePage" element={<PrivateRoute><ClientePage/></PrivateRoute>}/>
 
           {/*Emprendedor*/}
           <Route path='/login-emprendedor' element={<LoginEmprendedor/>}/>
-          <Route path="/emprendedorPage" element={<EmprendedorPage/>}/>
-          <Route path="/gestionProducto" element={<GestionProducto/>}/>
-
-
+          <Route path="/emprendedorPage" element={<PrivateRoute><EmprendedorPage/></PrivateRoute>}/>
+          <Route path="/gestionProducto" element={<PrivateRoute><GestionProducto/></PrivateRoute>}/>
 
 
           <Route path="*" element={<p>Ups...La ruta no existe</p>}/> 
