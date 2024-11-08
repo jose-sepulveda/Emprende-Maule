@@ -99,8 +99,8 @@ const updateAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 });
 exports.updateAdmin = updateAdmin;
 const loginAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { rut_administrador, contrasena } = req.body;
-    const administrador = yield administrador_1.Administrador.findOne({ where: { rut_administrador: rut_administrador } });
+    const { correo, contrasena } = req.body;
+    const administrador = yield administrador_1.Administrador.findOne({ where: { correo: correo } });
     if (!administrador) {
         return res.status(404).json({
             msg: 'El administrador no existe'
@@ -115,7 +115,7 @@ const loginAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const rol = 'administrador';
     const id_administrador = administrador.dataValues.id_administrador;
     const token = jsonwebtoken_1.default.sign({
-        rut_administrador: rut_administrador,
+        correo: correo,
         role: rol,
         id_administrador: id_administrador
     }, process.env.SECRET_KEY || 'ACCESS', { expiresIn: '1h' });

@@ -98,9 +98,9 @@ export const updateAdmin = async (req: Request, res: Response) => {
 };
 
 export const loginAdmin = async (req: Request, res: Response) => {
-    const { rut_administrador, contrasena } = req.body;
+    const { correo, contrasena } = req.body;
 
-    const administrador = await Administrador.findOne({ where: { rut_administrador: rut_administrador } });
+    const administrador = await Administrador.findOne({ where: { correo: correo } });
 
     if (!administrador) {
         return res.status(404).json({
@@ -120,7 +120,7 @@ export const loginAdmin = async (req: Request, res: Response) => {
     const rol = 'administrador';
     const id_administrador = administrador.dataValues.id_administrador;
     const token = jwt.sign({
-        rut_administrador: rut_administrador,
+        correo: correo,
         role: rol,
         id_administrador: id_administrador
     }, process.env.SECRET_KEY || 'ACCESS', {expiresIn: '1h'});
