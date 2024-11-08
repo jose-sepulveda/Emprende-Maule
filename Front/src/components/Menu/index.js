@@ -21,15 +21,29 @@ function Menu(){
 
         // General
         routes.push({to:"/", text:"Inicio"})
+        routes.push({to:"/crearCuenta", text:"Crear cuenta"})
+        routes.push({to:"/login", text:"Iniciar sesión"})
+
 
         // Emprendedor
         if (decodedToken.role === "emprendedor") {
-            routes.push({to:"/gestionCategorias", text:"Gestion Categorias"})
+            routes.push({to:"/gestionProducto", text:"Gestion Productos"})
+           
         }
 
+        //Cliente
         if (decodedToken.role === "cliente") {
-            routes.push({to:"/gestionProducto", text:"Gestion Productos"})
+
         }
+
+        //Admin
+        if (decodedToken.role === "admin") {
+            routes.push({to:"/gestionCategorias", text:"Gestion Categorias"})
+            routes.push({to:"/gestionClientes", text:"Gestion Clientes"})
+            routes.push({to:"/gestionEmprendedores", text:"Gestion Emprededores"})
+            
+        }
+
     }
 
     const cerrarSesion = () => {
