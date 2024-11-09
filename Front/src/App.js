@@ -9,28 +9,24 @@ import FormCrearCliente from './components/FormCrearCliente.js'; //formulario cr
 import { CrearCuentaPage } from './pages/CrearCuentaPage';
 
 //Admin
-import { AdminPage } from './pages/AdminPage';
+import LoginAministrador from './components/LoginAministrador.js';
 import { GestionAdmin } from './pages/GestionAdmin.js';
 import { GestionCategorias } from './pages/GestionCategorias.js';
 import { GestionClientes } from './pages/GestionClientes.js';
 import { GestionEmprendedores } from './pages/GestionEmprendedores.js';
 
 //cliente
-import { ClientePage } from './pages/ClientePage';
+import LoginCliente from './components/LoginCliente.js';
 
 
 //emprendedor
-import { ToastContainer } from 'react-toastify';
-import FormCrearEmprendedor from './components/FormCrearEmprendedor.js';
-import LoginAministrador from './components/LoginAministrador.js';
-import LoginCliente from './components/LoginCliente.js';
+import FormCrearEmprendedor from './components/FormCrearEmprendedor.js'; //formulario crear emprendedor 
 import LoginEmprendedor from './components/LoginEmprendedor.js';
-import { EmprendedorPage } from './pages/EmprendedorPage.js';
-import { GestionProducto } from './pages/GestionProducto.js';
+import { GestionProducto } from './pages/GestionProducto.js'; 
 
 import { AuthProvider } from './Auth/AuthContext';
 import { PrivateRoute } from './Auth/PrivateRoute';
-
+import { ToastContainer } from 'react-toastify';
 
 
 function App() {
@@ -51,7 +47,6 @@ function App() {
 
           {/*Administrador*/}
           <Route path='/login-administrador'element={<LoginAministrador/>}/> 
-          <Route path="/adminPage" element={<AdminPage/>}/>
           <Route path="/gestionCategorias" element={<PrivateRoute><GestionCategorias/></PrivateRoute>}/>
           <Route path="/gestionClientes" element={<PrivateRoute><GestionClientes/></PrivateRoute>}/>
           <Route path="/gestionAdmin" element={<PrivateRoute><GestionAdmin/></PrivateRoute>}/>
@@ -59,12 +54,11 @@ function App() {
 
           {/*Cliente*/}
           <Route path='/login-cliente' element={<LoginCliente/>}/>
-          <Route path="/clientePage" element={<PrivateRoute><ClientePage/></PrivateRoute>}/>
+
 
           {/*Emprendedor*/}
           <Route path='/login-emprendedor' element={<LoginEmprendedor/>}/>
-          <Route path="/emprendedorPage" element={<PrivateRoute><EmprendedorPage/></PrivateRoute>}/>
-          <Route path="/gestionProducto" element={<PrivateRoute><GestionProducto/></PrivateRoute>}/>
+          <Route path="/gestionProducto" element={<GestionProducto/>}/> {/*este era privado pero solo quiero probar cositas */}
 
 
           <Route path="*" element={<p>Ups...La ruta no existe</p>}/> 

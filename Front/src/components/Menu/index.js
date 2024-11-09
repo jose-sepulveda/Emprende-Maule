@@ -27,7 +27,7 @@ function Menu(){
 
         // Emprendedor
         if (decodedToken.role === "emprendedor") {
-            routes.push({to:"/gestionProducto", text:"Gestion Productos"});
+           
            
         }
 
@@ -40,8 +40,10 @@ function Menu(){
         // general
         routes.push(
             { to: "/crearCuenta", text: "Crear cuenta" },
-            { to: "/login", text: "Iniciar sesión" }
-        );
+            { to: "/login", text: "Iniciar sesión" },
+            {to:"/gestionProducto", text:"Gestion Productos"},
+            {to:"/gestionAdmin", text:"Gestion Admin"})
+    
     }
 
     const cerrarSesion = () => {
@@ -99,6 +101,5 @@ routes.push({to:"/gestionProducto", text:"Gestion Productos"})
 routes.push({to:"/gestionClientes", text:"Gestion Clientes"})
 routes.push({to:"/gestionCategorias", text:"Gestion Categorias"})
 routes.push({to:"/gestionEmprendedores", text:"Gestion Emprededores"})
-
+routes.push({to:"/gestionAdmin", text:"Gestion Admin"})
 export { Menu };
-

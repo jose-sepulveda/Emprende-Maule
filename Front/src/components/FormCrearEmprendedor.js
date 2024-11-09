@@ -22,8 +22,8 @@ const FormCrearEmprendedor = () => {
             numero_de_cuenta: data['numero_de_cuenta'],
             // Añadir los archivos al objeto emprendedor
             comprobante: data.comprobante[0],
-            imagen_productos: data['imagen-productos'][0],
-            imagen_local: data['imagen-local'][0]
+            imagen_productos: data['imagen_productos'][0],
+            imagen_local: data['imagen_local'][0]
         };
 
         crearEmprendedor(emprendedor)
