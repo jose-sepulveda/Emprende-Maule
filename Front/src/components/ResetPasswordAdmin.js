@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { resetPasswordAdmin } from '../services/admin';
+import "../Styles/reset-password.css";
 
 const ResetPassword = () => {
   const { token } = useParams();
@@ -36,7 +37,7 @@ const ResetPassword = () => {
   };
 
   return (
-    <div>
+    <div className='reset-password-container'>
       <h2>Actualizar Contraseña de Administrador</h2>
       <input
         type="password"

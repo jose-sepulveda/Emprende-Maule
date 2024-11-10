@@ -68,6 +68,15 @@
     width: 300px;
     text-align: center;
   }
+
+  .modal-content input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
   
   .recuperar-button {
     margin-top: 10px;
