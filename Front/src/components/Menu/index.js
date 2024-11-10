@@ -16,7 +16,7 @@ function Menu(){
         const decodedToken = jwtDecode(auth.token);
         
         // Admin
-        if (decodedToken.role === "admin") {
+        if (decodedToken.role === "administrador") {
             routes.push(
                 { to: "/gestionCategorias", text: "Gestion Categorias" },
                 { to: "/gestionClientes", text: "Gestion Clientes" },
@@ -103,3 +103,4 @@ routes.push({to:"/gestionCategorias", text:"Gestion Categorias"})
 routes.push({to:"/gestionEmprendedores", text:"Gestion Emprededores"})
 routes.push({to:"/gestionAdmin", text:"Gestion Admin"})
 export { Menu };
+

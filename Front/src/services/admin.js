@@ -19,3 +19,31 @@ export const deleteAdmin = (id_administrador) => axios.delete(`${API_URL}/${id_a
 
 // Iniciar sesión para administrador
 export const loginAdmin = (credentials) => axios.post(`${API_URL}/login`, credentials);
+
+// Correo para recuperar cntraseña
+export const recuperarContrasena = async(correo, token) => {
+    try {
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/administrador/reset-password/${token}`, { correo });
+        return response.data;
+    } catch (error) {
+        console.error('Error al enviar el correo de recuperación: ', error);
+        if (error.response) {
+            throw new Error(error.response.data.message || 'Hubo un problema al procesar la solicitud.');
+        } else if (error.request) {
+            throw new Error('No se recibió respuesta del servidor. Intenta nuevamente.');
+        } else {
+            throw new Error('Error desconocido al intentar recuperar la contraseña. Inténtalo de nuevo más tarde.');
+        }
+    }
+}
+
+// Resetear la contraseña del administrador
+export const resetPasswordAdmin = async (token, nuevaContrasena) => {
+    try {
+        const response = await axios.post(`${API_URL}/reset-password/${token}`, { nuevaContrasena });
+        return response.data;
+    } catch (error) {
+        console.error('Error al restablecer la contraseña:', error);
+        throw error;
+    }
+};
