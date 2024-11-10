@@ -3,7 +3,7 @@ import React from "react";
 import { FaShoppingCart } from 'react-icons/fa';
 import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Auth/AuthContext";
-import Logo from '../../Image/Logo.jpeg';
+import Logo from '../../Image/logoEM.png';
 import '../../Styles/menu.css';
 
 function Menu(){
@@ -67,7 +67,7 @@ function Menu(){
                 routes.map( (item, index)=>(
                     <li key={index}>
                         <NavLink 
-                            style={({isActive}) => ({color:isActive?"Orange":"Black"})}
+                            style={({isActive}) => ({color:isActive? '#f98000':"Black"})}
                             to={item.to}>
                             {item.text}
                         </NavLink>

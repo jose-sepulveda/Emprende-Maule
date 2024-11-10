@@ -21,6 +21,7 @@ import LoginCliente from './components/LoginCliente.js';
 
 //emprendedor
 import FormCrearEmprendedor from './components/FormCrearEmprendedor.js'; //formulario crear emprendedor 
+import FormCrearProducto from './components/FormCrearProducto.js';
 import LoginEmprendedor from './components/LoginEmprendedor.js';
 import { GestionProducto } from './pages/GestionProducto.js';
 
@@ -60,6 +61,7 @@ function App() {
           {/*Emprendedor*/}
           <Route path='/login-emprendedor' element={<LoginEmprendedor/>}/>
           <Route path="/gestionProducto" element={<GestionProducto/>}/> {/*este era privado pero solo quiero probar cositas */}
+          <Route path='/formCrearP' element={<FormCrearProducto/>}/>
 
           {/*Recuperacion de contraseña*/}
 
