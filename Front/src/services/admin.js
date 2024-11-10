@@ -21,14 +21,22 @@ export const deleteAdmin = (id_administrador) => axios.delete(`${API_URL}/${id_a
 export const loginAdmin = (credentials) => axios.post(`${API_URL}/login`, credentials);
 
 // Correo para recuperar cntraseña
-export const recuperarContrasena = async(correo, token) => {
+export const recuperarContrasena = async(correo) => {
     try {
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/administrador/reset-password/${token}`, { correo });
+        const response = await axios.post(`${API_URL}/recuperar`, { correo });
         return response.data;
     } catch (error) {
-        console.error('Error al enviar el correo de recuperación: ', error);
+        console.error('Error al enviar el correo de recuperación:', error);
+
         if (error.response) {
-            throw new Error(error.response.data.message || 'Hubo un problema al procesar la solicitud.');
+            const errorMsg = error.response.data.message || 'Hubo un problema al procesar la solicitud.';
+            if (error.response.status === 400) {
+                throw new Error('Correo no encontrado. Por favor verifica e intenta de nuevo.');
+            } else if (error.response.status === 500) {
+                throw new Error('Error interno del servidor. Inténtalo más tarde.');
+            } else {
+                throw new Error(errorMsg);
+            }
         } else if (error.request) {
             throw new Error('No se recibió respuesta del servidor. Intenta nuevamente.');
         } else {
@@ -38,9 +46,9 @@ export const recuperarContrasena = async(correo, token) => {
 }
 
 // Resetear la contraseña del administrador
-export const resetPasswordAdmin = async (token, nuevaContrasena) => {
+export const resetPasswordAdmin = async (token, contrasenaActual, nuevaContrasena) => {
     try {
-        const response = await axios.post(`${API_URL}/reset-password/${token}`, { nuevaContrasena });
+        const response = await axios.post(`${API_URL}/reset-password/${token}`, { contrasenaActual, nuevaContrasena });
         return response.data;
     } catch (error) {
         console.error('Error al restablecer la contraseña:', error);

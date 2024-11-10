@@ -22,8 +22,10 @@ const LoginAministrador = () => {
       return;
     }
 
+    console.log({correo, contrasena})
+
     try {
-      const response = await loginAdmin(correo, contrasena);
+      const response = await loginAdmin({correo, contrasena});
       if (response && response.data.token) {
         setToken(response.data.token);
         navigate("/");
@@ -38,9 +40,9 @@ const LoginAministrador = () => {
   };
 
   const handleRecuperacion = async () => {
-    const correoParaRecuperacion = correoRecuperacion || correo; // Si no hay correo en el modal, usar el del login
+    const correoParaRecuperacion = correoRecuperacion || correo; 
 
-    if (!correoParaRecuperacion) {
+    if (!correoParaRecuperacion || !/\S+@\S+\.\S+/.test(correoParaRecuperacion)) {
       toast.error("Por favor ingrese su correo para la recuperación de contraseña");
       return;
     }

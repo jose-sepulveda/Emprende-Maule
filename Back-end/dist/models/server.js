@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const cors_1 = __importDefault(require("cors"));
 const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
+const administrador_1 = __importDefault(require("../routes/administrador"));
 const carro_1 = __importDefault(require("../routes/carro"));
 const carro_productos_1 = __importDefault(require("../routes/carro_productos"));
 const categoria_1 = __importDefault(require("../routes/categoria"));
@@ -22,7 +23,7 @@ const cliente_1 = __importDefault(require("../routes/cliente"));
 const emprendedor_1 = __importDefault(require("../routes/emprendedor"));
 const producto_1 = __importDefault(require("../routes/producto"));
 const resena_1 = __importDefault(require("../routes/resena"));
-const administrador_1 = __importDefault(require("../routes/administrador"));
+const administrador_2 = require("./administrador");
 const carro_2 = require("./carro");
 const carro_productos_2 = require("./carro_productos");
 const categoria_2 = require("./categoria");
@@ -30,7 +31,6 @@ const cliente_2 = require("./cliente");
 const emprendedor_2 = require("./emprendedor");
 const producto_2 = require("./producto");
 const resena_2 = require("./resena");
-const administrador_2 = require("./administrador");
 class Server {
     constructor() {
         var _a;
@@ -59,7 +59,12 @@ class Server {
     midlewares() {
         this.app.use('/public', express_1.default.static(path_1.default.join(__dirname, '..', '..', 'public')));
         this.app.use(express_1.default.json());
-        this.app.use((0, cors_1.default)());
+        this.app.use((0, cors_1.default)({
+            origin: 'http://localhost:3001',
+            methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+            allowedHeaders: ['Content-Type', 'Authorization'],
+            credentials: true,
+        }));
     }
     dbConnect() {
         return __awaiter(this, void 0, void 0, function* () {

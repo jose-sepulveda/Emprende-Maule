@@ -1,64 +1,61 @@
-// pages/ResetPassword.js
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
+import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { resetPasswordAdmin } from '../services/admin';
-import "../Styles/reset-password.css";
 
-const ResetPasswordAdmin = () => {
-  const { token } = useParams(); // Extrae el token de la URL
+const ResetPassword = () => {
+  const { token } = useParams();
+  const [contrasenaActual, setContrasenActual] = useState('');
   const [nuevaContrasena, setNuevaContrasena] = useState('');
-  const [confirmarContrasena, setConfirmarContrasena] = useState('');
-  const navigate = useNavigate();
-
-  const handleResetPassword = async () => {
-    if (!nuevaContrasena || !confirmarContrasena) {
-      toast.error('Por favor ingresa la nueva contraseña');
-      return;
-    }
-
-    if (nuevaContrasena !== confirmarContrasena) {
-      toast.error('Las contraseñas no coinciden');
-      return;
-    }
-
-    try {
-      const response = await resetPasswordAdmin(nuevaContrasena);
-
-      toast.success(response.data.msg);
-      navigate('/login'); // Redirige a la página de login después de cambiar la contraseña
-    } catch (error) {
-      console.error('Error al restablecer la contraseña: ', error);
-      toast.error('Error al restablecer la contraseña, intenta de nuevo más tarde');
-    }
-  };
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!token) {
-      toast.error('El token de recuperación no es válido');
-      navigate('/login');
+      toast.error('Token no válido');
     }
-  }, [token, navigate]);
+  }, [token]);
+
+  const handleActualizarContrasena = async () => {
+    if (!contrasenaActual || !nuevaContrasena) {
+      toast.error('Por favor ingrese una nueva contraseña');
+      return;
+    }
+
+
+
+    setLoading(true);
+
+    try {
+      const response = await resetPasswordAdmin(token, contrasenaActual, nuevaContrasena);
+      toast.success('Contraseña actualizada con éxito');
+    } catch (error) {
+      toast.error('Error al actualizar la contraseña. Inténtalo de nuevo más tarde.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="reset-password-container">
-      <h2>Restablecer contraseña</h2>
+    <div>
+      <h2>Actualizar Contraseña de Administrador</h2>
       <input
         type="password"
-        placeholder="Nueva contraseña"
+        placeholder="Contraseña Actual"
+        value={contrasenaActual}
+        onChange={(e) => setContrasenActual(e.target.value)}
+      />
+      <input
+        type="password"
+        placeholder="Nueva Contraseña"
         value={nuevaContrasena}
         onChange={(e) => setNuevaContrasena(e.target.value)}
       />
-      <input
-        type="password"
-        placeholder="Confirmar contraseña"
-        value={confirmarContrasena}
-        onChange={(e) => setConfirmarContrasena(e.target.value)}
-      />
-      <button onClick={handleResetPassword}>Restablecer contraseña</button>
-      <ToastContainer />
+      <button onClick={handleActualizarContrasena} disabled={loading}>
+        {loading ? 'Actualizando...' : 'Actualizar Contraseña'}
+      </button>
     </div>
   );
 };
 
-export default ResetPasswordAdmin;
+export default ResetPassword;
+
