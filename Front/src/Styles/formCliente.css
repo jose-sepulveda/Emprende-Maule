@@ -1,73 +1,90 @@
-.fc-containerFormCrearCliente {
-  margin: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.fc-form {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 600px;
+/* Contenedor principal */
+.form-container-cliente {
+  margin: 0 auto;
   padding: 20px;
-  background-color: rgba(238, 238, 238, 0.514);
+  max-width: 600px;
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(1px);
   border-radius: 10px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3); 
 }
 
-.fc-containerInput {
+/* Estilos del formulario */
+.form-cliente {
+  background-color: rgba(255, 255, 255, 0.749);
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Contenedor de cada campo dentro del formulario */
+.form-cliente form > div {
   display: flex;
-  gap: 15px;
+  flex-direction: column;
+  gap: 5px;
 }
 
-.fc-label {
-  display: block;
-  margin-bottom: 10px;
-  margin-top: 10px;
-  font-weight: bold;
-  color: #333;
+/* Labels */
+.form-cliente .fc-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #000000;
 }
 
-.fc-input {
-  width: 287px;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
-  transition: border-color 0.3s ease;
-}
-
-.fcc-input {
-  width: 590px;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
-  transition: border-color 0.3s ease;
-}
-
-.fc-input:focus {
-  border-color: #f98511;
+/* Inputs */
+.form-cliente .fc-input {
+  padding: 8px 12px;
+  border: 1px solid #D1D5DB;
+  border-radius: 6px;
+  font-size: 14px;
   outline: none;
+  transition: border-color 0.2s;
 }
 
-.fc-button {
-  padding: 10px;
-  background-color: #f98511d1;
-  color: #fff;
-  font-size: 16px;
+.form-cliente .fc-input:focus {
+  border-color: #F97316;
+}
+
+/* Botón de submit */
+.form-cliente .fc-button {
+  grid-column: span 2; /* El botón ocupa toda la fila */
+  justify-self: center;
+  background-color: #F97316;
+  color: white;
+  padding: 10px 50px;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
+  font-size: 14px;
   cursor: pointer;
-  width: 50%;
-  align-self: center;
-  margin-top: 15px;
+  transition: background-color 0.2s;
+  margin-top: 10px;
 }
 
-.fc-button:hover {
-  background-color: #f77b00;
+.form-cliente .fc-button:hover {
+  background-color: #EA580C;
+}
+
+/* Cada campo ocupa una columna de manera predeterminada */
+.form-cliente form > div:nth-child(1),
+.form-cliente form > div:nth-child(2),
+.form-cliente form > div:nth-child(3),
+.form-cliente form > div:nth-child(4),
+.form-cliente form > div:nth-child(5),
+.form-cliente form > div:nth-child(6) {
+  grid-column: span 1; /* Cada campo ocupa una columna */
+}
+
+/* Campos 7 y 8 deben ocupar una fila de 2 columnas */
+.form-cliente form > div:nth-child(7),
+.form-cliente form > div:nth-child(8) {
+  grid-column: span 2; /* Ocupa las dos columnas de la fila */
+}
+
+/* Ajustar a una sola fila si lo necesitas */
+.form-cliente form > div:nth-child(9) {
+  grid-column: span 2; /* Para ocupar toda la fila */
 }

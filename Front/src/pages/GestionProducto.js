@@ -1,11 +1,11 @@
 // src/pages/GestionProductos.js
 import React from 'react';
-import FormCrearProducto from '../components/FormCrearProducto';
+import CrearProducto from '../components/FormCrearProducto';
 
 const GestionProducto = () => {
   return (
     <div>
-      <FormCrearProducto />
+      <CrearProducto />
     </div>
   );
 };
