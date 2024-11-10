@@ -22,11 +22,12 @@ import LoginCliente from './components/LoginCliente.js';
 //emprendedor
 import FormCrearEmprendedor from './components/FormCrearEmprendedor.js'; //formulario crear emprendedor 
 import LoginEmprendedor from './components/LoginEmprendedor.js';
-import { GestionProducto } from './pages/GestionProducto.js'; 
+import { GestionProducto } from './pages/GestionProducto.js';
 
+import { ToastContainer } from 'react-toastify';
 import { AuthProvider } from './Auth/AuthContext';
 import { PrivateRoute } from './Auth/PrivateRoute';
-import { ToastContainer } from 'react-toastify';
+import ResetPasswordAdmin from './components/ResetPasswordAdmin.js';
 
 
 function App() {
@@ -60,6 +61,9 @@ function App() {
           <Route path='/login-emprendedor' element={<LoginEmprendedor/>}/>
           <Route path="/gestionProducto" element={<GestionProducto/>}/> {/*este era privado pero solo quiero probar cositas */}
 
+          {/*Recuperacion de contraseña*/}
+
+          <Route path="/reset-password/:token" element={<ResetPasswordAdmin />} />
 
           <Route path="*" element={<p>Ups...La ruta no existe</p>}/> 
         </Routes>
