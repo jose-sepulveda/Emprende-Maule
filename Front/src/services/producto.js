@@ -40,4 +40,3 @@ export const updateProducto = (cod_producto, producto) => api.put(`/${cod_produc
 
 // Eliminar un producto
 export const deleteProducto = (cod_producto) => api.delete(`/${cod_producto}`);
-
