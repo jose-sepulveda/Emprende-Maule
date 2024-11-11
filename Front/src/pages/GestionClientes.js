@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { getClientes, deleteCliente } from '../services/crearCliente'; 
+import React, { useEffect, useState } from 'react';
+import { deleteCliente, getClientes } from '../services/crearCliente';
 
 const GestionClientes = () => {
   const [clientes, setClientes] = useState([]);
@@ -15,7 +15,6 @@ const GestionClientes = () => {
       setClientes(sortedClientes);
     } catch (error) {
       console.error('Error al cargar clientes:', error);
-      //alert('Error al cargar clientes');
     }
   };
 
@@ -61,3 +60,4 @@ const GestionClientes = () => {
 };
 
 export { GestionClientes };
+

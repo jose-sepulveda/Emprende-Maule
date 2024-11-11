@@ -461,3 +461,34 @@ export const resetPasswordEmprendedor = async (req: Request, res: Response) => {
         });
     }
 };
+
+export const getEmprendedoresPorEstado = async (req: Request, res: Response) => {
+    const { estado } = req.query;
+
+    if (estado !== 'Pendiente' && estado !== 'Aprobado') {
+        return res.status(400).json({
+            msg: 'El estado debe ser "Pendiente" o "Aprobado".'
+        });
+    }
+
+    try {
+        const emprendedores = await Emprendedor.findAll({
+            where: {
+                estado_emprendedor: estado
+            }
+        });
+
+        if (!emprendedores || emprendedores.length === 0) {
+            return res.status(404).json({
+                msg: `No se encontraron emprendedores con estado ${estado}.`
+            });
+        }
+
+        return res.status(200).json(emprendedores);
+    } catch (error) {
+        console.error('Error al obtener los emprendedores por estado: ', error);
+        return res.status(500).json({
+            msg: 'Error al obtener los emprendedores. Inténtalo más tarde.',
+        });
+    }
+};
