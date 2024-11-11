@@ -28,6 +28,7 @@ import { GestionProducto } from './pages/GestionProducto.js';
 import { ToastContainer } from 'react-toastify';
 import { AuthProvider } from './Auth/AuthContext';
 import { PrivateRoute } from './Auth/PrivateRoute';
+import FormActualizarEmprendedor from './components/FormActualizarEmprendedor.js';
 import ResetPasswordAdmin from './components/ResetPasswordAdmin.js';
 import ResetPasswordCliente from './components/ResetPasswordCliente.js';
 import ResetPasswordEmprendedor from './components/ResetPasswordEmprendedor.js';
@@ -55,6 +56,7 @@ function App() {
           <Route path="/gestionClientes" element={<PrivateRoute><GestionClientes/></PrivateRoute>}/>
           <Route path="/gestionAdmin" element={<PrivateRoute><GestionAdmin/></PrivateRoute>}/>
           <Route path= "/gestionEmprendedores" element= {<PrivateRoute><GestionEmprendedores/></PrivateRoute>}/>
+          <Route path= "/actualizar-emprendedor/:rut_emprendedor" element= {<PrivateRoute><FormActualizarEmprendedor/></PrivateRoute>}/>
 
           {/*Cliente*/}
           <Route path='/login-cliente' element={<LoginCliente/>}/>

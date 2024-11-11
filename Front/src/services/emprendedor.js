@@ -39,7 +39,20 @@ export const crearEmprendedor = (emprendedor) => {
 export const updateEmprendedor = (rut_emprendedor, emprendedor) => api.put(`/${rut_emprendedor}`, emprendedor);
 
 // Eliminar un emprendedor
-export const deleteEmprendedor = (rut_emprendedor) => api.delete(`/${rut_emprendedor}`);
+export const deleteEmprendedor = async (rut_emprendedor, token) => {
+    try {
+        const response = await api.delete(`${API_URL}/${rut_emprendedor}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error al eliminar el emprendedor:', error);
+        throw error;
+      }
+    
+};
 
 // Iniciar sesión emprendedor
 export const loginEmprendedor = (credentials) => api.post('/login', credentials);
@@ -83,6 +96,17 @@ export const resetPasswordEmprendedor = async (token, contrasenaActual, nuevaCon
         return response.data;
     } catch (error) {
         console.error('Error al restablecer la contraseña:', error);
+        throw error;
+    }
+};
+
+// Obtener emprendedores por estado
+export const getEmprendedoresPorEstado = async (estado) => {
+    try {
+        const response = await api.get(`/estado?estado=${estado}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error al obtener los emprendedores por estado', error);
         throw error;
     }
 };

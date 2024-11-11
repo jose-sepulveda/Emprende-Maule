@@ -1,7 +1,7 @@
 import { Router } from "express";
 import multer from 'multer';
 import path from 'path';
-import { crearEmprendedor, deleteEmprendedor, getEmprendedor, getEmprendedores, loginEmprendedor, recuperarContrasenaEmprendedor, resetPasswordEmprendedor, updateEmprendedor, updateEstadoEmprendedor, updatePassword } from "../controllers/emprendedor";
+import { crearEmprendedor, deleteEmprendedor, getEmprendedor, getEmprendedores, getEmprendedoresPorEstado, loginEmprendedor, recuperarContrasenaEmprendedor, resetPasswordEmprendedor, updateEmprendedor, updateEstadoEmprendedor, updatePassword } from "../controllers/emprendedor";
 import auth from '../middlewares/auth';
 
 const router = Router();
@@ -31,5 +31,6 @@ router.patch('/password', auth, updatePassword);
 router.patch('/estado', auth, updateEstadoEmprendedor);
 router.post('/recuperar', recuperarContrasenaEmprendedor);
 router.post('/reset-password-emprendedor/:token', resetPasswordEmprendedor);
+router.get('/estado', getEmprendedoresPorEstado);
 
 export default router;
