@@ -42,7 +42,9 @@ function Menu(){
             { to: "/crearCuenta", text: "Crear cuenta" },
             { to: "/login", text: "Iniciar sesión" },
             {to:"/gestionProducto", text:"Gestion Productos"},
-            {to:"/gestionAdmin", text:"Gestion Admin"})
+            {to:"/gestionAdmin", text:"Gestion Admin"},
+            {to:"/tablaP", text:"Productos"})
+
     
     }
 
@@ -102,5 +104,7 @@ routes.push({to:"/gestionClientes", text:"Gestion Clientes"})
 routes.push({to:"/gestionCategorias", text:"Gestion Categorias"})
 routes.push({to:"/gestionEmprendedores", text:"Gestion Emprededores"})
 routes.push({to:"/gestionAdmin", text:"Gestion Admin"})
+routes.push({to:"/tablaP", text:"Productos"})
 export { Menu };
+
 

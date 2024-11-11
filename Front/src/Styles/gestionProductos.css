@@ -1,20 +1,21 @@
 /* Contenedor principal */
 .form-container-prod {
-    display: flex;
-    flex-direction: row;
-    justify-content:space-around;
-    padding: 20px;
-    max-width: 1300px;
+    padding: 40px;
+    max-width: 900px;
     background-color: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(1px);
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.3); 
     margin: 0 auto; /* Centra el contenedor */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 /* Título del formulario */
 h2 {
-    font-size: 1.3rem;  /* Tamaño reducido */
+    font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 20px;
     color: #333;
@@ -28,19 +29,17 @@ h2 {
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     display: grid;
-    grid-template-columns: repeat(2, 1fr);  /* Dos columnas con igual espacio */
-    gap: 10px;  /* Reducido el espacio entre los campos */
-    width: 500px;
-    height: 300px;
-    margin-top: 70px;
-
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    width: 700px;
+    height: 400px;
 }
 
 /* Contenedor de cada campo */
 .form-prod > div {
     display: flex;
     flex-direction: column;
-    gap: 4px;  /* Reducido el espacio entre label e input */
+    gap: 5px;
 }
 
 /* Campos que ocupan 2 columnas */
@@ -53,31 +52,31 @@ h2 {
 .file-uploads {
     grid-column: span 2;
     display: flex;
-    gap: 10px;  /* Reducido el espacio entre los botones de archivo */
+    gap: 20px;
     justify-content: space-between;
 }
 
 /* Labels */
 label {
-    font-size: 12px;  /* Tamaño reducido */
+    font-size: 14px;
     font-weight: 500;
     color: #000000;
 }
 
-/* Inputs y selects */
+/* Inputs */
 input,
 select {
-    width: 200px;  /* Establece el ancho de los inputs y selects a 200px */
-    padding: 6px 10px;  /* Tamaño reducido */
+    padding: 8px 12px;
     border: 1px solid #D1D5DB;
     border-radius: 6px;
-    font-size: 12px;  /* Tamaño reducido */
+    font-size: 14px;
     outline: none;
     transition: border-color 0.2s;
 }
+
 input:focus,
 select:focus {
-    border-color: #f98511;
+    border-color: #F97316;
 }
 
 /* Estilos específicos para inputs tipo file */
@@ -87,9 +86,9 @@ input[type="file"] {
 
 /* Botones para upload */
 .file-uploads label {
-    background-color: #f98511;
+    background-color: #F97316;
     color: white;
-    padding: 6px 12px;  /* Tamaño reducido */
+    padding: 8px 16px;
     border-radius: 6px;
     cursor: pointer;
     text-align: center;
@@ -104,12 +103,12 @@ input[type="file"] {
 button[type="submit"] {
     grid-column: span 2;
     justify-self: center;
-    background-color: #f98511;
+    background-color: #F97316;
     color: white;
-    padding: 8px 16px;  /* Tamaño reducido */
+    padding: 10px 20px;
     border: none;
     border-radius: 6px;
-    font-size: 14px;  /* Tamaño reducido */
+    font-size: 16px;
     cursor: pointer;
     transition: background-color 0.2s;
     margin-top: 10px;
@@ -118,7 +117,3 @@ button[type="submit"] {
 button[type="submit"]:hover {
     background-color: #EA580C;
 }
-
-
-
-/*tabla*/

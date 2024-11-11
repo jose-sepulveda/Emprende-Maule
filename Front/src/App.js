@@ -24,6 +24,7 @@ import FormCrearEmprendedor from './components/FormCrearEmprendedor.js'; //formu
 import CrearProducto from './components/FormCrearProducto.js';
 import LoginEmprendedor from './components/LoginEmprendedor.js';
 import { GestionProducto } from './pages/GestionProducto.js';
+import {TablaP} from './pages/TablaP.js';
 
 import { ToastContainer } from 'react-toastify';
 import { AuthProvider } from './Auth/AuthContext';
@@ -63,6 +64,7 @@ function App() {
           {/*Emprendedor*/}
           <Route path='/login-emprendedor' element={<LoginEmprendedor/>}/>
           <Route path="/gestionProducto" element={<GestionProducto/>}/> {/*este era privado pero solo quiero probar cositas */}
+          <Route path="/tablaP" element={<TablaP/>}/>
           <Route path='/formCrearP' element={<CrearProducto/>}/>
 
           {/*Recuperacion de contraseña*/}

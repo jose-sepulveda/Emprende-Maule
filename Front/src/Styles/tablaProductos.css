@@ -1,11 +1,16 @@
 /* Estilos para el contenedor de la tabla */
 .table-container {
-    max-width: 1000px;
     margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    max-width: 800px;
+    background-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(1px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .table-container h2 {
@@ -16,26 +21,31 @@
 
 /* Estilos para la tabla */
 table {
-    width: 100%;
+    background-color: #ffffffd0;
+    width: 800px;
     border-collapse: collapse;
     margin-bottom: 20px;
 }
 
 table th,
 table td {
-    padding: 12px;
-    text-align: left;
+    padding: 10px;
+    text-align: center;
     border-bottom: 1px solid #ddd;
+    white-space: nowrap; /* Evita que el texto se ajuste en varias líneas */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Agrega puntos suspensivos si el texto es demasiado largo */
 }
 
 table th {
     background-color: #f98511;
     color: white;
     font-weight: bold;
+    width: 250px; /* Ancho fijo para los encabezados */
 }
 
-table tr:hover {
-    background-color: #f1f1f1;
+table td {
+    width: 150px; /* Ancho fijo para las celdas */
 }
 
 /* Estilos para botones */

@@ -4,7 +4,6 @@ import { toast } from 'react-toastify';
 import { crearProducto } from '../services/producto';
 import { getCategorias } from '../services/categoria'; 
 import '../Styles/gestionProductos.css';
-import TablaProductos from './TablaProductos';
 
 const FormCrearProducto = () => {
     const { register, handleSubmit } = useForm();
@@ -44,6 +43,7 @@ const FormCrearProducto = () => {
 
     return (
         <div className="form-container-prod">
+                <h2>Añadir nuevo producto</h2>
             <form className="form-prod" onSubmit={handleSubmit(enviar)}>
                 <div>
                     <label htmlFor="nombre_producto">Nombre</label>
@@ -84,9 +84,8 @@ const FormCrearProducto = () => {
                     <label htmlFor="imagen">Imagen</label>
                     <input id="imagen" type="file" required {...register("imagen")} />
                 </div>
-                <button type="submit">Crear Producto</button>
+                <button type="submit">Añadir producto</button>
             </form>
-            <TablaProductos/>
         </div>
     );
 };
