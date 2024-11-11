@@ -29,6 +29,8 @@ import { ToastContainer } from 'react-toastify';
 import { AuthProvider } from './Auth/AuthContext';
 import { PrivateRoute } from './Auth/PrivateRoute';
 import ResetPasswordAdmin from './components/ResetPasswordAdmin.js';
+import ResetPasswordCliente from './components/ResetPasswordCliente.js';
+import ResetPasswordEmprendedor from './components/ResetPasswordEmprendedor.js';
 
 
 function App() {
@@ -65,7 +67,9 @@ function App() {
 
           {/*Recuperacion de contraseña*/}
 
-          <Route path="/reset-password/:token" element={<ResetPasswordAdmin />} />
+          <Route path="/reset-password-admin/:token" element={<ResetPasswordAdmin />} />
+          <Route path="/reset-password-emprendedor/:token" element={<ResetPasswordEmprendedor />} />
+          <Route path="/reset-password-cliente/:token" element={<ResetPasswordCliente />} />
 
           <Route path="*" element={<p>Ups...La ruta no existe</p>}/> 
         </Routes>

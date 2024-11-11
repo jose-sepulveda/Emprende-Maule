@@ -169,7 +169,7 @@ const recuperarContrasena = (req, res) => __awaiter(void 0, void 0, void 0, func
             });
         }
         const token = jsonwebtoken_1.default.sign({ correo: administrador.getDataValue("correo"), id_administrador: administrador.getDataValue("id_administrador"), rol: "administrador" }, process.env.SECRET_KEY || 'ACCESS', { expiresIn: '1h' });
-        const link = `http://localhost:3001/#/reset-password/${token}`;
+        const link = `http://localhost:3001/#/reset-password-admin/${token}`;
         yield (0, mail_1.sendEmail)(correo, 'Recuperación de contraseña', `Haz clic en el siguiente enlace para recuperar tu contraseña: ${link}`);
         return res.status(200).json({
             msg: 'Se envió un enlace de recuperación de contraseña a tu correo'

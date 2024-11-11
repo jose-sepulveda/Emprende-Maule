@@ -11,6 +11,6 @@ router.post('/login', loginAdmin);
 router.get('/list', auth, getAdministradores);
 router.get('/:id_administrador', auth, getAdminById);
 router.post('/recuperar', recuperarContrasena);
-router.post('/reset-password/:token', resetPasswordAdmin);
+router.post('/reset-password-admin/:token', resetPasswordAdmin);
 
 export default router;

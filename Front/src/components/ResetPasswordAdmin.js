@@ -4,9 +4,9 @@ import { toast } from 'react-toastify';
 import { resetPasswordAdmin } from '../services/admin';
 import "../Styles/reset-password.css";
 
-const ResetPassword = () => {
+const ResetPasswordAdmin = () => {
   const { token } = useParams();
-  const [contrasenaActual, setContrasenActual] = useState('');
+  const [contrasenaActual, setContrasenaActual] = useState('');
   const [nuevaContrasena, setNuevaContrasena] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -43,7 +43,7 @@ const ResetPassword = () => {
         type="password"
         placeholder="Contraseña Actual"
         value={contrasenaActual}
-        onChange={(e) => setContrasenActual(e.target.value)}
+        onChange={(e) => setContrasenaActual(e.target.value)}
       />
       <input
         type="password"
@@ -58,5 +58,5 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default ResetPasswordAdmin;
 

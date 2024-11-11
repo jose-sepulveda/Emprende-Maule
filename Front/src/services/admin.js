@@ -48,7 +48,7 @@ export const recuperarContrasena = async(correo) => {
 // Resetear la contraseña del administrador
 export const resetPasswordAdmin = async (token, contrasenaActual, nuevaContrasena) => {
     try {
-        const response = await axios.post(`${API_URL}/reset-password/${token}`, { contrasenaActual, nuevaContrasena });
+        const response = await axios.post(`${API_URL}/reset-password-admin/${token}`, { contrasenaActual, nuevaContrasena });
         return response.data;
     } catch (error) {
         console.error('Error al restablecer la contraseña:', error);

@@ -184,7 +184,7 @@ export const recuperarContrasena = async (req: Request, res: Response) => {
 
         const token = jwt.sign({correo: administrador.getDataValue("correo"), id_administrador: administrador.getDataValue("id_administrador"), rol: "administrador"}, process.env.SECRET_KEY || 'ACCESS', {expiresIn: '1h'});
 
-        const link = `http://localhost:3001/#/reset-password/${token}`;
+        const link = `http://localhost:3001/#/reset-password-admin/${token}`;
 
         await sendEmail(
             correo,
