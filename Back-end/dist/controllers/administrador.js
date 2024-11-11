@@ -99,8 +99,8 @@ const updateAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 });
 exports.updateAdmin = updateAdmin;
 const loginAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { rut_administrador, contrasena } = req.body;
-    const administrador = yield administrador_1.Administrador.findOne({ where: { rut_administrador: rut_administrador } });
+    const { correo, contrasena } = req.body;
+    const administrador = yield administrador_1.Administrador.findOne({ where: { correo } });
     if (!administrador) {
         return res.status(404).json({
             msg: 'El administrador no existe'
@@ -115,7 +115,7 @@ const loginAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const rol = 'administrador';
     const id_administrador = administrador.dataValues.id_administrador;
     const token = jsonwebtoken_1.default.sign({
-        rut_administrador: rut_administrador,
+        correo: correo,
         role: rol,
         id_administrador: id_administrador
     }, process.env.SECRET_KEY || 'ACCESS', { expiresIn: '1h' });
@@ -168,8 +168,8 @@ const recuperarContrasena = (req, res) => __awaiter(void 0, void 0, void 0, func
                 msg: 'No se encontró un administrador con ese correo'
             });
         }
-        const token = jsonwebtoken_1.default.sign({ correo }, process.env.SECRET_KEY || 'ACCESS', { expiresIn: '1h' });
-        const link = `http://localhost:3000/reset-password/${token}`;
+        const token = jsonwebtoken_1.default.sign({ correo: administrador.getDataValue("correo"), id_administrador: administrador.getDataValue("id_administrador"), rol: "administrador" }, process.env.SECRET_KEY || 'ACCESS', { expiresIn: '1h' });
+        const link = `http://localhost:3001/#/reset-password-admin/${token}`;
         yield (0, mail_1.sendEmail)(correo, 'Recuperación de contraseña', `Haz clic en el siguiente enlace para recuperar tu contraseña: ${link}`);
         return res.status(200).json({
             msg: 'Se envió un enlace de recuperación de contraseña a tu correo'
@@ -185,13 +185,19 @@ const recuperarContrasena = (req, res) => __awaiter(void 0, void 0, void 0, func
 exports.recuperarContrasena = recuperarContrasena;
 const resetPasswordAdmin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { token } = req.params;
-    const { nuevaContrasena } = req.body;
+    const { contrasenaActual, nuevaContrasena } = req.body;
     try {
         const decoded = jsonwebtoken_1.default.verify(token, process.env.SECRET_KEY || 'ACCESS');
         const administrador = yield administrador_1.Administrador.findOne({ where: { correo: decoded.correo } });
         if (!administrador) {
             return res.status(400).json({
                 msg: 'No se encontró un administrador con ese correo',
+            });
+        }
+        const contrasenaActualValida = yield bcrypt_1.default.compare(contrasenaActual, administrador.getDataValue('contrasena'));
+        if (!contrasenaActualValida) {
+            return res.status(400).json({
+                msg: 'La contraseña actual es incorrecta',
             });
         }
         const hashedPassword = yield bcrypt_1.default.hash(nuevaContrasena, 10);

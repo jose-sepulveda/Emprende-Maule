@@ -98,9 +98,9 @@ export const updateAdmin = async (req: Request, res: Response) => {
 };
 
 export const loginAdmin = async (req: Request, res: Response) => {
-    const { rut_administrador, contrasena } = req.body;
+    const { correo, contrasena } = req.body;
 
-    const administrador = await Administrador.findOne({ where: { rut_administrador: rut_administrador } });
+    const administrador = await Administrador.findOne({ where: { correo } });
 
     if (!administrador) {
         return res.status(404).json({
@@ -120,7 +120,7 @@ export const loginAdmin = async (req: Request, res: Response) => {
     const rol = 'administrador';
     const id_administrador = administrador.dataValues.id_administrador;
     const token = jwt.sign({
-        rut_administrador: rut_administrador,
+        correo: correo,
         role: rol,
         id_administrador: id_administrador
     }, process.env.SECRET_KEY || 'ACCESS', {expiresIn: '1h'});
@@ -171,7 +171,7 @@ export const getAdministradores = async (req: Request, res: Response) => {
 };
 
 export const recuperarContrasena = async (req: Request, res: Response) => {
-    const {correo} = req.body;
+    const { correo } = req.body;
 
     try{
         const administrador = await Administrador.findOne({where: {correo}});
@@ -182,9 +182,9 @@ export const recuperarContrasena = async (req: Request, res: Response) => {
             });
         }
 
-        const token = jwt.sign({correo}, process.env.SECRET_KEY || 'ACCESS', {expiresIn: '1h'});
+        const token = jwt.sign({correo: administrador.getDataValue("correo"), id_administrador: administrador.getDataValue("id_administrador"), rol: "administrador"}, process.env.SECRET_KEY || 'ACCESS', {expiresIn: '1h'});
 
-        const link = `http://localhost:3000/reset-password/${token}`;
+        const link = `http://localhost:3001/#/reset-password-admin/${token}`;
 
         await sendEmail(
             correo,
@@ -206,7 +206,7 @@ export const recuperarContrasena = async (req: Request, res: Response) => {
 
 export const resetPasswordAdmin = async (req: Request, res: Response) => {
     const { token } = req.params;
-    const { nuevaContrasena} = req.body;
+    const { contrasenaActual, nuevaContrasena} = req.body;
 
     try{
         const decoded: any = jwt.verify(token, process.env.SECRET_KEY || 'ACCESS');
@@ -217,6 +217,14 @@ export const resetPasswordAdmin = async (req: Request, res: Response) => {
             return res.status(400).json({
                 msg: 'No se encontró un administrador con ese correo',
             });
+        }
+
+        const contrasenaActualValida = await bcrypt.compare(contrasenaActual, administrador.getDataValue('contrasena'));
+
+        if (!contrasenaActualValida) {
+            return res.status(400).json({
+                msg: 'La contraseña actual es incorrecta',
+            })
         }
 
         const hashedPassword = await bcrypt.hash(nuevaContrasena,10);

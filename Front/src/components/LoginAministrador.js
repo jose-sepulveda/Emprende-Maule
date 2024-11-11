@@ -6,13 +6,13 @@ import { loginAdmin, recuperarContrasena } from '../services/admin';
 import '../Styles/login-admin.css';
 
 const LoginAministrador = () => {
-  const [correo, setCorreo] = useState(''); // Correo para el login
+  const [correo, setCorreo] = useState(''); 
   const [contrasena, setContrasena] = useState('');
   const { setToken } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [showModal, setShowModal] = useState(false);
-  const [correoRecuperacion, setCorreoRecuperacion] = useState(''); // Correo para recuperación de contraseña
+  const [correoRecuperacion, setCorreoRecuperacion] = useState(''); 
 
   const [loading, setLoading] = useState(false);
 
@@ -22,14 +22,16 @@ const LoginAministrador = () => {
       return;
     }
 
+    console.log({correo, contrasena})
+
     try {
-      const response = await loginAdmin(correo, contrasena);
+      const response = await loginAdmin({correo, contrasena});
       if (response && response.data.token) {
         setToken(response.data.token);
         navigate("/");
       } else {
-        toast.error("Usuario no existe. Por favor registrarse");
-        console.error("Usuario no existe. Por favor registrarse");
+        toast.error("Administrador no existe. Por favor registrarse");
+        console.error("Administrador no existe. Por favor registrarse");
       }
     } catch (error) {
       console.error("Error al iniciar sesión");
@@ -38,9 +40,9 @@ const LoginAministrador = () => {
   };
 
   const handleRecuperacion = async () => {
-    const correoParaRecuperacion = correoRecuperacion || correo; // Si no hay correo en el modal, usar el del login
+    const correoParaRecuperacion = correoRecuperacion || correo; 
 
-    if (!correoParaRecuperacion) {
+    if (!correoParaRecuperacion || !/\S+@\S+\.\S+/.test(correoParaRecuperacion)) {
       toast.error("Por favor ingrese su correo para la recuperación de contraseña");
       return;
     }
@@ -101,7 +103,7 @@ const LoginAministrador = () => {
             <input
               type="email"
               placeholder="Ingresa tu correo"
-              value={correoRecuperacion || correo} // Si hay un correo en recuperación, usarlo, sino el del login
+              value={correoRecuperacion || correo}
               onChange={(e) => setCorreoRecuperacion(e.target.value)}
             />
             <button
