@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { crearProducto } from '../services/producto';
 import { getCategorias } from '../services/categoria'; 
+import '../Styles/gestionProductos.css';
+import TablaProductos from './TablaProductos';
 
 const FormCrearProducto = () => {
     const { register, handleSubmit } = useForm();
@@ -11,7 +13,7 @@ const FormCrearProducto = () => {
     useEffect(() => {
         getCategorias()
             .then(response => {
-                setCategorias(response.data); 
+                setCategorias(response.data); // Verifica la respuesta de la API
             })
             .catch(error => {
                 console.error("Error al obtener las categorías:", error);
@@ -27,7 +29,7 @@ const FormCrearProducto = () => {
             id_categoria: data.id_categoria, 
             cantidad_disponible: data.cantidad_disponible,
             descuento: data.descuento,
-            imagen: data.imagen[0] 
+            imagen: data.imagen[0] // La imagen se maneja como un archivo
         };
 
         try {
@@ -38,12 +40,11 @@ const FormCrearProducto = () => {
             console.error("Error al registrar Producto:", error);
             toast.error("Error al registrar Producto");
         }
-    }
+    };
 
     return (
-        <div className="form-container">
-            <h2>Formulario de Registro de Producto</h2>
-            <form onSubmit={handleSubmit(enviar)}>
+        <div className="form-container-prod">
+            <form className="form-prod" onSubmit={handleSubmit(enviar)}>
                 <div>
                     <label htmlFor="nombre_producto">Nombre</label>
                     <input id="nombre_producto" type="text" required {...register("nombre_producto")} />
@@ -60,11 +61,15 @@ const FormCrearProducto = () => {
                     <label htmlFor="id_categoria">Categoría</label>
                     <select id="id_categoria" {...register("id_categoria")} required>
                         <option value="">Seleccione una categoría</option>
-                        {categorias.map(categoria => (
-                            <option key={categoria.id_categoria} value={categoria.id_categoria}>
-                                {categoria.nombre_categoria}
-                            </option>
-                        ))}
+                        {categorias && categorias.length > 0 ? (
+                            categorias.map(categoria => (
+                                <option key={categoria.id_categoria} value={categoria.id_categoria}>
+                                    {categoria.nombre_categoria}
+                                </option>
+                            ))
+                        ) : (
+                            <option disabled>Cargando categorías...</option>
+                        )}
                     </select>
                 </div>
                 <div>
@@ -75,12 +80,13 @@ const FormCrearProducto = () => {
                     <label htmlFor="descuento">Descuento</label>
                     <input id="descuento" type="number" {...register("descuento")} />
                 </div>
-                <div>
+                <div className='file-uploads'>
                     <label htmlFor="imagen">Imagen</label>
                     <input id="imagen" type="file" required {...register("imagen")} />
                 </div>
                 <button type="submit">Crear Producto</button>
             </form>
+            <TablaProductos/>
         </div>
     );
 };
