@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPasswordEmprendedor = exports.recuperarContrasenaEmprendedor = exports.updateEstadoEmprendedor = exports.deleteEmprendedor = exports.updateEmprendedor = exports.updatePassword = exports.loginEmprendedor = exports.getEmprendedor = exports.crearEmprendedor = exports.getEmprendedores = void 0;
+exports.getEmprendedoresPorEstado = exports.resetPasswordEmprendedor = exports.recuperarContrasenaEmprendedor = exports.updateEstadoEmprendedor = exports.deleteEmprendedor = exports.updateEmprendedor = exports.updatePassword = exports.loginEmprendedor = exports.getEmprendedor = exports.crearEmprendedor = exports.getEmprendedores = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const fs_1 = __importDefault(require("fs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -385,3 +385,31 @@ const resetPasswordEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0,
     }
 });
 exports.resetPasswordEmprendedor = resetPasswordEmprendedor;
+const getEmprendedoresPorEstado = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { estado } = req.query;
+    if (estado !== 'Pendiente' && estado !== 'Aprobado') {
+        return res.status(400).json({
+            msg: 'El estado debe ser "Pendiente" o "Aprobado".'
+        });
+    }
+    try {
+        const emprendedores = yield emprendedor_1.Emprendedor.findAll({
+            where: {
+                estado_emprendedor: estado
+            }
+        });
+        if (!emprendedores || emprendedores.length === 0) {
+            return res.status(404).json({
+                msg: `No se encontraron emprendedores con estado ${estado}.`
+            });
+        }
+        return res.status(200).json(emprendedores);
+    }
+    catch (error) {
+        console.error('Error al obtener los emprendedores por estado: ', error);
+        return res.status(500).json({
+            msg: 'Error al obtener los emprendedores. Inténtalo más tarde.',
+        });
+    }
+});
+exports.getEmprendedoresPorEstado = getEmprendedoresPorEstado;

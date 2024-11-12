@@ -12,10 +12,10 @@ exports.Venta_productos = connection_1.default.define('venta_productos', {
     "id_venta_productos": { type: sequelize_1.DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     "id_venta": { type: sequelize_1.DataTypes.INTEGER },
     "cod_producto": { type: sequelize_1.DataTypes.INTEGER },
-    "cantidad": { type: sequelize_1.DataTypes.INTEGER }
+    "cantidad": { type: sequelize_1.DataTypes.INTEGER },
 }, {
     timestamps: false,
     freezeTableName: true
 });
-exports.Venta_productos.belongsTo(ventas_1.Ventas, { foreignKey: 'id_venta', onDelete: 'SET NULL' });
-exports.Venta_productos.belongsTo(producto_1.Productos, { foreignKey: 'cod_producto', onDelete: 'SET NULL' });
+exports.Venta_productos.belongsTo(ventas_1.Ventas, { foreignKey: "id_venta", onDelete: "SET NULL" });
+exports.Venta_productos.belongsTo(producto_1.Productos, { foreignKey: "cod_producto", onDelete: "SET NULL" });

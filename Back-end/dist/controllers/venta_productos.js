@@ -9,27 +9,50 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteVenta_Producto = void 0;
+exports.updateVentaProducto = exports.deleteVentaProducto = void 0;
 const venta_productos_1 = require("../models/venta_productos");
-const deleteVenta_Producto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id_venta_producto } = req.params;
-    const idVentaProducto = yield venta_productos_1.Venta_productos.findOne({ where: { id_venta_producto: id_venta_producto } });
+const deleteVentaProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_venta_productos } = req.params;
+    const idVentaProducto = yield venta_productos_1.Venta_productos.findOne({ where: { id_venta_productos: id_venta_productos } });
     if (!idVentaProducto) {
-        return res.status(404).json({
-            msg: "El detalle de venta: " + id_venta_producto + " no existe"
-        });
+        return res.status(404).json({ message: 'Venta producto no encontrado' });
     }
     try {
-        yield venta_productos_1.Venta_productos.destroy({ where: { id_venta_producto: id_venta_producto } });
-        res.json({
-            msg: "El detalle de venta: " + id_venta_producto + " ha sido eliminado"
+        yield venta_productos_1.Venta_productos.destroy({ where: { id_venta_productos: id_venta_productos } });
+        return res.json({
+            msg: 'Venta producto eliminado con exito',
         });
     }
     catch (error) {
         return res.status(400).json({
-            msg: "No se ha podido eliminar el detalle de venta: " + id_venta_producto,
+            msg: 'Error al eliminar venta producto',
             error
         });
     }
 });
-exports.deleteVenta_Producto = deleteVenta_Producto;
+exports.deleteVentaProducto = deleteVentaProducto;
+const updateVentaProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_venta_productos } = req.params;
+    const { id_venta, cod_producto, cantidad } = req.body;
+    const idVentaProducto = yield venta_productos_1.Venta_productos.findOne({ where: { id_venta_productos: id_venta_productos } });
+    if (!idVentaProducto) {
+        return res.status(404).json({ msg: 'El id del detalle de venta no existe' });
+    }
+    try {
+        yield venta_productos_1.Venta_productos.update({
+            id_venta: id_venta,
+            cod_producto: cod_producto,
+            cantidad: cantidad
+        }, { where: { id_venta_productos: id_venta_productos } });
+        return res.json({
+            msg: 'Detalle de venta ' + id_venta_productos + ' actualizado correctamente'
+        });
+    }
+    catch (error) {
+        return res.status(400).json({
+            msg: 'Error al actualizar el detalle de venta',
+            error
+        });
+    }
+});
+exports.updateVentaProducto = updateVentaProducto;
