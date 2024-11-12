@@ -3,7 +3,7 @@ import React from "react";
 import { FaShoppingCart } from 'react-icons/fa';
 import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Auth/AuthContext";
-import Logo from '../../Image/Logo.jpeg';
+import Logo from '../../Image/logoEM.png';
 import '../../Styles/menu.css';
 
 function Menu(){
@@ -16,7 +16,7 @@ function Menu(){
         const decodedToken = jwtDecode(auth.token);
         
         // Admin
-        if (decodedToken.role === "admin") {
+        if (decodedToken.role === "administrador") {
             routes.push(
                 { to: "/gestionCategorias", text: "Gestion Categorias" },
                 { to: "/gestionClientes", text: "Gestion Clientes" },
@@ -42,7 +42,9 @@ function Menu(){
             { to: "/crearCuenta", text: "Crear cuenta" },
             { to: "/login", text: "Iniciar sesión" },
             {to:"/gestionProducto", text:"Gestion Productos"},
-            {to:"/gestionAdmin", text:"Gestion Admin"})
+            {to:"/gestionAdmin", text:"Gestion Admin"},
+            {to:"/tablaP", text:"Productos"})
+
     
     }
 
@@ -67,7 +69,7 @@ function Menu(){
                 routes.map( (item, index)=>(
                     <li key={index}>
                         <NavLink 
-                            style={({isActive}) => ({color:isActive?"Orange":"Black"})}
+                            style={({isActive}) => ({color:isActive? '#f98000':"Black"})}
                             to={item.to}>
                             {item.text}
                         </NavLink>
@@ -102,4 +104,7 @@ routes.push({to:"/gestionClientes", text:"Gestion Clientes"})
 routes.push({to:"/gestionCategorias", text:"Gestion Categorias"})
 routes.push({to:"/gestionEmprendedores", text:"Gestion Emprededores"})
 routes.push({to:"/gestionAdmin", text:"Gestion Admin"})
+routes.push({to:"/tablaP", text:"Productos"})
 export { Menu };
+
+

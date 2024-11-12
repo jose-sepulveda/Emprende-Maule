@@ -1,0 +1,114 @@
+/* General container style */
+.container {
+    margin: 20px;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+/* Heading style */
+.container h1 {
+    text-align: center;
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+/* Table styles */
+table {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-top: 20px;
+    table-layout: auto;
+    overflow: hidden;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid black;
+    word-wrap: break-word;
+    overflow: hidden;
+    width: auto;
+}
+
+th {
+    color: black;
+    font-weight: bold;
+}
+
+/* Button styles */
+button {
+    padding: 8px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+/* Specific button styles */
+.btn-eliminar {
+    background-color: #f44336;
+    color: black;
+}
+
+.btn-eliminar:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.btn-eliminar:hover:not(:disabled) {
+    background-color: #d32f2f;
+}
+
+.btn-ver {
+    background-color: #2196F3;
+    color: black;
+}
+
+.btn-ver:hover {
+    background-color: #1976D2;
+}
+
+.btn-actualizar {
+    background-color: #FFC107;
+    color: black;
+}
+
+.btn-actualizar:hover {
+    background-color: #FFA000;
+}
+
+/* Loading button style */
+button[disabled] {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Responsive table */
+@media (max-width: 768px) {
+    table {
+        width: 100%;
+        display: block;
+        overflow-x: auto;
+    }
+
+    th, td {
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+
+    .container {
+        margin: 10px;
+        padding: 15px;
+    }
+
+    .container h1 {
+        font-size: 1.5rem;
+    }
+}

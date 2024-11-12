@@ -8,9 +8,9 @@ function LoginPage() {
     return (
       <div className='login-buttons-container'>
         <h1 className='title'>Seleccione una opción</h1>
-        <button className='login-button' onClick={() => navigate('/login-cliente')}>Cliente</button>
-        <button className='login-button' onClick={() => navigate('/login-emprendedor')}>Emprendedor</button>
-        <button className='login-button' onClick={() => navigate('/login-administrador')}>Administrador</button>
+        <button className='login-button-page' onClick={() => navigate('/login-cliente')}>Cliente</button>
+        <button className='login-button-page' onClick={() => navigate('/login-emprendedor')}>Emprendedor</button>
+        <button className='login-button-page' onClick={() => navigate('/login-administrador')}>Administrador</button>
       </div>  
     );
 }

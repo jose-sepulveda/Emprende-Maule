@@ -1,0 +1,131 @@
+/* Estilos para el contenedor de la tabla */
+.table-container {
+    margin: 0 auto;
+    padding: 40px;
+    max-width: 800px;
+    background-color: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(1px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.table-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #000000;
+}
+
+/* Estilos para la tabla */
+table {
+    background-color: #ffffffd0;
+    width: 800px;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table th,
+table td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    white-space: nowrap; /* Evita que el texto se ajuste en varias líneas */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Agrega puntos suspensivos si el texto es demasiado largo */
+}
+
+table th {
+    background-color: #f98511;
+    color: white;
+    font-weight: bold;
+    width: 250px; /* Ancho fijo para los encabezados */
+}
+
+table td {
+    width: 150px; /* Ancho fijo para las celdas */
+}
+
+/* Estilos para botones */
+button {
+    padding: 8px 12px;
+    margin: 4px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+button:first-of-type {
+    background-color: #4CAF50; /* Color para actualizar */
+}
+
+button:last-of-type {
+    background-color: #f44336; /* Color para eliminar */
+}
+
+/* Estilos para el modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal h3 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.modal label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #555;
+}
+
+.modal input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.modal button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal button[type="submit"]:hover {
+    background-color: #45a049;
+}

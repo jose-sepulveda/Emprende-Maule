@@ -1,11 +1,14 @@
 import { NavLink } from "react-router-dom";
 import '../Styles/crearCuenta.css';
+import icono from '../Image/ico3.png';
 
 function CrearCuentaPage(){
-    return <>
+    return (
         <div className="container-crear-cuenta">
+            <img src={icono} alt="icono" className="imagen-icono" />
+            
             <ul className="opcion-crear-cuenta">
-            {routes.map((item, index) => (
+                {routes.map((item, index) => (
                     <li key={index}>
                         <NavLink 
                             to={item.to} 
@@ -16,11 +19,12 @@ function CrearCuentaPage(){
                 ))}
             </ul>
         </div>
-    </>
+    );
 }
 
-const routes = [];
+const routes = [
+    { to: "/formCrearE", text: "Crear cuenta Emprendedor" },
+    { to: "/formCrearC", text: "Crear cuenta Cliente" }
+];
 
-routes.push({to:"/formCrearE", text:"Crear cuenta Emprendedor"})
-routes.push({to:"/formCrearC", text:"Crear cuenta Cliente"})
 export { CrearCuentaPage };

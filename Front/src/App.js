@@ -21,12 +21,18 @@ import LoginCliente from './components/LoginCliente.js';
 
 //emprendedor
 import FormCrearEmprendedor from './components/FormCrearEmprendedor.js'; //formulario crear emprendedor 
+import CrearProducto from './components/FormCrearProducto.js';
 import LoginEmprendedor from './components/LoginEmprendedor.js';
-import { GestionProducto } from './pages/GestionProducto.js'; 
+import { GestionProducto } from './pages/GestionProducto.js';
+import {TablaP} from './pages/TablaP.js';
 
+import { ToastContainer } from 'react-toastify';
 import { AuthProvider } from './Auth/AuthContext';
 import { PrivateRoute } from './Auth/PrivateRoute';
-import { ToastContainer } from 'react-toastify';
+import FormActualizarEmprendedor from './components/FormActualizarEmprendedor.js';
+import ResetPasswordAdmin from './components/ResetPasswordAdmin.js';
+import ResetPasswordCliente from './components/ResetPasswordCliente.js';
+import ResetPasswordEmprendedor from './components/ResetPasswordEmprendedor.js';
 
 
 function App() {
@@ -51,6 +57,7 @@ function App() {
           <Route path="/gestionClientes" element={<PrivateRoute><GestionClientes/></PrivateRoute>}/>
           <Route path="/gestionAdmin" element={<PrivateRoute><GestionAdmin/></PrivateRoute>}/>
           <Route path= "/gestionEmprendedores" element= {<PrivateRoute><GestionEmprendedores/></PrivateRoute>}/>
+          <Route path= "/actualizar-emprendedor/:rut_emprendedor" element= {<PrivateRoute><FormActualizarEmprendedor/></PrivateRoute>}/>
 
           {/*Cliente*/}
           <Route path='/login-cliente' element={<LoginCliente/>}/>
@@ -59,7 +66,14 @@ function App() {
           {/*Emprendedor*/}
           <Route path='/login-emprendedor' element={<LoginEmprendedor/>}/>
           <Route path="/gestionProducto" element={<GestionProducto/>}/> {/*este era privado pero solo quiero probar cositas */}
+          <Route path="/tablaP" element={<TablaP/>}/>
+          <Route path='/formCrearP' element={<CrearProducto/>}/>
 
+          {/*Recuperacion de contraseña*/}
+
+          <Route path="/reset-password-admin/:token" element={<ResetPasswordAdmin />} />
+          <Route path="/reset-password-emprendedor/:token" element={<ResetPasswordEmprendedor />} />
+          <Route path="/reset-password-cliente/:token" element={<ResetPasswordCliente />} />
 
           <Route path="*" element={<p>Ups...La ruta no existe</p>}/> 
         </Routes>

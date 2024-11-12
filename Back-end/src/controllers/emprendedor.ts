@@ -391,7 +391,7 @@ export const updateEstadoEmprendedor = async (req: Request, res: Response) => {
         
 }
 
-export const recuperarContrasena = async (req: Request, res: Response) => {
+export const recuperarContrasenaEmprendedor = async (req: Request, res: Response) => {
     const { correo_electronico } = req.body;
 
     try {
@@ -401,9 +401,9 @@ export const recuperarContrasena = async (req: Request, res: Response) => {
             return res.status(404).json({ msg: 'No existe un emprendedor con ese correo' });
         }
 
-        const token = jwt.sign({ correo_electronico }, process.env.SECRET_KEY || 'ACCESS', { expiresIn: '1h' });
+        const token = jwt.sign({ correo_electronico: emprendedor.getDataValue("correo_electronico"), id_emprendedor: emprendedor.getDataValue("id_emprendedr"), rol: "emprendedor" }, process.env.SECRET_KEY || 'ACCESS', { expiresIn: '1h' });
 
-        const link = `http://localhost:3000/reset-password/${token}`;
+        const link = `http://localhost:3001/#/reset-password-emprendedor/${token}`;
 
         await sendEmail(
             correo_electronico,
@@ -418,9 +418,9 @@ export const recuperarContrasena = async (req: Request, res: Response) => {
     }
 };
 
-export const resetPassword = async (req: Request, res: Response) => {
+export const resetPasswordEmprendedor = async (req: Request, res: Response) => {
     const { token } = req.params;
-    const { nuevaContrasena } = req.body;
+    const { contrasenaActual, nuevaContrasena } = req.body;
 
     try {
         const decoded: any = jwt.verify(token, process.env.SECRET_KEY || 'ACCESS');
@@ -431,6 +431,14 @@ export const resetPassword = async (req: Request, res: Response) => {
             return res.status(400).json({
                 msg: 'No se encontró un emprendedor con ese correo',
             });
+        }
+
+        const contrasenaActualValida = await bcrypt.compare(contrasenaActual, emprendedor.getDataValue('contrasena'));
+
+        if (!contrasenaActualValida) {
+            return res.status(400).json({
+                msg: 'La contraseña actual es incorrecta',
+            })
         }
 
         const hashedPassword = await bcrypt.hash(nuevaContrasena, 10);
@@ -450,6 +458,37 @@ export const resetPassword = async (req: Request, res: Response) => {
         console.error('Error al restablecer la contraseña:', error);
         return res.status(500).json({
             msg: 'Error al restablecer la contraseña. Inténtalo más tarde.',
+        });
+    }
+};
+
+export const getEmprendedoresPorEstado = async (req: Request, res: Response) => {
+    const { estado } = req.query;
+
+    if (estado !== 'Pendiente' && estado !== 'Aprobado') {
+        return res.status(400).json({
+            msg: 'El estado debe ser "Pendiente" o "Aprobado".'
+        });
+    }
+
+    try {
+        const emprendedores = await Emprendedor.findAll({
+            where: {
+                estado_emprendedor: estado
+            }
+        });
+
+        if (!emprendedores || emprendedores.length === 0) {
+            return res.status(404).json({
+                msg: `No se encontraron emprendedores con estado ${estado}.`
+            });
+        }
+
+        return res.status(200).json(emprendedores);
+    } catch (error) {
+        console.error('Error al obtener los emprendedores por estado: ', error);
+        return res.status(500).json({
+            msg: 'Error al obtener los emprendedores. Inténtalo más tarde.',
         });
     }
 };

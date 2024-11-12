@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPassword = exports.recuperarContrasena = exports.updateEstadoEmprendedor = exports.deleteEmprendedor = exports.updateEmprendedor = exports.updatePassword = exports.loginEmprendedor = exports.getEmprendedor = exports.crearEmprendedor = exports.getEmprendedores = void 0;
+exports.resetPasswordEmprendedor = exports.recuperarContrasenaEmprendedor = exports.updateEstadoEmprendedor = exports.deleteEmprendedor = exports.updateEmprendedor = exports.updatePassword = exports.loginEmprendedor = exports.getEmprendedor = exports.crearEmprendedor = exports.getEmprendedores = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const fs_1 = __importDefault(require("fs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -335,15 +335,15 @@ const updateEstadoEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, 
     }
 });
 exports.updateEstadoEmprendedor = updateEstadoEmprendedor;
-const recuperarContrasena = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const recuperarContrasenaEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { correo_electronico } = req.body;
     try {
         const emprendedor = yield emprendedor_1.Emprendedor.findOne({ where: { correo_electronico } });
         if (!emprendedor) {
             return res.status(404).json({ msg: 'No existe un emprendedor con ese correo' });
         }
-        const token = jsonwebtoken_1.default.sign({ correo_electronico }, process.env.SECRET_KEY || 'ACCESS', { expiresIn: '1h' });
-        const link = `http://localhost:3000/reset-password/${token}`;
+        const token = jsonwebtoken_1.default.sign({ correo_electronico: emprendedor.getDataValue("correo_electronico"), id_emprendedor: emprendedor.getDataValue("id_emprendedr"), rol: "emprendedor" }, process.env.SECRET_KEY || 'ACCESS', { expiresIn: '1h' });
+        const link = `http://localhost:3001/#/reset-password-emprendedor/${token}`;
         yield (0, mail_1.sendEmail)(correo_electronico, 'Recuperar contraseña', `Haz clic en el siguiente enlace para recuperar tu contraseña: ${link}`);
         return res.status(200).json({ msg: 'Se envio un enlace de recuperacion de contraseña a tu correo' });
     }
@@ -352,16 +352,22 @@ const recuperarContrasena = (req, res) => __awaiter(void 0, void 0, void 0, func
         return res.status(500).json({ msg: 'Error al enviar el correo' });
     }
 });
-exports.recuperarContrasena = recuperarContrasena;
-const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.recuperarContrasenaEmprendedor = recuperarContrasenaEmprendedor;
+const resetPasswordEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { token } = req.params;
-    const { nuevaContrasena } = req.body;
+    const { contrasenaActual, nuevaContrasena } = req.body;
     try {
         const decoded = jsonwebtoken_1.default.verify(token, process.env.SECRET_KEY || 'ACCESS');
         const emprendedor = yield emprendedor_1.Emprendedor.findOne({ where: { correo_electronico: decoded.correo_electronico } });
         if (!emprendedor) {
             return res.status(400).json({
                 msg: 'No se encontró un emprendedor con ese correo',
+            });
+        }
+        const contrasenaActualValida = yield bcrypt_1.default.compare(contrasenaActual, emprendedor.getDataValue('contrasena'));
+        if (!contrasenaActualValida) {
+            return res.status(400).json({
+                msg: 'La contraseña actual es incorrecta',
             });
         }
         const hashedPassword = yield bcrypt_1.default.hash(nuevaContrasena, 10);
@@ -378,4 +384,4 @@ const resetPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         });
     }
 });
-exports.resetPassword = resetPassword;
+exports.resetPasswordEmprendedor = resetPasswordEmprendedor;

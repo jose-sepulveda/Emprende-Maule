@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { newAdmin, deleteAdmin, updateAdmin, loginAdmin, getAdminById, getAdministradores, recuperarContrasena, resetPasswordAdmin } from "../controllers/administrador";
+import { deleteAdmin, getAdminById, getAdministradores, loginAdmin, newAdmin, recuperarContrasena, resetPasswordAdmin, updateAdmin } from "../controllers/administrador";
 import auth from "../middlewares/auth";
 
 const router = Router();
@@ -10,7 +10,7 @@ router.put('/:id_administrador', auth, updateAdmin);
 router.post('/login', loginAdmin);
 router.get('/list', auth, getAdministradores);
 router.get('/:id_administrador', auth, getAdminById);
-router.post('/recuperar', recuperarContrasena),
-router.post('/reset-password/:token', resetPasswordAdmin);
+router.post('/recuperar', recuperarContrasena);
+router.post('/reset-password-admin/:token', resetPasswordAdmin);
 
 export default router;

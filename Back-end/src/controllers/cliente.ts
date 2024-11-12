@@ -168,7 +168,7 @@ export const loginCliente = async(req: Request, res: Response) =>{
     res.json({token, rol: rol, id_cliente: id_cliente})
 };
 
-export const recuperarContrasena = async (req: Request, res: Response) => {
+export const recuperarContrasenaCliente = async (req: Request, res: Response) => {
     const { correo } = req.body;
 
     try {
@@ -180,9 +180,9 @@ export const recuperarContrasena = async (req: Request, res: Response) => {
             });
         }
 
-        const token = jwt.sign({correo}, process.env.SECRET_KEY || 'ACCESS', {expiresIn: '1h' });
+        const token = jwt.sign({correo: cliente.getDataValue("correo"), id_cliente: cliente.getDataValue("id_cliente"), rol: "cliente"}, process.env.SECRET_KEY || 'ACCESS', {expiresIn: '1h' });
 
-        const link = `http://localhost:3000/reset-password/${token}`; 
+        const link = `http://localhost:3001/#/reset-password-cliente/${token}`; 
 
         await sendEmail(
             correo,
@@ -201,9 +201,9 @@ export const recuperarContrasena = async (req: Request, res: Response) => {
     }
 };
 
-export const resetPasswordToken = async (req: Request, res: Response) => {
+export const resetPasswordCliente = async (req: Request, res: Response) => {
     const { token } = req.params;
-    const { nuevaContrasena } = req.body;
+    const { contrasenaActual, nuevaContrasena } = req.body;
 
     try {
         const decoded: any = jwt.verify(token, process.env.SECRET_KEY || 'ACCESS');
@@ -214,6 +214,14 @@ export const resetPasswordToken = async (req: Request, res: Response) => {
             return res.status(400).json({
                 msg: 'No se encontró un cliente con ese correo',
             });
+        }
+
+        const contrasenaActualValida = await bcrypt.compare(contrasenaActual, cliente.getDataValue('contrasena'));
+
+        if (!contrasenaActualValida) {
+            return res.status(400).json({
+                msg: 'La contraseña actual es incorrecta',
+            })
         }
 
         const hashedPassword = await bcrypt.hash(nuevaContrasena, 10);

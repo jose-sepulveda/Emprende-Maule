@@ -2,6 +2,7 @@
 import cors from 'cors';
 import express, { Application } from 'express';
 import path from 'path';
+import routerAdministrador from '../routes/administrador';
 import routerCarro from '../routes/carro';
 import routerCarroProductos from '../routes/carro_productos';
 import routerCategoria from '../routes/categoria';
@@ -9,7 +10,7 @@ import routerCliente from '../routes/cliente';
 import routerEmprendedor from '../routes/emprendedor';
 import routerProducto from '../routes/producto';
 import routerResena from '../routes/resena';
-import routerAdministrador from '../routes/administrador';
+import { Administrador } from './administrador';
 import routerVentas from '../routes/ventas';
 import { Carro } from './carro';
 import { Carro_productos } from './carro_productos';
@@ -18,7 +19,6 @@ import { Cliente } from './cliente';
 import { Emprendedor } from './emprendedor';
 import { Productos } from './producto';
 import { Resena } from './resena';
-import { Administrador } from './administrador';
 import { Ventas } from './ventas';
 
 class Server {
@@ -56,7 +56,12 @@ class Server {
     midlewares() {
         this.app.use('/public', express.static(path.join(__dirname, '..', '..', 'public')));
         this.app.use(express.json());
-        this.app.use(cors());
+        this.app.use(cors({
+            origin: 'http://localhost:3001',
+            methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'],
+            allowedHeaders: ['Content-Type', 'Authorization'],
+            credentials: true, 
+        }));
     }
 
     async dbConnect() {

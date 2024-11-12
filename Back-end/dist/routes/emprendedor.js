@@ -30,6 +30,6 @@ router.put('/:rut_emprendedor', auth_1.default, emprendedor_1.updateEmprendedor)
 router.delete('/:rut_emprendedor', auth_1.default, emprendedor_1.deleteEmprendedor);
 router.patch('/password', auth_1.default, emprendedor_1.updatePassword);
 router.patch('/estado', auth_1.default, emprendedor_1.updateEstadoEmprendedor);
-router.post('/recuperar', emprendedor_1.recuperarContrasena);
-router.post('/reset-password/:token', emprendedor_1.resetPassword);
+router.post('/recuperar', emprendedor_1.recuperarContrasenaEmprendedor);
+router.post('/reset-password-emprendedor/:token', emprendedor_1.resetPasswordEmprendedor);
 exports.default = router;
