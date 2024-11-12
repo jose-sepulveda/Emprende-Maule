@@ -1,5 +1,5 @@
 // import logo from './logo.svg';
-import { HashRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
 import { Menu } from './components/Menu';
 import { InicioPage } from './pages/InicioPage';
@@ -24,65 +24,89 @@ import FormCrearEmprendedor from './components/FormCrearEmprendedor.js'; //formu
 import CrearProducto from './components/FormCrearProducto.js';
 import LoginEmprendedor from './components/LoginEmprendedor.js';
 import { GestionProducto } from './pages/GestionProducto.js';
-import {TablaP} from './pages/TablaP.js';
+import { TablaP } from './pages/TablaP.js';
 
+import { jwtDecode } from 'jwt-decode';
+import { useContext, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
-import { AuthProvider } from './Auth/AuthContext';
+import { AuthContext, AuthProvider } from './Auth/AuthContext';
 import { PrivateRoute } from './Auth/PrivateRoute';
+import DetalleEmprendedor from './components/DetalleEmprendedor.js';
 import FormActualizarEmprendedor from './components/FormActualizarEmprendedor.js';
 import ResetPasswordAdmin from './components/ResetPasswordAdmin.js';
 import ResetPasswordCliente from './components/ResetPasswordCliente.js';
 import ResetPasswordEmprendedor from './components/ResetPasswordEmprendedor.js';
 
+function AuthProviderWithRouter({children}) {
+  const { auth, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (auth.token) {
+      const decodedToken = jwtDecode(auth.token);
+      const { exp } = decodedToken;
+
+      if (exp * 1000 < Date.now()) {
+        logout();
+        navigate("/");
+      }
+    }
+  }, [auth, logout, navigate]);
+
+  return children;
+}
 
 function App() {
   return (
+    <BrowserRouter>
     <AuthProvider>
-      <HashRouter>
-        <Menu />
-        <Routes>
-          <Route path="/" element={<InicioPage/>}/> 
-          
-          {/*Pagina de inicio*/}
-          <Route path="/login" element={<LoginPage />}/> 
-          
-          {/*crear cuentas cliente y emprendedor*/}
-          <Route path="/crearCuenta" element={<CrearCuentaPage />}/> 
-          <Route path="/formCrearC" element={<FormCrearCliente/>}/> 
-          <Route path='/formCrearE' element={<FormCrearEmprendedor/>}/>
+      <AuthProviderWithRouter>
+          <Menu />
+          <Routes>
+            <Route path="/" element={<InicioPage/>}/> 
+            
+            {/*Pagina de inicio*/}
+            <Route path="/login" element={<LoginPage />}/> 
+            
+            {/*crear cuentas cliente y emprendedor*/}
+            <Route path="/crearCuenta" element={<CrearCuentaPage />}/> 
+            <Route path="/formCrearC" element={<FormCrearCliente/>}/> 
+            <Route path='/formCrearE' element={<FormCrearEmprendedor/>}/>
 
-          {/*Administrador*/}
-          <Route path='/login-administrador'element={<LoginAministrador/>}/> 
-          <Route path="/gestionCategorias" element={<PrivateRoute><GestionCategorias/></PrivateRoute>}/>
-          <Route path="/gestionClientes" element={<PrivateRoute><GestionClientes/></PrivateRoute>}/>
-          <Route path="/gestionAdmin" element={<PrivateRoute><GestionAdmin/></PrivateRoute>}/>
-          <Route path= "/gestionEmprendedores" element= {<PrivateRoute><GestionEmprendedores/></PrivateRoute>}/>
-          <Route path= "/actualizar-emprendedor/:rut_emprendedor" element= {<PrivateRoute><FormActualizarEmprendedor/></PrivateRoute>}/>
+            {/*Administrador*/}
+            <Route path='/login-administrador'element={<LoginAministrador/>}/> 
+            <Route path="/gestionCategorias" element={<PrivateRoute><GestionCategorias/></PrivateRoute>}/>
+            <Route path="/gestionClientes" element={<PrivateRoute><GestionClientes/></PrivateRoute>}/>
+            <Route path="/gestionAdmin" element={<PrivateRoute><GestionAdmin/></PrivateRoute>}/>
+            <Route path= "/gestionEmprendedores" element= {<PrivateRoute><GestionEmprendedores/></PrivateRoute>}/>
+            <Route path= "/actualizar-emprendedor/:rut_emprendedor" element= {<PrivateRoute><FormActualizarEmprendedor/></PrivateRoute>}/>
+            <Route path= "/detalle-emprendedor/:rut_emprendedor" element= {<PrivateRoute><DetalleEmprendedor/></PrivateRoute>}/>
 
-          {/*Cliente*/}
-          <Route path='/login-cliente' element={<LoginCliente/>}/>
+            {/*Cliente*/}
+            <Route path='/login-cliente' element={<LoginCliente/>}/>
 
 
-          {/*Emprendedor*/}
-          <Route path='/login-emprendedor' element={<LoginEmprendedor/>}/>
-          <Route path="/gestionProducto" element={<GestionProducto/>}/> {/*este era privado pero solo quiero probar cositas */}
-          <Route path="/tablaP" element={<TablaP/>}/>
-          <Route path='/formCrearP' element={<CrearProducto/>}/>
+            {/*Emprendedor*/}
+            <Route path='/login-emprendedor' element={<LoginEmprendedor/>}/>
+            <Route path="/gestionProducto" element={<GestionProducto/>}/> {/*este era privado pero solo quiero probar cositas */}
+            <Route path="/tablaP" element={<TablaP/>}/>
+            <Route path='/formCrearP' element={<CrearProducto/>}/>
 
-          {/*Recuperacion de contraseña*/}
+            {/*Recuperacion de contraseña*/}
 
-          <Route path="/reset-password-admin/:token" element={<ResetPasswordAdmin />} />
-          <Route path="/reset-password-emprendedor/:token" element={<ResetPasswordEmprendedor />} />
-          <Route path="/reset-password-cliente/:token" element={<ResetPasswordCliente />} />
+            <Route path="/reset-password-admin/:token" element={<ResetPasswordAdmin />} />
+            <Route path="/reset-password-emprendedor/:token" element={<ResetPasswordEmprendedor />} />
+            <Route path="/reset-password-cliente/:token" element={<ResetPasswordCliente />} />
 
-          <Route path="*" element={<p>Ups...La ruta no existe</p>}/> 
-        </Routes>
-        <footer className="footer">
-            Chile, 2024
-        </footer>
-      </HashRouter>
-      <ToastContainer position="top-center" autoClose={1000} />
+            <Route path="*" element={<p>Ups...La ruta no existe</p>}/> 
+          </Routes>
+          <footer className="footer">
+              Chile, 2024
+          </footer>
+        <ToastContainer position="top-center" autoClose={1000} />
+      </AuthProviderWithRouter>
     </AuthProvider>
+    </BrowserRouter>
 
   );
 }

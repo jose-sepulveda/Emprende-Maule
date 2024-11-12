@@ -1,9 +1,11 @@
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import { AuthContext } from '../Auth/AuthContext';
 import { loginAdmin, recuperarContrasena } from '../services/admin';
-import '../Styles/login-admin.css';
+import "../Styles/login-admin.css";
 
 const LoginAministrador = () => {
   const [correo, setCorreo] = useState(''); 
@@ -16,13 +18,14 @@ const LoginAministrador = () => {
 
   const [loading, setLoading] = useState(false);
 
+  const [ password, setPassword ] = useState('');
+    const [ showPassword, setShowPassword ] = useState(false);
+
   const handleLogin = async () => {
     if (!correo || !contrasena) {
       toast.error("Por favor ingrese su correo y contraseña");
       return;
     }
-
-    console.log({correo, contrasena})
 
     try {
       const response = await loginAdmin({correo, contrasena});
@@ -50,7 +53,7 @@ const LoginAministrador = () => {
     setLoading(true);
 
     try {
-      const response = await recuperarContrasena(correoParaRecuperacion); // Usar el correo de login o modal
+      const response = await recuperarContrasena(correoParaRecuperacion);
       toast.success(response.msg);
       setShowModal(false);
     } catch (error) {
@@ -66,6 +69,11 @@ const LoginAministrador = () => {
     setShowModal(true);
   }
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  }
+
+
   return (
     <>
       <div className="login-form-container">
@@ -77,13 +85,24 @@ const LoginAministrador = () => {
           value={correo}
           onChange={(e) => setCorreo(e.target.value)}
         />
-        <input
-          className="login-input"
-          type="password"
-          placeholder="Contraseña"
-          value={contrasena}
-          onChange={(e) => setContrasena(e.target.value)}
-        />
+        
+        <div className="input-container">
+          <input
+            className="login-input"
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Contraseña"
+            value={contrasena}
+            onChange={(e) => setContrasena(e.target.value)}
+          />
+          <button
+            className="password-toggle-button"
+            onClick={togglePasswordVisibility}
+            type="button"
+          >
+            <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+          </button>
+        </div>
+
         <button className="login-button" onClick={handleLogin}>
           Iniciar Sesión
         </button>
@@ -95,6 +114,9 @@ const LoginAministrador = () => {
           ¿Olvidaste tu contraseña?
         </button>
       </div>
+
+
+
 
       {showModal && (
         <div className="modal">

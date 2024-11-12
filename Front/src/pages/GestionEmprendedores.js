@@ -77,7 +77,7 @@ const GestionEmprendedores = () => {
                                 <button
                                     id='ver' 
                                     className='btn-ver'
-                                    onClick={() => verDetalles(emprendedor.id_emprendedor)}
+                                    onClick={() => verDetalles(emprendedor.rut_emprendedor)}
                                 >
                                     Ver
                                 </button>

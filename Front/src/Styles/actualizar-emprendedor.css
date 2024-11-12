@@ -75,3 +75,26 @@ input:focus {
 .back-btn:hover {
     background-color: #aaa;
   }
+
+  .contrasena {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0 10px;
+    width: 96%;
+    background-color: #fff;
+}
+
+.contrasena input {
+    border: none;
+    outline: none;
+    flex: 1;
+    padding: 8px;
+}
+
+.contrasena span {
+    cursor: pointer;
+    color: #666;
+    margin-left: 5px; /* Separación entre el icono y el texto */
+}

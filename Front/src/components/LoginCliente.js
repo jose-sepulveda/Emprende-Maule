@@ -1,3 +1,5 @@
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
@@ -17,6 +19,8 @@ const LoginCliente = () => {
     const [correoRecuperacion, setCorreoRecuperacion] = useState(''); 
 
     const [loading, setLoading] = useState(false);
+
+    const [ showPassword, setShowPassword ] = useState(false);
 
     const handleLogin = async() => {
         if (!correo || !contrasena) {
@@ -65,6 +69,10 @@ const LoginCliente = () => {
         setCorreoRecuperacion(correo)
         setShowModal(true);
       }
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    }
     
     return (
         <>
@@ -77,13 +85,22 @@ const LoginCliente = () => {
                     value={correo}
                     onChange={(e) => setCorreo(e.target.value)}
                 />
+                <div className='input-container'>
                 <input
                     className='login-input'
-                    type='password'
+                    type={showPassword ? 'text' : 'password'}
                     placeholder='Contraseña'
                     value={contrasena}
                     onChange={(e) => setContrasena(e.target.value)}
                 />
+                <button
+                    className='password-toggle-button'
+                    onClick={togglePasswordVisibility}
+                    type='button'
+                >
+                    <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                </button>
+                </div>
                 <button className='login-button' onClick={handleLogin}>Iniciar Sesión</button>
                 <button
                     className="recuperar-button"

@@ -6,13 +6,13 @@ export const AuthContext = createContext();
 
 export function AuthProvider({children}) {
     const [auth, setAuth] = useState({ token: null, role: null, id: null});
-
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) {
             const decodedToken = jwtDecode(token);
-            const { role, id_emprendedor, id_cliente, id_administrador} = decodedToken;
+            const { exp, role, id_emprendedor, id_cliente, id_administrador} = decodedToken;
             const id = id_emprendedor || id_cliente || id_administrador;
+
             if (!id) {
                 console.error("Token no contiene un ID válido");
                 return;
@@ -33,8 +33,6 @@ export function AuthProvider({children}) {
         localStorage.setItem("role", role);
         localStorage.setItem("id", id);
         setAuth({ token, role, id });
-
-        console.log(decodedToken)
     };
 
     const logout = () => {

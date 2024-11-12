@@ -1,8 +1,11 @@
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import { AuthContext } from '../Auth/AuthContext';
 import { loginEmprendedor, recuperarContrasenaEmprendedor } from '../services/emprendedor';
+import "../Styles/login-emprendedor.css";
 
 const LoginEmprendedor = () => {
 
@@ -15,6 +18,8 @@ const LoginEmprendedor = () => {
     const [correoRecuperacion, setCorreoRecuperacion] = useState('');
 
     const [loading, setLoading] = useState(false);
+
+    const [ showPassword, setShowPassword ] = useState(false);
 
     const handleLogin = async() => {
         if (!correo_electronico || !contrasena) {
@@ -64,6 +69,10 @@ const LoginEmprendedor = () => {
         setShowModal(true);
       }
 
+      const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    }
+
     return (
         <>
             <div className='login-form-container'>
@@ -75,13 +84,22 @@ const LoginEmprendedor = () => {
                     value={correo_electronico}
                     onChange={(e) => setCorreo_electronico(e.target.value)}
                 />
-                <input
-                    className='login-input'
-                    type='password'
-                    placeholder='Contraseña'
-                    value={contrasena}
-                    onChange={(e) => setContrasena(e.target.value)}
-                />
+                <div className='input-container'>
+                    <input
+                        className='login-input'
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder='Contraseña'
+                        value={contrasena}
+                        onChange={(e) => setContrasena(e.target.value)}
+                    />
+                    <button 
+                        className='password-toggle-button'
+                        onClick={togglePasswordVisibility}
+                        type='button'
+                    >
+                        <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                    </button>
+                </div>
                 <button className='login-button' onClick={handleLogin}>Iniciar Sesión</button>
                 <button
                     className="recuperar-button"

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetPasswordEmprendedor = exports.recuperarContrasenaEmprendedor = exports.updateEstadoEmprendedor = exports.deleteEmprendedor = exports.updateEmprendedor = exports.updatePassword = exports.loginEmprendedor = exports.getEmprendedor = exports.crearEmprendedor = exports.getEmprendedores = void 0;
+exports.getEmprendedoresPorEstado = exports.resetPasswordEmprendedor = exports.recuperarContrasenaEmprendedor = exports.updateEstadoEmprendedor = exports.deleteEmprendedor = exports.updateEmprendedor = exports.updatePassword = exports.loginEmprendedor = exports.getEmprendedor = exports.crearEmprendedor = exports.getEmprendedores = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const fs_1 = __importDefault(require("fs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -114,30 +114,43 @@ const crearEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, functio
 exports.crearEmprendedor = crearEmprendedor;
 const getEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { rut_emprendedor } = req.params;
-    const rutEmprendedor = yield emprendedor_1.Emprendedor.findOne({
-        attributes: [
-            'id_emprendedor',
-            'rut_emprendedor',
-            'contrasena',
-            'nombre_emprendedor',
-            'apellido1_emprendedor',
-            'apellido2_emprendedor',
-            'direccion',
-            'telefono',
-            'correo_electronico',
-            'imagen_productos',
-            'imagen_local',
-            'comprobante',
-            'tipo_de_cuenta',
-            'numero_de_cuenta',
-            'estado_emprendedor',
-        ], where: { rut_emprendedor: rut_emprendedor }
-    });
-    if (!rutEmprendedor) {
-        res.status(404).json({ msg: 'El rut de este emprendedor no existe' });
-    }
     try {
-        res.json(rutEmprendedor);
+        const rutEmprendedor = yield emprendedor_1.Emprendedor.findOne({
+            attributes: [
+                'id_emprendedor',
+                'rut_emprendedor',
+                'contrasena',
+                'nombre_emprendedor',
+                'apellido1_emprendedor',
+                'apellido2_emprendedor',
+                'direccion',
+                'telefono',
+                'correo_electronico',
+                'imagen_productos',
+                'imagen_local',
+                'comprobante',
+                'tipo_de_cuenta',
+                'numero_de_cuenta',
+                'estado_emprendedor',
+            ], where: { rut_emprendedor: rut_emprendedor }
+        });
+        if (!rutEmprendedor) {
+            if (!res.headersSent) {
+                res.status(404).json({ msg: 'El rut de este emprendedor no existe' });
+            }
+        }
+        const emprendedorData = rutEmprendedor === null || rutEmprendedor === void 0 ? void 0 : rutEmprendedor.get();
+        const { imagen_productos, imagen_local, comprobante } = emprendedorData;
+        const files = yield Promise.all([
+            imagen_productos ? (0, googleDrive_1.getFilesFromDrive)(imagen_productos) : null,
+            imagen_local ? (0, googleDrive_1.getFilesFromDrive)(imagen_local) : null,
+            comprobante ? (0, googleDrive_1.getFilesFromDrive)(comprobante) : null,
+        ]);
+        if (!res.headersSent) {
+            res.json({
+                emprendedor: Object.assign(Object.assign({}, emprendedorData), { imagen_productos: files[0] || null, imagen_local: files[1] || null, comprobante: files[2] || null }),
+            });
+        }
     }
     catch (error) {
         res.status(400).json({
@@ -385,3 +398,31 @@ const resetPasswordEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0,
     }
 });
 exports.resetPasswordEmprendedor = resetPasswordEmprendedor;
+const getEmprendedoresPorEstado = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { estado } = req.query;
+    if (estado !== 'Pendiente' && estado !== 'Aprobado') {
+        return res.status(400).json({
+            msg: 'El estado debe ser "Pendiente" o "Aprobado".'
+        });
+    }
+    try {
+        const emprendedores = yield emprendedor_1.Emprendedor.findAll({
+            where: {
+                estado_emprendedor: estado
+            }
+        });
+        if (!emprendedores || emprendedores.length === 0) {
+            return res.status(404).json({
+                msg: `No se encontraron emprendedores con estado ${estado}.`
+            });
+        }
+        return res.status(200).json(emprendedores);
+    }
+    catch (error) {
+        console.error('Error al obtener los emprendedores por estado: ', error);
+        return res.status(500).json({
+            msg: 'Error al obtener los emprendedores. Inténtalo más tarde.',
+        });
+    }
+});
+exports.getEmprendedoresPorEstado = getEmprendedoresPorEstado;

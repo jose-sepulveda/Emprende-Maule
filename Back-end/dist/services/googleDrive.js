@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.uploadPhoToToDrive = exports.deleteFileFromDrive = exports.uploadFileToDrive = void 0;
+exports.getFilesFromDrive = exports.uploadPhoToToDrive = exports.deleteFileFromDrive = exports.uploadFileToDrive = void 0;
 const fs_1 = __importDefault(require("fs"));
 const googleapis_1 = require("googleapis");
 const path_1 = __importDefault(require("path"));
@@ -110,3 +110,23 @@ const uploadPhoToToDrive = (filePath, fileName, mimeType) => __awaiter(void 0, v
     }
 });
 exports.uploadPhoToToDrive = uploadPhoToToDrive;
+const getFilesFromDrive = (fileId) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const auth = new googleapis_1.google.auth.GoogleAuth({
+            keyFile: path_1.default.resolve(__dirname, '../config/credencial.json'),
+            scopes: ['https://www.googleapis.com/auth/drive.readonly']
+        });
+        const drive = googleapis_1.google.drive({ version: 'v3', auth });
+        const file = yield drive.files.get({
+            fileId: fileId,
+            fields: 'webViewLink, name',
+        });
+        console.log('Archivo obtenido de Google Drive: ', file.data.name);
+        return file.data.webViewLink || null;
+    }
+    catch (error) {
+        console.error('Error al obtener el archivo de Google Drive: ', error);
+        return null;
+    }
+});
+exports.getFilesFromDrive = getFilesFromDrive;

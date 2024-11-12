@@ -4,7 +4,7 @@ import fs from 'fs';
 import jwt from 'jsonwebtoken';
 import path from 'path';
 import { Emprendedor } from "../models/emprendedor";
-import { deleteFileFromDrive, uploadFileToDrive } from '../services/googleDrive';
+import { deleteFileFromDrive, getFilesFromDrive, uploadFileToDrive } from '../services/googleDrive';
 import { sendEmail } from '../services/mail';
 import { MulterRequest } from '../services/types';
 
@@ -108,32 +108,54 @@ export const crearEmprendedor : RequestHandler = async (req: MulterRequest, res:
     }
 }
 
-export const getEmprendedor: RequestHandler = async(req: MulterRequest, res: Response): Promise<void> => {
+export const getEmprendedor: RequestHandler = async(req, res) => {
     const {rut_emprendedor} = req.params;
-    const rutEmprendedor = await Emprendedor.findOne({
-        attributes: [
-            'id_emprendedor',
-            'rut_emprendedor',
-            'contrasena',
-            'nombre_emprendedor',
-            'apellido1_emprendedor',
-            'apellido2_emprendedor',
-            'direccion',
-            'telefono',
-            'correo_electronico',
-            'imagen_productos',
-            'imagen_local',
-            'comprobante',
-            'tipo_de_cuenta',
-            'numero_de_cuenta',
-            'estado_emprendedor',
-        ], where: {rut_emprendedor: rut_emprendedor}
-    }); 
-    if (!rutEmprendedor) {
-        res.status(404).json({msg: 'El rut de este emprendedor no existe'})
-    }
     try {
-        res.json(rutEmprendedor);
+        const rutEmprendedor = await Emprendedor.findOne({
+            attributes: [
+                'id_emprendedor',
+                'rut_emprendedor',
+                'contrasena',
+                'nombre_emprendedor',
+                'apellido1_emprendedor',
+                'apellido2_emprendedor',
+                'direccion',
+                'telefono',
+                'correo_electronico',
+                'imagen_productos',
+                'imagen_local',
+                'comprobante',
+                'tipo_de_cuenta',
+                'numero_de_cuenta',
+                'estado_emprendedor',
+            ], where: {rut_emprendedor: rut_emprendedor}
+        }); 
+        if (!rutEmprendedor) {
+            if (!res.headersSent){
+                res.status(404).json({msg: 'El rut de este emprendedor no existe'})
+            }
+        }
+
+        const emprendedorData = rutEmprendedor?.get()
+        const { imagen_productos, imagen_local, comprobante } = emprendedorData;
+
+        const files = await Promise.all([
+            imagen_productos ? getFilesFromDrive(imagen_productos) : null,
+            imagen_local ? getFilesFromDrive(imagen_local) : null,
+            comprobante ? getFilesFromDrive(comprobante) : null,
+        ]);
+
+        if (!res.headersSent) {
+            res.json({
+                emprendedor: {
+                    ...emprendedorData,
+                    imagen_productos: files[0] || null,
+                    imagen_local: files[1] || null,
+                    comprobante: files[2] || null,
+                },
+            });
+        }
+    
     } catch (error) {
         res.status(400).json({
             msg: 'Ha ocurrido un error',

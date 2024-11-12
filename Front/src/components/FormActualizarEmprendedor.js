@@ -1,4 +1,6 @@
-import React from 'react';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
@@ -8,6 +10,9 @@ import "../Styles/actualizar-emprendedor.css";
 const FormActualizarEmprendedor = () => {
     const { register, handleSubmit } = useForm();
     const { rut_emprendedor } = useParams();
+    const [ password, setPassword ] = useState('');
+    const [ showPassword, setShowPassword ] = useState(false);
+
     const navigate = useNavigate();
 
     const onSubmit = (data) => {
@@ -32,6 +37,10 @@ const FormActualizarEmprendedor = () => {
 
     const back = () => {
         navigate('/gestionEmprendedores')
+    }
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
     }
 
     return (
@@ -60,8 +69,19 @@ const FormActualizarEmprendedor = () => {
                     <input {...register('telefono')} id="telefono" placeholder="Teléfono" type='phone'/>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="correo_electronico">Correo Electrónico</label>
-                    <input {...register('correo_electronico')} id="correo_electronico" placeholder="Correo Electrónico" type='email'/>
+                <label htmlFor="contrasena">Contraseña</label>
+                    <div className='contrasena'>
+                        <input {...register('contrasena')} 
+                        id="ccontrasena"
+                         placeholder="Contraseña" 
+                         type={showPassword ? 'text' : 'password'} 
+                         onChange={(e) => setPassword(e.target.value)}/>
+                        <span
+                            onClick={togglePasswordVisibility}
+                        >
+                        <FontAwesomeIcon icon={showPassword ? faEyeSlash: faEye}/>
+                        </span>
+                    </div>
                 </div>
                 <div className="form-group">
                     <label htmlFor="tipo_de_cuenta">Tipo de Cuenta</label>

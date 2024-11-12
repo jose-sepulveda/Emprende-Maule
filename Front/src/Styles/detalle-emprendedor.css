@@ -1,0 +1,77 @@
+/* DetalleEmprendedor.css */
+
+/* Contenedor principal */
+.detalle-emprendedor {
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+}
+
+/* Título principal */
+.detalle-emprendedor h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Estilos para las secciones de información */
+.detalle-emprendedor p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+/* Estilo para las etiquetas */
+.detalle-emprendedor strong {
+    color: #333;
+}
+
+/* Estilo para los títulos de las secciones */
+.detalle-emprendedor h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+/* Contenedor de imágenes */
+.detalle-emprendedor .imagenes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* Estilo para las imágenes */
+.detalle-emprendedor img {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para los botones de archivos */
+.detalle-emprendedor .archivos {
+    margin-top: 10px;
+}
+
+.detalle-emprendedor .archivos a {
+    display: inline-block;
+    padding: 8px 16px;
+    margin-right: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.detalle-emprendedor .archivos a:hover {
+    background-color: #45a049;
+}

@@ -13,8 +13,7 @@
   .login-input {
     width: 100%;
     padding: 12px;
-    padding-right: 35px; /* espacio para el icono */
-    margin-bottom: 15px;
+    padding-right: 35px; 
     border: 1.5px solid #aaa;
     border-radius: 5px;
     font-size: 14px;
@@ -32,7 +31,6 @@
   /* Contenedor de entrada para Contraseña */
   .input-container {
     position: relative;
-    margin-bottom: 15px;
   }
   
   /* Estilo para el icono de visibilidad de la contraseña */
@@ -49,4 +47,3 @@
     padding: 0;
     font-size: 16px;
   }
-

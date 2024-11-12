@@ -1,6 +1,5 @@
 import fs from 'fs';
 import { google } from 'googleapis';
-import { file } from 'googleapis/build/src/apis/file';
 import path from 'path';
 
 export const uploadFileToDrive = async (filePath: string, fileName: string, mimeType: string) => {
@@ -111,6 +110,29 @@ export const uploadPhoToToDrive = async (filePath: string, fileName: string, mim
         }
         return null;
         
+    }
+}
+
+export const getFilesFromDrive = async (fileId: string): Promise<string | null> => {
+    try {
+        const auth = new google.auth.GoogleAuth({
+            keyFile: path.resolve(__dirname, '../config/credencial.json'),
+            scopes: ['https://www.googleapis.com/auth/drive.readonly']
+        })
+
+        const drive = google.drive({ version: 'v3', auth });
+
+        const file = await drive.files.get({
+            fileId: fileId,
+            fields: 'webViewLink, name',
+        });
+
+        console.log('Archivo obtenido de Google Drive: ', file.data.name);
+
+        return file.data.webViewLink || null;
+    } catch (error) {
+        console.error('Error al obtener el archivo de Google Drive: ', error);
+        return null;
     }
 }
 
