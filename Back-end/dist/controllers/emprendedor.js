@@ -139,14 +139,8 @@ const getEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 res.status(404).json({ msg: 'El rut de este emprendedor no existe' });
             }
         }
-        const emprendedorData = rutEmprendedor === null || rutEmprendedor === void 0 ? void 0 : rutEmprendedor.get();
-        const { imagen_productos, imagen_local, comprobante } = emprendedorData;
-        // Obtenemos los enlaces de visualización de los archivos
-        const imagenProductosData = imagen_productos ? yield (0, googleDrive_1.getFilesFromDrive)(imagen_productos) : null;
-        const imagenLocalData = imagen_local ? yield (0, googleDrive_1.getFilesFromDrive)(imagen_local) : null;
-        const comprobanteData = comprobante ? yield (0, googleDrive_1.getFilesFromDrive)(comprobante) : null;
         res.json({
-            emprendedor: Object.assign(Object.assign({}, emprendedorData), { imagen_productos: imagenProductosData, imagen_local: imagenLocalData, comprobante: comprobanteData }),
+            rutEmprendedor,
         });
     }
     catch (error) {

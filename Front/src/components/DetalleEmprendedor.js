@@ -23,11 +23,13 @@ const DetalleEmprendedor = () => {
         fetchEmprendedor();
     }, [rut_emprendedor]);
 
-    if (!emprendedor || !emprendedor.imagen_productos) {
+    const getGoogleDriveUrl = (fileId) => {
+        return `https://drive.google.com/uc?export=view&id=${fileId}`;
+    };
+    
+    if (!emprendedor) {
         return <p>Cargando...</p>;
-    }
-
-    console.log(emprendedor.imagen_productos)
+    } 
 
     return (
         <div className='detalle-emprendedor'>
@@ -46,23 +48,27 @@ const DetalleEmprendedor = () => {
             <h3>Documentos Tributarios</h3>
             <div>
                 {emprendedor.comprobante && (
-                    <a href={emprendedor.comprobante} target="_blank" rel="noopener noreferrer">
+                    <a href={getGoogleDriveUrl(emprendedor.comprobante)} target="_blank" rel="noopener noreferrer">
                         Comprobante
                     </a>
                 )}
             </div> 
-
+                    
             <h3>Imágenes de sus Productos</h3>
             <div>
                 {emprendedor.imagen_productos && (
-                    <img src={emprendedor.imagen_productos} alt="Imagen de productos" style={{ maxWidth: '100%', height: 'auto' }} />
+                    <img 
+                        src={getGoogleDriveUrl(emprendedor.imagen_productos)} 
+                        alt="Imagen de productos" 
+                        style={{ maxWidth: '100%', height: 'auto' }} 
+                    />
                 )}
             </div>
 
             <h3>Imágenes de su Local o Domicilio</h3>
             <div>
                 {emprendedor.imagen_local && (
-                    <img src={emprendedor.imagen_local} alt="Imagen del local" />
+                    <img src={getGoogleDriveUrl(emprendedor.imagen_local)} alt="Imagen del local" style={{ maxWidth: '100%', height: 'auto' }}/>
                 )}
             </div>
 

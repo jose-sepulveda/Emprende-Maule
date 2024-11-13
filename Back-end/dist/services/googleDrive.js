@@ -111,37 +111,23 @@ const uploadPhoToToDrive = (filePath, fileName, mimeType) => __awaiter(void 0, v
 });
 exports.uploadPhoToToDrive = uploadPhoToToDrive;
 const getFilesFromDrive = (fileId) => __awaiter(void 0, void 0, void 0, function* () {
-    const auth = new googleapis_1.google.auth.GoogleAuth({
-        keyFile: path_1.default.resolve(__dirname, '../config/credencial.json'),
-        scopes: ['https://www.googleapis.com/auth/drive'],
-    });
-    const drive = googleapis_1.google.drive({ version: 'v3', auth });
     try {
-        // Obtener el archivo con la ID proporcionada
-        const file = yield drive.files.get({
-            fileId: fileId,
-            fields: 'id',
+        const auth = new googleapis_1.google.auth.GoogleAuth({
+            keyFile: path_1.default.resolve(__dirname, '../config/credencial.json'),
+            scopes: ['https://www.googleapis.com/auth/drive.readonly'],
         });
-        if (file.data.id) {
-            // Hacer el archivo público
-            yield drive.permissions.create({
-                fileId: file.data.id,
-                requestBody: {
-                    role: 'reader',
-                    type: 'anyone',
-                },
-            });
-            // Construir el enlace directo para la visualización de la imagen
-            const directUrl = `https://drive.google.com/uc?export=view&id=${file.data.id}`;
-            return directUrl;
-        }
-        else {
-            throw new Error('El archivo no tiene un enlace de visualización disponible');
-        }
+        const drive = googleapis_1.google.drive({ version: 'v3', auth });
+        // Obtener los metadatos del archivo
+        const response = yield drive.files.get({
+            fileId,
+            fields: 'webViewLink', // Solo solicitamos el enlace para ver el archivo
+        });
+        const fileLink = response.data.webViewLink; // Devuelve el enlace para visualizar el archivo
+        return fileLink || null;
     }
     catch (error) {
-        console.error('Error al obtener el archivo desde Google Drive:', error);
-        throw error;
+        console.error('Error al obtener el archivo de Google Drive:', error);
+        return null;
     }
 });
 exports.getFilesFromDrive = getFilesFromDrive;

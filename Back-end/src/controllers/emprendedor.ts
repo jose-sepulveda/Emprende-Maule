@@ -4,7 +4,7 @@ import fs from 'fs';
 import jwt from 'jsonwebtoken';
 import path from 'path';
 import { Emprendedor } from "../models/emprendedor";
-import { deleteFileFromDrive, getFilesFromDrive, uploadFileToDrive } from '../services/googleDrive';
+import { deleteFileFromDrive, uploadFileToDrive } from '../services/googleDrive';
 import { sendEmail } from '../services/mail';
 import { MulterRequest } from '../services/types';
 
@@ -136,22 +136,9 @@ export const getEmprendedor: RequestHandler = async(req, res) => {
             }
         }
 
-        const emprendedorData = rutEmprendedor?.get();
-        const { imagen_productos, imagen_local, comprobante } = emprendedorData;
-
-        // Obtenemos los enlaces de visualización de los archivos
-        const imagenProductosData = imagen_productos ? await getFilesFromDrive(imagen_productos) : null;
-        const imagenLocalData = imagen_local ? await getFilesFromDrive(imagen_local) : null;
-        const comprobanteData = comprobante ? await getFilesFromDrive(comprobante) : null;
-
 
         res.json({
-            emprendedor: {
-                ...emprendedorData,
-                imagen_productos: imagenProductosData,
-                imagen_local: imagenLocalData,
-                comprobante: comprobanteData,
-            },
+            rutEmprendedor,
         });
     
     } catch (error) {

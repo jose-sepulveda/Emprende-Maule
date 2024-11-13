@@ -115,39 +115,26 @@ export const uploadPhoToToDrive = async (filePath: string, fileName: string, mim
 
 
 export const getFilesFromDrive = async (fileId: string) => {
-    const auth = new google.auth.GoogleAuth({
-        keyFile: path.resolve(__dirname, '../config/credencial.json'),
-        scopes: ['https://www.googleapis.com/auth/drive'],
-    });
-
-    const drive = google.drive({ version: 'v3', auth });
-
     try {
-        // Obtener el archivo con la ID proporcionada
-        const file = await drive.files.get({
-            fileId: fileId,
-            fields: 'id',
+        const auth = new google.auth.GoogleAuth({
+            keyFile: path.resolve(__dirname, '../config/credencial.json'),
+            scopes: ['https://www.googleapis.com/auth/drive.readonly'],
         });
 
-        if (file.data.id) {
-            // Hacer el archivo público
-            await drive.permissions.create({
-                fileId: file.data.id,
-                requestBody: {
-                    role: 'reader', 
-                    type: 'anyone', 
-                },
-            });
+        const drive = google.drive({ version: 'v3', auth });
 
-            // Construir el enlace directo para la visualización de la imagen
-            const directUrl = `https://drive.google.com/uc?export=view&id=${file.data.id}`;
-            return directUrl;
-        } else {
-            throw new Error('El archivo no tiene un enlace de visualización disponible');
-        }
+        // Obtener los metadatos del archivo
+        const response = await drive.files.get({
+            fileId,
+            fields: 'webViewLink', // Solo solicitamos el enlace para ver el archivo
+        });
+
+        const fileLink = response.data.webViewLink; // Devuelve el enlace para visualizar el archivo
+
+        return fileLink || null;
     } catch (error) {
-        console.error('Error al obtener el archivo desde Google Drive:', error);
-        throw error;
+        console.error('Error al obtener el archivo de Google Drive:', error);
+        return null;
     }
 };
 
