@@ -8,7 +8,6 @@ import { loginEmprendedor, recuperarContrasenaEmprendedor } from '../services/em
 import "../Styles/login-emprendedor.css";
 
 const LoginEmprendedor = () => {
-
     const [correo_electronico, setCorreo_electronico] = useState('');
     const [contrasena, setContrasena] = useState('');
     const { setToken } = useContext(AuthContext);
@@ -16,9 +15,7 @@ const LoginEmprendedor = () => {
 
     const [showModal, setShowModal] = useState(false);
     const [correoRecuperacion, setCorreoRecuperacion] = useState('');
-
     const [loading, setLoading] = useState(false);
-
     const [ showPassword, setShowPassword ] = useState(false);
 
     const handleLogin = async() => {
@@ -46,93 +43,93 @@ const LoginEmprendedor = () => {
         const correoParaRecuperacion = correoRecuperacion || correo_electronico; 
     
         if (!correoParaRecuperacion || !/\S+@\S+\.\S+/.test(correoParaRecuperacion)) {
-          toast.error("Por favor ingrese su correo para la recuperación de contraseña");
-          return;
+            toast.error("Por favor ingrese su correo para la recuperación de contraseña");
+            return;
         }
     
         setLoading(true);
     
         try {
-          const response = await recuperarContrasenaEmprendedor(correoParaRecuperacion); 
-          toast.success(response.msg);
-          setShowModal(false);
+            const response = await recuperarContrasenaEmprendedor(correoParaRecuperacion); 
+            toast.success(response.msg);
+            setShowModal(false);
         } catch (error) {
-          console.error("Error al enviar el correo de recuperación: ", error);
-          toast.error("Error al enviar el correo de recuperación, intentalo más tarde");
+            console.error("Error al enviar el correo de recuperación: ", error);
+            toast.error("Error al enviar el correo de recuperación, intentalo más tarde");
         } finally {
-          setLoading(false);
+            setLoading(false);
         }
-      };
-    
-      const handleModalOpen = () => {
+    };
+
+    const handleModalOpen = () => {
         setCorreoRecuperacion(correo_electronico)
         setShowModal(true);
-      }
+    }
 
-      const togglePasswordVisibility = () => {
+    const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     }
 
     return (
         <>
-            <div className='login-form-container'>
+            <div className='login-emprendedor-form-container'>
                 <h2>Iniciar Sesión Emprendedor</h2>
                 <input
-                    className='login-input'
+                    className='login-emprendedor-input'
                     type='text'
                     placeholder='Correo'
                     value={correo_electronico}
                     onChange={(e) => setCorreo_electronico(e.target.value)}
                 />
-                <div className='input-container'>
+                <div className='login-emprendedor-input-container'>
                     <input
-                        className='login-input'
+                        className='login-emprendedor-input'
                         type={showPassword ? 'text' : 'password'}
                         placeholder='Contraseña'
                         value={contrasena}
                         onChange={(e) => setContrasena(e.target.value)}
                     />
                     <button 
-                        className='password-toggle-button'
+                        className='login-emprendedor-password-toggle-button'
                         onClick={togglePasswordVisibility}
                         type='button'
                     >
                         <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
                     </button>
                 </div>
-                <button className='login-button' onClick={handleLogin}>Iniciar Sesión</button>
+                <button className='login-emprendedor-button' onClick={handleLogin}>Iniciar Sesión</button>
                 <button
-                    className="recuperar-button"
+                    className="login-emprendedor-recuperar-button"
                     onClick={handleModalOpen}
                 >
-                ¿Olvidaste tu contraseña?
+                    ¿Olvidaste tu contraseña?
                 </button>
             </div>
 
             {showModal && (
-                <div className="modal">
-                <div className="modal-content">
-                    <h3>Recuperación de contraseña</h3>
-                    <input
-                    type="email"
-                    placeholder="Ingresa tu correo"
-                    value={correoRecuperacion || correo_electronico}
-                    onChange={(e) => setCorreoRecuperacion(e.target.value)}
-                    />
-                    <button
-                    className="enviar-button"
-                    onClick={handleRecuperacion}
-                    disabled={loading}
-                    >
-                    {loading ? 'Enviando...' : 'Enviar enlace de recuperación'}
-                    </button>
-                    <button
-                    className="cancelar-button"
-                    onClick={() => setShowModal(false)}
-                    >
-                    Cancelar
-                    </button>
-                </div>
+                <div className="login-emprendedor-modal">
+                    <div className="login-emprendedor-modal-content">
+                        <h3>Recuperación de contraseña</h3>
+                        <input
+                            type="email"
+                            placeholder="Ingresa tu correo"
+                            value={correoRecuperacion || correo_electronico}
+                            onChange={(e) => setCorreoRecuperacion(e.target.value)}
+                        />
+                        <button
+                            className="login-emprendedor-enviar-button"
+                            onClick={handleRecuperacion}
+                            disabled={loading}
+                        >
+                            {loading ? 'Enviando...' : 'Enviar enlace de recuperación'}
+                        </button>
+                        <button
+                            className="login-emprendedor-cancelar-button"
+                            onClick={() => setShowModal(false)}
+                        >
+                            Cancelar
+                        </button>
+                    </div>
                 </div>
             )}
             <ToastContainer />
@@ -140,4 +137,4 @@ const LoginEmprendedor = () => {
     )
 }
 
-export default LoginEmprendedor
+export default LoginEmprendedor;

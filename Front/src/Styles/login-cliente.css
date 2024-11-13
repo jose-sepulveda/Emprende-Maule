@@ -1,52 +1,132 @@
 /* Contenedor del formulario de inicio de sesión */
-.login-form-container {
-    width: 300px;
-    background-color: #f5f5f5;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    margin: auto;
-    text-align: center;
-  }
-  
-  /* Estilos para los campos de entrada */
-  .login-input {
-    width: 100%;
-    padding: 12px;
-    padding-right: 35px; /* espacio para el icono */
-    margin-bottom: 15px;
-    border: 1.5px solid #aaa;
-    border-radius: 5px;
-    font-size: 14px;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    background-color: #fefefe;
-  }
-  
-  .login-input:focus {
-    border-color: #4CAF50;
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
-    outline: none;
-  }
-  
-  /* Contenedor de entrada para Contraseña */
-  .input-container {
-    position: relative;
-    margin-bottom: 15px;
-  }
-  
-  /* Estilo para el icono de visibilidad de la contraseña */
-  .password-toggle-button {
-    position: absolute;
-    right: 10px;
-    top: 30%;
-    transform: translateY(-50%);
-    background-color: none;
-    border: none;
-    cursor: pointer;
-    color: #666;
-    outline: none;
-    padding: 0;
-    font-size: 16px;
-  }
+.login-cliente-container {
+  width: 300px;
+  background-color: #f5f5f5;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  margin: auto;
+  text-align: center;
+}
 
+/* Estilos para los campos de entrada */
+.login-cliente-input {
+  width: 100%;
+  padding: 12px;
+  padding-right: 35px; /* espacio para el icono */
+  margin-top: 5px;
+  border: 1.5px solid #aaa;
+  border-radius: 5px;
+  font-size: 14px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: #fefefe;
+}
+
+.login-cliente-input:focus {
+  border-color: #f98511;
+  box-shadow: 0 0 5px #f98511ac;
+  outline: none;
+}
+
+/* Contenedor de entrada para Contraseña */
+.login-cliente-input-container {
+  position: relative;
+}
+
+/* Estilo para el icono de visibilidad de la contraseña */
+.password-toggle-button {
+  position: absolute;
+  right: 10px;
+  top: 30%;
+  transform: translateY(-50%);
+  background-color: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  outline: none;
+  padding: 0;
+  font-size: 16px;
+}
+
+/* Botón de iniciar sesión */
+.login-cliente-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #f98511;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-cliente-button:hover {
+  background-color: #f08113;
+}
+
+/* Botón de recuperación */
+.recuperar-button {
+  margin-top: 15px;
+  background-color: transparent;
+  color: #000000;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.recuperar-button:hover {
+  color: #186485;
+}
+
+/* Estilos del modal */
+.login-cliente-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-cliente-modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  text-align: center;
+}
+
+/* Botones del modal */
+.login-cliente-enviar-button, .login-cliente-cancelar-button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.login-cliente-enviar-button {
+  background-color: #f98511;
+  color: white;
+  border: none;
+}
+
+.login-cliente-cancelar-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+}
+
+.login-cliente-enviar-button:hover {
+  background-color: #f98511;
+}
+
+.login-cliente-cancelar-button:hover {
+  background-color: #e53935;
+}

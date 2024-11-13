@@ -20,15 +20,18 @@ function Menu(){
             routes.push(
                 { to: "/gestionCategorias", text: "Gestion Categorias" },
                 { to: "/gestionClientes", text: "Gestion Clientes" },
-                { to: "/gestionEmprendedores", text: "Gestion Emprendedores" }
+                { to: "/gestionEmprendedores", text: "Gestion Emprendedores" },
+                {to:"/gestionAdmin", text:"Gestion Admin"},
             );
         }
  
 
         // Emprendedor
         if (decodedToken.role === "emprendedor") {
-           
-           
+            routes.puch(
+            {to:"/gestionProducto", text:"Gestion Productos"},
+            {to:"/tablaP", text:"Productos"},
+        );   
         }
 
         //Cliente
@@ -41,11 +44,9 @@ function Menu(){
         routes.push(
             { to: "/crearCuenta", text: "Crear cuenta" },
             { to: "/login", text: "Iniciar sesión" },
-            {to:"/gestionProducto", text:"Gestion Productos"},
-            {to:"/gestionAdmin", text:"Gestion Admin"},
-            {to:"/tablaP", text:"Productos"})
+            { to: "/inicio-admin", text: "Rutas" }
 
-    
+        );    
     }
 
     const cerrarSesion = () => {
@@ -105,6 +106,8 @@ routes.push({to:"/gestionCategorias", text:"Gestion Categorias"})
 routes.push({to:"/gestionEmprendedores", text:"Gestion Emprededores"})
 routes.push({to:"/gestionAdmin", text:"Gestion Admin"})
 routes.push({to:"/tablaP", text:"Productos"})
+routes.push({to:"/inicio-admin", text:"Rutas admin"})
+
 export { Menu };
 
 

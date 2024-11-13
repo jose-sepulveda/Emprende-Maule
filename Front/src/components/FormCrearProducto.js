@@ -80,7 +80,7 @@ const FormCrearProducto = () => {
                     <label htmlFor="descuento">Descuento</label>
                     <input id="descuento" type="number" {...register("descuento")} />
                 </div>
-                <div className='file-uploads'>
+                <div className='file-uploads-p'>
                     <label htmlFor="imagen">Imagen</label>
                     <input id="imagen" type="file" required {...register("imagen")} />
                 </div>

@@ -5,19 +5,19 @@ import '../Styles/tablaProductos.css';
 
 const TablaProductos = () => {
     const [productos, setProductos] = useState([]);
-    const [productoAActualizar, setProductoAActualizar] = useState(null);  // Nuevo estado para producto a actualizar
+    const [productoAActualizar, setProductoAActualizar] = useState(null);
     const [formData, setFormData] = useState({
         nombre_producto: '',
         precio_producto: '',
         descripcion_producto: '',
         nombre_categoria: '',
         cantidad_disponible: ''
-    });  // Formulario para actualización
+    });
 
     useEffect(() => {
         getProductos()
             .then(response => {
-                setProductos(response.data); // Verifica que la respuesta contiene los productos
+                setProductos(response.data);
             })
             .catch(error => {
                 console.error("Error al obtener productos:", error);
@@ -38,7 +38,7 @@ const TablaProductos = () => {
 
     const actualizarProducto = (cod_producto) => {
         const producto = productos.find(p => p.cod_producto === cod_producto);
-        setProductoAActualizar(producto);  // Cargar el producto a actualizar en el estado
+        setProductoAActualizar(producto);
         setFormData({
             nombre_producto: producto.nombre_producto,
             precio_producto: producto.precio_producto,
@@ -62,7 +62,7 @@ const TablaProductos = () => {
             await updateProducto(productoAActualizar.cod_producto, formData);
             toast.success("Producto actualizado correctamente");
             setProductos(productos.map(p => p.cod_producto === productoAActualizar.cod_producto ? { ...p, ...formData } : p));
-            setProductoAActualizar(null);  // Cerrar el modal o formulario
+            setProductoAActualizar(null);
         } catch (error) {
             console.error("Error al actualizar producto:", error);
             toast.error("Error al actualizar producto");
@@ -70,9 +70,9 @@ const TablaProductos = () => {
     };
 
     return (
-        <div className="table-container">
-            <h2>Lista de Productos</h2>
-            <table>
+        <div className="productos-table-container">
+            <h2 className="productos-table-title">Lista de Productos</h2>
+            <table className="productos-table">
                 <thead>
                     <tr>
                         <th>Nombre</th>
@@ -95,23 +95,23 @@ const TablaProductos = () => {
                                 <td>{producto.cantidad_disponible}</td>
                                 <td></td>
                                 <td>
-                                    <button onClick={() => actualizarProducto(producto.cod_producto)}>Actualizar</button>
-                                    <button onClick={() => eliminarProducto(producto.cod_producto)}>Eliminar</button>
+                                    <button className="productos-btn actualizar" onClick={() => actualizarProducto(producto.cod_producto)}>Actualizar</button>
+                                    <button className="productos-btn eliminar" onClick={() => eliminarProducto(producto.cod_producto)}>Eliminar</button>
                                 </td>
                             </tr>
                         ))
                     ) : (
                         <tr>
-                            <td colSpan="6">No hay productos disponibles</td>
+                            <td colSpan="7">No hay productos disponibles</td>
                         </tr>
                     )}
                 </tbody>
             </table>
 
             {productoAActualizar && (
-                <div className="modal">
-                    <h3>Actualizar Producto</h3>
-                    <form onSubmit={handleSubmit}>
+                <div className="productos-modal">
+                    <h3 className="productos-modal-title">Actualizar Producto</h3>
+                    <form className="productos-modal-form" onSubmit={handleSubmit}>
                         <label>Nombre:</label>
                         <input 
                             type="text" 
@@ -147,7 +147,7 @@ const TablaProductos = () => {
                             value={formData.cantidad_disponible} 
                             onChange={handleInputChange} 
                         />
-                        <button type="submit">Actualizar Producto</button>
+                        <button type="submit" className="productos-modal-submit-btn">Actualizar Producto</button>
                     </form>
                 </div>
             )}

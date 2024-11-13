@@ -1,8 +1,8 @@
 /* Estilos para el contenedor de la tabla */
-.table-container {
+.productos-table-container {
     margin: 0 auto;
     padding: 40px;
-    max-width: 800px;
+    max-width: 1000px;
     background-color: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(1px);
     border-radius: 10px;
@@ -13,43 +13,43 @@
     flex-direction: column;
 }
 
-.table-container h2 {
+.productos-table-title {
     text-align: center;
     margin-bottom: 20px;
     color: #000000;
 }
 
 /* Estilos para la tabla */
-table {
+.productos-table {
     background-color: #ffffffd0;
     width: 800px;
     border-collapse: collapse;
     margin-bottom: 20px;
 }
 
-table th,
-table td {
+.productos-table th,
+.productos-table td {
     padding: 10px;
     text-align: center;
-    border-bottom: 1px solid #ddd;
-    white-space: nowrap; /* Evita que el texto se ajuste en varias líneas */
+    border: 1px solid #ccc9c9;
+    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; /* Agrega puntos suspensivos si el texto es demasiado largo */
+    text-overflow: ellipsis;
 }
 
-table th {
+.productos-table th {
     background-color: #f98511;
     color: white;
     font-weight: bold;
-    width: 250px; /* Ancho fijo para los encabezados */
+    width: 250px;
 }
 
-table td {
-    width: 150px; /* Ancho fijo para las celdas */
+.productos-table td {
+    width: 150px;
 }
 
 /* Estilos para botones */
-button {
+.productos-btn {
     padding: 8px 12px;
     margin: 4px;
     border: none;
@@ -58,20 +58,20 @@ button {
     color: white;
 }
 
-button:hover {
+.productos-btn:hover {
     opacity: 0.9;
 }
 
-button:first-of-type {
-    background-color: #4CAF50; /* Color para actualizar */
+.productos-btn.actualizar {
+    background-color: #4CAF50;
 }
 
-button:last-of-type {
-    background-color: #f44336; /* Color para eliminar */
+.productos-btn.eliminar {
+    background-color: #f44336;
 }
 
 /* Estilos para el modal */
-.modal {
+.productos-modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -84,7 +84,7 @@ button:last-of-type {
     z-index: 1000;
 }
 
-.modal form {
+.productos-modal-form {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
@@ -92,20 +92,20 @@ button:last-of-type {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.modal h3 {
+.productos-modal-title {
     text-align: center;
     margin-bottom: 15px;
     color: #333;
 }
 
-.modal label {
+.productos-modal-form label {
     display: block;
     margin-top: 10px;
     font-weight: bold;
     color: #555;
 }
 
-.modal input {
+.productos-modal-form input {
     width: 100%;
     padding: 8px;
     margin-top: 5px;
@@ -114,7 +114,7 @@ button:last-of-type {
     box-sizing: border-box;
 }
 
-.modal button[type="submit"] {
+.productos-modal-submit-btn {
     width: 100%;
     padding: 10px;
     margin-top: 15px;
@@ -126,6 +126,6 @@ button:last-of-type {
     cursor: pointer;
 }
 
-.modal button[type="submit"]:hover {
+.productos-modal-submit-btn:hover {
     background-color: #45a049;
 }

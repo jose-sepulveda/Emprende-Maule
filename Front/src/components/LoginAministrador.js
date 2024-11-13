@@ -19,7 +19,7 @@ const LoginAministrador = () => {
   const [loading, setLoading] = useState(false);
 
   const [ password, setPassword ] = useState('');
-    const [ showPassword, setShowPassword ] = useState(false);
+  const [ showPassword, setShowPassword ] = useState(false);
 
   const handleLogin = async () => {
     if (!correo || !contrasena) {
@@ -73,29 +73,28 @@ const LoginAministrador = () => {
     setShowPassword(!showPassword);
   }
 
-
   return (
     <>
-      <div className="login-form-container">
+      <div className="login-admin-form-container">
         <h2>Iniciar Sesión administrador</h2>
         <input
-          className="login-input"
+          className="login-admin-input"
           type="text"
           placeholder="Correo"
           value={correo}
           onChange={(e) => setCorreo(e.target.value)}
         />
         
-        <div className="input-container">
+        <div className="login-admin-input-container">
           <input
-            className="login-input"
+            className="login-admin-input"
             type={showPassword ? 'text' : 'password'}
             placeholder="Contraseña"
             value={contrasena}
             onChange={(e) => setContrasena(e.target.value)}
           />
           <button
-            className="password-toggle-button"
+            className="login-admin-password-toggle-button"
             onClick={togglePasswordVisibility}
             type="button"
           >
@@ -103,24 +102,21 @@ const LoginAministrador = () => {
           </button>
         </div>
 
-        <button className="login-button" onClick={handleLogin}>
+        <button className="login-admin-button" onClick={handleLogin}>
           Iniciar Sesión
         </button>
 
         <button
-          className="recuperar-button"
+          className="login-admin-recuperar-button"
           onClick={handleModalOpen}
         >
           ¿Olvidaste tu contraseña?
         </button>
       </div>
 
-
-
-
       {showModal && (
-        <div className="modal">
-          <div className="modal-content">
+        <div className="login-admin-modal">
+          <div className="login-admin-modal-content">
             <h3>Recuperación de contraseña</h3>
             <input
               type="email"
@@ -129,14 +125,14 @@ const LoginAministrador = () => {
               onChange={(e) => setCorreoRecuperacion(e.target.value)}
             />
             <button
-              className="enviar-button"
+              className="login-admin-enviar-button"
               onClick={handleRecuperacion}
               disabled={loading}
             >
               {loading ? 'Enviando...' : 'Enviar enlace de recuperación'}
             </button>
             <button
-              className="cancelar-button"
+              className="login-admin-cancelar-button"
               onClick={() => setShowModal(false)}
             >
               Cancelar
@@ -149,5 +145,4 @@ const LoginAministrador = () => {
   );
 };
 
-
-export default LoginAministrador
+export default LoginAministrador;

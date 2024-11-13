@@ -1,7 +1,7 @@
 /* Contenedor principal */
 .form-container-prod {
-    padding: 40px;
-    max-width: 900px;
+    padding: 20px;
+    max-width: 700px;
     background-color: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(1px);
     border-radius: 10px;
@@ -31,7 +31,7 @@ h2 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
-    width: 700px;
+    width: 500px;
     height: 400px;
 }
 
@@ -49,11 +49,13 @@ h2 {
 }
 
 /* Contenedor para los botones de archivo */
-.file-uploads {
+.file-uploads-p {
     grid-column: span 2;
     display: flex;
+    justify-content: center; /* Centrado horizontal */
+    align-items: center;     /* Centrado vertical */
     gap: 20px;
-    justify-content: space-between;
+    width: 100%;   
 }
 
 /* Labels */
@@ -85,7 +87,7 @@ input[type="file"] {
 }
 
 /* Botones para upload */
-.file-uploads label {
+.file-uploads-p label {
     background-color: #F97316;
     color: white;
     padding: 8px 16px;
@@ -93,6 +95,7 @@ input[type="file"] {
     cursor: pointer;
     text-align: center;
     transition: background-color 0.2s;
+    width: 200px;
 }
 
 .file-uploads label:hover {
