@@ -29,8 +29,7 @@ function Menu(){
         // Emprendedor
         if (decodedToken.role === "emprendedor") {
             routes.puch(
-            {to:"/gestionProducto", text:"Gestion Productos"},
-            {to:"/tablaP", text:"Productos"},
+
         );   
         }
 
@@ -44,6 +43,8 @@ function Menu(){
         routes.push(
             { to: "/crearCuenta", text: "Crear cuenta" },
             { to: "/login", text: "Iniciar sesión" },
+            {to:"/gestionProducto", text:"Gestion Productos"},
+            {to:"/tablaP", text:"Productos"},
 
         );    
     }
