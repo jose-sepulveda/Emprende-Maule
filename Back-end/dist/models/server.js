@@ -23,8 +23,8 @@ const cliente_1 = __importDefault(require("../routes/cliente"));
 const emprendedor_1 = __importDefault(require("../routes/emprendedor"));
 const producto_1 = __importDefault(require("../routes/producto"));
 const resena_1 = __importDefault(require("../routes/resena"));
-const ventas_1 = __importDefault(require("../routes/ventas"));
 const venta_productos_1 = __importDefault(require("../routes/venta_productos"));
+const ventas_1 = __importDefault(require("../routes/ventas"));
 const administrador_2 = require("./administrador");
 const carro_2 = require("./carro");
 const carro_productos_2 = require("./carro_productos");
@@ -33,8 +33,8 @@ const cliente_2 = require("./cliente");
 const emprendedor_2 = require("./emprendedor");
 const producto_2 = require("./producto");
 const resena_2 = require("./resena");
-const ventas_2 = require("./ventas");
 const venta_productos_2 = require("./venta_productos");
+const ventas_2 = require("./ventas");
 class Server {
     constructor() {
         var _a;

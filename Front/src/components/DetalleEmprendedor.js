@@ -13,7 +13,7 @@ const DetalleEmprendedor = () => {
         const fetchEmprendedor = async () => {
         try {
             const response = await getEmprendedor(rut_emprendedor); 
-            setEmprendedor(response.data.emprendedor);
+            setEmprendedor(response.data.emprendedor || {});
         } catch (error) {
             console.error("Error al obtener los detalles del emprendedor:", error);
             toast.error("Error al obtener los detalles del emprendedor")
@@ -27,9 +27,11 @@ const DetalleEmprendedor = () => {
         return `https://drive.google.com/uc?export=view&id=${fileId}`;
     };
     
-    if (!emprendedor) {
-        return <p>Cargando...</p>;
-    } 
+    if (!emprendedor || Object.keys(emprendedor).length === 0) {
+        return <p>  Cargando...</p>;
+    }
+
+    //console.log(emprendedor.imagen_productos)
 
     return (
         <div className='detalle-emprendedor'>
@@ -48,7 +50,7 @@ const DetalleEmprendedor = () => {
             <h3>Documentos Tributarios</h3>
             <div>
                 {emprendedor.comprobante && (
-                    <a href={getGoogleDriveUrl(emprendedor.comprobante)} target="_blank" rel="noopener noreferrer">
+                    <a href={emprendedor.comprobante} target="_blank" rel="noopener noreferrer">
                         Comprobante
                     </a>
                 )}
@@ -58,9 +60,8 @@ const DetalleEmprendedor = () => {
             <div>
                 {emprendedor.imagen_productos && (
                     <img 
-                        src={getGoogleDriveUrl(emprendedor.imagen_productos)} 
+                        src={emprendedor.imagen_productos} 
                         alt="Imagen de productos" 
-                        style={{ maxWidth: '100%', height: 'auto' }} 
                     />
                 )}
             </div>
@@ -68,7 +69,10 @@ const DetalleEmprendedor = () => {
             <h3>Imágenes de su Local o Domicilio</h3>
             <div>
                 {emprendedor.imagen_local && (
-                    <img src={getGoogleDriveUrl(emprendedor.imagen_local)} alt="Imagen del local" style={{ maxWidth: '100%', height: 'auto' }}/>
+                    <img 
+                        src={emprendedor.imagen_local} 
+                        alt="Imagen del local"
+                    />
                 )}
             </div>
 

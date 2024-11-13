@@ -4,7 +4,7 @@ import fs from 'fs';
 import jwt from 'jsonwebtoken';
 import path from 'path';
 import { Emprendedor } from "../models/emprendedor";
-import { deleteFileFromDrive, uploadFileToDrive } from '../services/googleDrive';
+import { deleteFileFromDrive, setPublicAccessToFile, uploadFileToDrive } from '../services/googleDrive';
 import { sendEmail } from '../services/mail';
 import { MulterRequest } from '../services/types';
 
@@ -111,7 +111,7 @@ export const crearEmprendedor : RequestHandler = async (req: MulterRequest, res:
 export const getEmprendedor: RequestHandler = async(req, res) => {
     const {rut_emprendedor} = req.params;
     try {
-        const rutEmprendedor = await Emprendedor.findOne({
+        const emprendedor = await Emprendedor.findOne({
             attributes: [
                 'id_emprendedor',
                 'rut_emprendedor',
@@ -130,15 +130,25 @@ export const getEmprendedor: RequestHandler = async(req, res) => {
                 'estado_emprendedor',
             ], where: {rut_emprendedor: rut_emprendedor}
         }); 
-        if (!rutEmprendedor) {
+        if (!emprendedor) {
             if (!res.headersSent){
                 res.status(404).json({msg: 'El rut de este emprendedor no existe'})
             }
         }
 
 
+        const imagenProductosUrl = emprendedor?.getDataValue("imagen_productos") ? await setPublicAccessToFile(emprendedor.getDataValue("imagen_productos")) : null;
+        const imagenLocalUrl = emprendedor?.getDataValue("imagen_local") ? await setPublicAccessToFile(emprendedor.getDataValue("imagen_local")) : null;
+        const comprobanteUrl = emprendedor?.getDataValue("comprobante") ? await setPublicAccessToFile(emprendedor.getDataValue("comprobante")) : null;
+
+        // Responder con los datos del emprendedor y los enlaces públicos
         res.json({
-            rutEmprendedor,
+            emprendedor: {
+                ...emprendedor?.toJSON(),
+                imagen_productos: imagenProductosUrl,
+                imagen_local: imagenLocalUrl,
+                comprobante: comprobanteUrl,
+            },
         });
     
     } catch (error) {

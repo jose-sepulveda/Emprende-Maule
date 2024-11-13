@@ -138,31 +138,44 @@ export const getFilesFromDrive = async (fileId: string) => {
     }
 };
 
-export const setPublicAccessToFile = async (fileId:string) => {
+export const setPublicAccessToFile = async (fileId: string) => {
     const auth = new google.auth.GoogleAuth({
         keyFile: path.resolve(__dirname, '../config/credencial.json'),
-        scopes: ['https://www.googleapis.com/auth/drive.readonly'], // Usamos el alcance solo de lectura
+        scopes: ['https://www.googleapis.com/auth/drive.readonly'],
     });
 
     const drive = google.drive({ version: 'v3', auth });
 
     try {
-        // Obtenemos el enlace público de vista del archivo
+        // Obtenemos el archivo para asegurarnos de que se pueda acceder públicamente
         const file = await drive.files.get({
             fileId: fileId,
-            fields: 'webViewLink', // Esto devuelve un enlace para ver el archivo
+            fields: 'webViewLink,permissions', // Obtén los permisos y el enlace de vista
         });
 
-        // Verifica si el archivo tiene el enlace de vista
-        if (file.data.webViewLink) {
-            return file.data.webViewLink; // Retorna el enlace
-        } else {
-            throw new Error('No se pudo obtener el enlace del archivo');
+        // Verifica si el archivo tiene permisos públicos
+        const permissions = file.data.permissions || [];
+        const isPublic = permissions.some(permission => permission.role === 'reader' && permission.type === 'anyone');
+
+        if (!isPublic) {
+            // Cambia los permisos para hacerlo público
+            await drive.permissions.create({
+                fileId: fileId,
+                requestBody: {
+                    role: 'reader',
+                    type: 'anyone',
+                },
+            });
         }
+
+        // Retorna el enlace público accesible directamente
+        return `https://drive.google.com/uc?export=view&id=${fileId}`;
+
     } catch (error) {
-        console.error('Error al obtener el archivo de Google Drive:', error);
+        console.error('Error al obtener o hacer público el archivo de Google Drive:', error);
         throw error; // Lanza el error para manejarlo donde sea necesario
     }
 };
+
 
 

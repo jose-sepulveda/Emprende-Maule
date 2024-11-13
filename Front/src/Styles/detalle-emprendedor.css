@@ -50,9 +50,9 @@
 
 /* Estilo para las imágenes */
 .detalle-emprendedor img {
+    max-width: 100%;
     width: 100%;
-    max-width: 300px;
-    border-radius: 8px;
+    height: auto;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -79,3 +79,4 @@
 .documentos-title{
     text-align: center;
 }
+
