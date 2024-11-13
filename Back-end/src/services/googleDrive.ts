@@ -113,26 +113,69 @@ export const uploadPhoToToDrive = async (filePath: string, fileName: string, mim
     }
 }
 
-export const getFilesFromDrive = async (fileId: string): Promise<string | null> => {
+
+export const getFilesFromDrive = async (fileId: string) => {
+    const auth = new google.auth.GoogleAuth({
+        keyFile: path.resolve(__dirname, '../config/credencial.json'),
+        scopes: ['https://www.googleapis.com/auth/drive'],
+    });
+
+    const drive = google.drive({ version: 'v3', auth });
+
     try {
-        const auth = new google.auth.GoogleAuth({
-            keyFile: path.resolve(__dirname, '../config/credencial.json'),
-            scopes: ['https://www.googleapis.com/auth/drive.readonly']
-        })
-
-        const drive = google.drive({ version: 'v3', auth });
-
+        // Obtener el archivo con la ID proporcionada
         const file = await drive.files.get({
             fileId: fileId,
-            fields: 'webViewLink, name',
+            fields: 'id',
         });
 
-        console.log('Archivo obtenido de Google Drive: ', file.data.name);
+        if (file.data.id) {
+            // Hacer el archivo público
+            await drive.permissions.create({
+                fileId: file.data.id,
+                requestBody: {
+                    role: 'reader', 
+                    type: 'anyone', 
+                },
+            });
 
-        return file.data.webViewLink || null;
+            // Construir el enlace directo para la visualización de la imagen
+            const directUrl = `https://drive.google.com/uc?export=view&id=${file.data.id}`;
+            return directUrl;
+        } else {
+            throw new Error('El archivo no tiene un enlace de visualización disponible');
+        }
     } catch (error) {
-        console.error('Error al obtener el archivo de Google Drive: ', error);
-        return null;
+        console.error('Error al obtener el archivo desde Google Drive:', error);
+        throw error;
     }
-}
+};
+
+export const setPublicAccessToFile = async (fileId:string) => {
+    const auth = new google.auth.GoogleAuth({
+        keyFile: path.resolve(__dirname, '../config/credencial.json'),
+        scopes: ['https://www.googleapis.com/auth/drive.readonly'], // Usamos el alcance solo de lectura
+    });
+
+    const drive = google.drive({ version: 'v3', auth });
+
+    try {
+        // Obtenemos el enlace público de vista del archivo
+        const file = await drive.files.get({
+            fileId: fileId,
+            fields: 'webViewLink', // Esto devuelve un enlace para ver el archivo
+        });
+
+        // Verifica si el archivo tiene el enlace de vista
+        if (file.data.webViewLink) {
+            return file.data.webViewLink; // Retorna el enlace
+        } else {
+            throw new Error('No se pudo obtener el enlace del archivo');
+        }
+    } catch (error) {
+        console.error('Error al obtener el archivo de Google Drive:', error);
+        throw error; // Lanza el error para manejarlo donde sea necesario
+    }
+};
+
 

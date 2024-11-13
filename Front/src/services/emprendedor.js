@@ -4,6 +4,7 @@ const API_URL = 'http://localhost:3000/api/emprendedor';
 
 const api = axios.create({
     baseURL: API_URL,
+    withCredentials: true,
 });
 
 api.interceptors.request.use((config) => {
@@ -20,7 +21,7 @@ api.interceptors.request.use((config) => {
 export const getEmprendedores = () => api.get('/list');
 
 // Obtener un emprendedor por ID
-export const getEmprendedor = (rut_emprendedor) => api.get(`/${rut_emprendedor}`);
+export const getEmprendedor = (rut_emprendedor) => api.get(`/${rut_emprendedor}`, { withCredentials: true });
 
 // Crear emprendedor
 export const crearEmprendedor = (emprendedor) => {
