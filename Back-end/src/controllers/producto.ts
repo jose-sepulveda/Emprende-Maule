@@ -4,11 +4,11 @@ import path from "path";
 import sequelize from "sequelize";
 import { Categorias } from "../models/categoria";
 import { Productos } from "../models/producto";
-import { uploadPhoToToDrive} from "../services/googleDrive";
+import { uploadPhoToToDrive, getFilesFromDrive, deleteFileFromDrive} from "../services/googleDrive";
 import { Emprendedor } from "../models/emprendedor";
 
 export const newProducto = async(req: Request, res: Response) =>{
-    const {nombre_producto, precio_producto, descripcion_producto, id_categoria, cantidad_disponible, descuento} = req.body;
+    const {nombre_producto, precio_producto, descripcion_producto, id_categoria, cantidad_disponible, descuento, id_emprendedor} = req.body;
     const imagenFile = req.file;
 
     try{
@@ -36,6 +36,7 @@ export const newProducto = async(req: Request, res: Response) =>{
             "id_categoria": id_categoria,
             "imagen": imagenId,
             "cantidad_disponible": cantidad_disponible,
+            "id_emprendedor": id_emprendedor,
             "descuento": descuento || null,
             "precio_descuento": precio_descuento
         });
@@ -50,38 +51,53 @@ export const newProducto = async(req: Request, res: Response) =>{
     }
 };
 
-export const getProducto = async(req: Request, res: Response) =>{
-    try{
-        const {cod_producto} = req.params;
-        const id_categoria = await Productos.findOne({attributes:['id_categoria'],where:{cod_producto: cod_producto}});
-        if(!id_categoria){
-            return res.status(404).json({
-                message: "El producto no existe"
-        });
-    }
-    const producto = await Productos.findOne({attributes:['cod_producto','nombre_producto','precio_producto','descripcion_producto',[sequelize.col('categoria.nombre_categoria'), 'nombre_categoria'],'cantidad_disponible','imagen','cod_producto'],
-        include: [
-            {
+export const getProducto = async(req: Request, res: Response) => {
+    try {
+        const { cod_producto } = req.params;
+
+        const producto = await Productos.findOne({
+            attributes: [
+                'cod_producto',
+                'nombre_producto',
+                'precio_producto',
+                'descripcion_producto',
+                [sequelize.col('categoria.nombre_categoria'), 'nombre_categoria'],
+                'cantidad_disponible',
+                'imagen',
+                'id_emprendedor'
+            ],
+            include: [{
                 model: Categorias,
-                attributes: [],
-            }
-        ],
-        where: {
-            cod_producto: cod_producto
+                attributes: []
+            }],
+            where: { cod_producto }
+        });
+
+        if (!producto) {
+            return res.status(404).json({ message: "El producto no existe" });
         }
-    });
-    res.json(producto);
-    }catch(error){
+
+        const productoData = producto.get();
+        const imagenFile = productoData.imagen ? await getFilesFromDrive(productoData.imagen) : null;
+
+        res.json({
+            ...productoData,
+            imagen: imagenFile || null
+        });
+
+    } catch (error) {
+        console.error("Ocurrió un error al obtener el producto:", error);
         return res.status(400).json({
-            message: 'Ocurrio un error al obtener el producto',
+            message: "Ocurrió un error al obtener el producto",
             error
         });
     }
 };
 
+
 export const getProductos = async(req: Request, res: Response) =>{
     try{
-        const listaProductos = await Productos.findAll({attributes:['cod_producto','nombre_producto','precio_producto','descripcion_producto',[sequelize.col('categoria.nombre_categoria'), 'nombre_categoria'],'cantidad_disponible','imagen','cod_producto'],
+        const listaProductos = await Productos.findAll({attributes:['cod_producto','nombre_producto','precio_producto','descripcion_producto','id_emprendedor',[sequelize.col('categoria.nombre_categoria'), 'nombre_categoria'],'cantidad_disponible','imagen','cod_producto'],
         include: [
             {
                 model: Categorias,
@@ -89,8 +105,23 @@ export const getProductos = async(req: Request, res: Response) =>{
             }
         ]
     });
-    res.json(listaProductos);
+
+    const productosConImagenes = await Promise.all(
+        listaProductos.map(async (producto) => {
+            const productoData = producto.get();
+            const imagenFile = productoData.imagen ? await getFilesFromDrive(productoData.imagen) : null;
+            return {
+                ...productoData,
+                imagen: imagenFile || null
+            };
+        })
+    );
+
+    
+    res.json(productosConImagenes);
+
     }catch(error){
+        console. error("Ocurrio un error al obtener los productos:", error);
         return res.status(400).json({
             message: 'Ocurrio un error al obtener los productos',
             error
@@ -100,21 +131,31 @@ export const getProductos = async(req: Request, res: Response) =>{
 
 export const deleteProducto = async(req: Request, res: Response) =>{
     const {cod_producto} = req.params;
-    const idProducto = await Productos.findOne({where: {cod_producto: cod_producto}});
-    if(!idProducto){
-        return res.status(404).json({
-            message: "El producto no existe"
-        });
-    }
+
     try{
-        await Productos.destroy({where: {cod_producto: cod_producto}});
+
+        const idProducto = await Productos.findOne({where: {cod_producto: cod_producto}});
+        if(!idProducto){
+            return res.status(404).json({
+                message: "El producto no existe"
+            });
+        }
+
+        const imagenProductoId = idProducto.getDataValue('imagen');
+        if(imagenProductoId){
+            await deleteFileFromDrive(imagenProductoId);
+        }
+
+        await Productos.destroy({ where: { cod_producto: cod_producto } });
+
         return res.json({
-            message: 'Producto eliminado correctamente'
+            msg: 'Producto eliminado correctamente'
         });
-    }catch(error){
-        return res.status(400).json({
-            message: 'Ocurrio un error al eliminar el producto',
-            error
+    } catch (error) {
+            console.error(error);
+            return res.status(500).json({
+                message: 'Ocurrio un error al eliminar el producto',
+                error
         });
     }
 };
@@ -169,7 +210,7 @@ export const getProductosByCategoria = async(req: Request, res: Response) => {
     try{
         const productos = await Productos.findAll({
             where: {id_categoria: id_categoria},
-            attributes: ['cod_producto','nombre_producto','precio_producto','descripcion_producto','cantidad_disponible', 'imagen'],
+            attributes: ['cod_producto','nombre_producto','precio_producto','descripcion_producto','cantidad_disponible', 'imagen', 'id_emprendedor'],
             include: [{
                 model: Categorias,
                 attributes: ['nombre_categoria'],
@@ -180,7 +221,15 @@ export const getProductosByCategoria = async(req: Request, res: Response) => {
                 message: 'No hay productos en esta categoria'
             });
         }
-        res.json(productos);
+
+        const productosConImagen = await Promise.all(productos.map(async (producto) => {
+            const imagenId = producto.getDataValue('imagen');
+            const imagenUrl = imagenId ? await getFilesFromDrive(imagenId) : null;
+            return { ...producto.get(), imagen: imagenUrl };
+        }));
+            
+        res.json(productosConImagen);
+
     } catch (error) {
         res.status(400).json({
             message: 'Ocurrio un error al obtener los productos',
@@ -212,7 +261,13 @@ export const getProductosByEmprendedor = async (req: Request, res: Response) => 
             return res.status(204).json();
         }
 
-        res.json(productos);
+        const productosConImagen = await Promise.all(productos.map(async (producto) => {
+            const imagenId = producto.getDataValue('imagen');
+            const imagenUrl = imagenId ? await getFilesFromDrive(imagenId) : null;
+            return { ...producto.get(), imagen: imagenUrl };
+        }));
+
+        res.json(productosConImagen);
 
     } catch(error) {
         console.error("Error al consultar productos por emprendedor:", error);
