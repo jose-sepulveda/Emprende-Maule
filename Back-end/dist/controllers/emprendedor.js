@@ -141,16 +141,13 @@ const getEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, function*
         }
         const emprendedorData = rutEmprendedor === null || rutEmprendedor === void 0 ? void 0 : rutEmprendedor.get();
         const { imagen_productos, imagen_local, comprobante } = emprendedorData;
-        const files = yield Promise.all([
-            imagen_productos ? (0, googleDrive_1.getFilesFromDrive)(imagen_productos) : null,
-            imagen_local ? (0, googleDrive_1.getFilesFromDrive)(imagen_local) : null,
-            comprobante ? (0, googleDrive_1.getFilesFromDrive)(comprobante) : null,
-        ]);
-        if (!res.headersSent) {
-            res.json({
-                emprendedor: Object.assign(Object.assign({}, emprendedorData), { imagen_productos: files[0] || null, imagen_local: files[1] || null, comprobante: files[2] || null }),
-            });
-        }
+        // Obtenemos los enlaces de visualización de los archivos
+        const imagenProductosData = imagen_productos ? yield (0, googleDrive_1.getFilesFromDrive)(imagen_productos) : null;
+        const imagenLocalData = imagen_local ? yield (0, googleDrive_1.getFilesFromDrive)(imagen_local) : null;
+        const comprobanteData = comprobante ? yield (0, googleDrive_1.getFilesFromDrive)(comprobante) : null;
+        res.json({
+            emprendedor: Object.assign(Object.assign({}, emprendedorData), { imagen_productos: imagenProductosData, imagen_local: imagenLocalData, comprobante: comprobanteData }),
+        });
     }
     catch (error) {
         res.status(400).json({

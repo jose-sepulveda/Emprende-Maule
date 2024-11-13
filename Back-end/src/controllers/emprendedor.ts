@@ -136,25 +136,23 @@ export const getEmprendedor: RequestHandler = async(req, res) => {
             }
         }
 
-        const emprendedorData = rutEmprendedor?.get()
+        const emprendedorData = rutEmprendedor?.get();
         const { imagen_productos, imagen_local, comprobante } = emprendedorData;
 
-        const files = await Promise.all([
-            imagen_productos ? getFilesFromDrive(imagen_productos) : null,
-            imagen_local ? getFilesFromDrive(imagen_local) : null,
-            comprobante ? getFilesFromDrive(comprobante) : null,
-        ]);
+        // Obtenemos los enlaces de visualización de los archivos
+        const imagenProductosData = imagen_productos ? await getFilesFromDrive(imagen_productos) : null;
+        const imagenLocalData = imagen_local ? await getFilesFromDrive(imagen_local) : null;
+        const comprobanteData = comprobante ? await getFilesFromDrive(comprobante) : null;
 
-        if (!res.headersSent) {
-            res.json({
-                emprendedor: {
-                    ...emprendedorData,
-                    imagen_productos: files[0] || null,
-                    imagen_local: files[1] || null,
-                    comprobante: files[2] || null,
-                },
-            });
-        }
+
+        res.json({
+            emprendedor: {
+                ...emprendedorData,
+                imagen_productos: imagenProductosData,
+                imagen_local: imagenLocalData,
+                comprobante: comprobanteData,
+            },
+        });
     
     } catch (error) {
         res.status(400).json({
