@@ -65,11 +65,11 @@ export const createVenta = async (req: Request, res: Response) => {
         //}
 
         const fechaActual = new Date();
-        const dia = fechaActual.getDate();
-        const mes = fechaActual.getMonth() + 1;
-        const anio = fechaActual.getFullYear();
+        //const dia = fechaActual.getDate();
+        //const mes = fechaActual.getMonth() + 1;
+        //const anio = fechaActual.getFullYear();
         //const hora = fechaActual.getHours();
-        const fechaFormateada = `${dia}/${mes}/${anio}`;
+        const fechaFormateada = fechaActual.toISOString().split('T')[0];
 
         const venta = await Ventas.create({
             id_cliente: id_cliente,
@@ -89,15 +89,20 @@ export const createVenta = async (req: Request, res: Response) => {
             return res.json({ msg: "No hay productos en el carrito" });
         } 
 
+        let subtotalVenta = 0;
+
         for (const carroProductos of listCarroProductos) {
-            const { cod_producto, cantidad } = carroProductos.dataValues;
+            const { cod_producto, cantidad, subtotal } = carroProductos.dataValues;
             const idVenta = venta.dataValues.id_venta;
 
             await Venta_productos.create({
                 id_venta: idVenta,
                 cod_producto,
-                cantidad
+                cantidad,
+                subtotal
             });
+
+            subtotalVenta += subtotal;
 
             const producto = await Productos.findOne({ where: {cod_producto} });
             if(producto) {
@@ -109,13 +114,13 @@ export const createVenta = async (req: Request, res: Response) => {
 
         await Carro.update({ total: 0}, { where: { id_cliente } });
 
-        const listVentaProductos = await Venta_productos.findAll({ where: { id_venta: venta.dataValues.id_venta} });
-        let subtotalVenta = 0;
+        //const listVentaProductos = await Venta_productos.findAll({ where: { id_venta: venta.dataValues.id_venta} });
+        //let subtotalVenta = 0;
 
-        for (const ventasProducto of listVentaProductos) {
-            const subtotalProducto = ventasProducto.dataValues.subtotal || 0;
-            subtotalVenta += subtotalProducto;
-        }
+        //for (const ventasProducto of listVentaProductos) {
+            //const subtotalProducto = ventasProducto.dataValues.subtotal || 0;
+            //subtotalVenta += subtotalProducto;
+        //}
 
         const iva = subtotalVenta * 0.19;
         const total = subtotalVenta + iva;
@@ -134,13 +139,38 @@ export const createVenta = async (req: Request, res: Response) => {
                 total: total,
                 subtotal: subtotalVenta,
                 iva: iva,
-                fecha_venta: venta.dataValues.fecha_venta,
+                fecha_venta: venta.dataValues.fecha_venta.toISOString().split('T')[0],
             }
         });
     } catch (error) {
         return res.status(400).json({
             msg: "Error al realizar la venta",
             error
+        });
+    }
+};
+
+export const deleteVenta = async (req: Request, res: Response) => {
+    const { id_venta } = req.params;
+    const venta = await Ventas.findByPk(id_venta);
+
+    if (!venta) {
+        return res.status(404).json({
+            msg: "La venta no existe",
+        });
+    }
+
+    try {
+
+        await venta.destroy();
+
+        res.json({
+            msg: "Venta eliminada correctamente",
+        });
+    } catch (error) {
+        return res.status(400).json({
+            msg: "Error al eliminar la venta",
+            error,
         });
     }
 };

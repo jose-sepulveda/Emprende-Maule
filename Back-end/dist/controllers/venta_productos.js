@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateVentaProducto = exports.deleteVentaProducto = void 0;
+exports.getVentaProducto = exports.getVentaProductosVenta = exports.getVentaProductos = exports.updateVentaProducto = exports.deleteVentaProducto = void 0;
 const venta_productos_1 = require("../models/venta_productos");
 const deleteVentaProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_venta_productos } = req.params;
@@ -56,3 +56,47 @@ const updateVentaProducto = (req, res) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.updateVentaProducto = updateVentaProducto;
+const getVentaProductos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const listVentaProductos = yield venta_productos_1.Venta_productos.findAll();
+        res.json(listVentaProductos);
+    }
+    catch (error) {
+        res.status(500).json({
+            msg: "Error al obtener los detalles de ventas",
+            error
+        });
+    }
+});
+exports.getVentaProductos = getVentaProductos;
+const getVentaProductosVenta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_venta } = req.params;
+    try {
+        const listVentaProductos = yield venta_productos_1.Venta_productos.findAll({ where: { id_venta: id_venta } });
+        res.json(listVentaProductos);
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Error al obtener los detalles de ventas de esa venta." });
+    }
+});
+exports.getVentaProductosVenta = getVentaProductosVenta;
+const getVentaProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_venta_productos } = req.params;
+    try {
+        const ventaProducto = yield venta_productos_1.Venta_productos.findOne({ where: { id_venta_productos: id_venta_productos } });
+        if (!ventaProducto) {
+            return res.status(404).json({
+                msg: "El detalle de venta no existe"
+            });
+        }
+        res.json(ventaProducto);
+    }
+    catch (error) {
+        res.status(500).json({
+            msg: "Error al obtener el detalle de venta",
+            error
+        });
+    }
+});
+exports.getVentaProducto = getVentaProducto;

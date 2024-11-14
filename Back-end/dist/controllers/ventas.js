@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createVenta = exports.getVentaCliente = exports.getVenta = exports.getVentas = void 0;
+exports.deleteVenta = exports.createVenta = exports.getVentaCliente = exports.getVenta = exports.getVentas = void 0;
 const ventas_1 = require("../models/ventas");
 const producto_1 = require("../models/producto");
 const carro_productos_1 = require("../models/carro_productos");
@@ -74,11 +74,11 @@ const createVenta = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         //return res.json({ msg: "Debes realizar el pago del carrito primero" });
         //}
         const fechaActual = new Date();
-        const dia = fechaActual.getDate();
-        const mes = fechaActual.getMonth() + 1;
-        const anio = fechaActual.getFullYear();
+        //const dia = fechaActual.getDate();
+        //const mes = fechaActual.getMonth() + 1;
+        //const anio = fechaActual.getFullYear();
         //const hora = fechaActual.getHours();
-        const fechaFormateada = `${dia}/${mes}/${anio}`;
+        const fechaFormateada = fechaActual.toISOString().split('T')[0];
         const venta = yield ventas_1.Ventas.create({
             id_cliente: id_cliente,
             fecha_venta: fechaFormateada,
@@ -94,14 +94,17 @@ const createVenta = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         if (!listCarroProductos || listCarroProductos.length === 0) {
             return res.json({ msg: "No hay productos en el carrito" });
         }
+        let subtotalVenta = 0;
         for (const carroProductos of listCarroProductos) {
-            const { cod_producto, cantidad } = carroProductos.dataValues;
+            const { cod_producto, cantidad, subtotal } = carroProductos.dataValues;
             const idVenta = venta.dataValues.id_venta;
             yield venta_productos_1.Venta_productos.create({
                 id_venta: idVenta,
                 cod_producto,
-                cantidad
+                cantidad,
+                subtotal
             });
+            subtotalVenta += subtotal;
             const producto = yield producto_1.Productos.findOne({ where: { cod_producto } });
             if (producto) {
                 const cantidadActual = producto.dataValues.cantidad_disponible - cantidad;
@@ -110,12 +113,12 @@ const createVenta = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             yield carroProductos.destroy();
         }
         yield carro_1.Carro.update({ total: 0 }, { where: { id_cliente } });
-        const listVentaProductos = yield venta_productos_1.Venta_productos.findAll({ where: { id_venta: venta.dataValues.id_venta } });
-        let subtotalVenta = 0;
-        for (const ventasProducto of listVentaProductos) {
-            const subtotalProducto = ventasProducto.dataValues.subtotal || 0;
-            subtotalVenta += subtotalProducto;
-        }
+        //const listVentaProductos = await Venta_productos.findAll({ where: { id_venta: venta.dataValues.id_venta} });
+        //let subtotalVenta = 0;
+        //for (const ventasProducto of listVentaProductos) {
+        //const subtotalProducto = ventasProducto.dataValues.subtotal || 0;
+        //subtotalVenta += subtotalProducto;
+        //}
         const iva = subtotalVenta * 0.19;
         const total = subtotalVenta + iva;
         yield venta.update({
@@ -131,7 +134,7 @@ const createVenta = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 total: total,
                 subtotal: subtotalVenta,
                 iva: iva,
-                fecha_venta: venta.dataValues.fecha_venta,
+                fecha_venta: venta.dataValues.fecha_venta.toISOString().split('T')[0],
             }
         });
     }
@@ -143,3 +146,25 @@ const createVenta = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.createVenta = createVenta;
+const deleteVenta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_venta } = req.params;
+    const venta = yield ventas_1.Ventas.findByPk(id_venta);
+    if (!venta) {
+        return res.status(404).json({
+            msg: "La venta no existe",
+        });
+    }
+    try {
+        yield venta.destroy();
+        res.json({
+            msg: "Venta eliminada correctamente",
+        });
+    }
+    catch (error) {
+        return res.status(400).json({
+            msg: "Error al eliminar la venta",
+            error,
+        });
+    }
+});
+exports.deleteVenta = deleteVenta;
