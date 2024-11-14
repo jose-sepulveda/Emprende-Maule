@@ -23,6 +23,7 @@ function Menu(){
                 { to: "/gestionClientes", text: "Gestion Clientes" },
                 { to: "/gestionEmprendedores", text: "Gestion Emprendedores" },
                 {to:"/gestionAdmin", text:"Gestion Admin"},
+                {to:"/solicitudes-registro", text:"Solicitudes de Registro"}
             );
         }
  
@@ -108,7 +109,7 @@ routes.push({to:"/gestionCategorias", text:"Gestion Categorias"})
 routes.push({to:"/gestionEmprendedores", text:"Gestion Emprededores"})
 routes.push({to:"/gestionAdmin", text:"Gestion Admin"})
 routes.push({to:"/tablaP", text:"Productos"})
-
+routes.push({to:"/solicitudes-registro", text:"Solicitudes de Registro"})
 
 export { Menu };
 

@@ -32,10 +32,12 @@ import { ToastContainer } from 'react-toastify';
 import { AuthContext, AuthProvider } from './Auth/AuthContext';
 import { PrivateRoute } from './Auth/PrivateRoute';
 import DetalleEmprendedor from './components/DetalleEmprendedor.js';
+import DetalleSolicitud from './components/DetalleSolicitud.js';
 import FormActualizarEmprendedor from './components/FormActualizarEmprendedor.js';
 import ResetPasswordAdmin from './components/ResetPasswordAdmin.js';
 import ResetPasswordCliente from './components/ResetPasswordCliente.js';
 import ResetPasswordEmprendedor from './components/ResetPasswordEmprendedor.js';
+import { SolicitudesRegistro } from './pages/SolicitudesRegistro.js';
 
 function AuthProviderWithRouter({children}) {
   const { auth, logout } = useContext(AuthContext);
@@ -81,6 +83,8 @@ function App() {
             <Route path= "/gestionEmprendedores" element= {<PrivateRoute><GestionEmprendedores/></PrivateRoute>}/>
             <Route path= "/actualizar-emprendedor/:rut_emprendedor" element= {<PrivateRoute><FormActualizarEmprendedor/></PrivateRoute>}/>
             <Route path= "/detalle-emprendedor/:rut_emprendedor" element= {<PrivateRoute><DetalleEmprendedor/></PrivateRoute>}/>
+            <Route path= "/solicitudes-registro" element= {<PrivateRoute><SolicitudesRegistro/></PrivateRoute>}/>
+            <Route path= "/detalle-solicitud/:rut_emprendedor" element= {<PrivateRoute><DetalleSolicitud/></PrivateRoute>}/>
 
             {/*Cliente*/}
             <Route path='/login-cliente' element={<LoginCliente/>}/>

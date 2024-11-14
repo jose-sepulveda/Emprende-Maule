@@ -134,7 +134,7 @@ exports.getFilesFromDrive = getFilesFromDrive;
 const setPublicAccessToFile = (fileId) => __awaiter(void 0, void 0, void 0, function* () {
     const auth = new googleapis_1.google.auth.GoogleAuth({
         keyFile: path_1.default.resolve(__dirname, '../config/credencial.json'),
-        scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+        scopes: ['https://www.googleapis.com/auth/drive'],
     });
     const drive = googleapis_1.google.drive({ version: 'v3', auth });
     try {

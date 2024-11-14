@@ -63,7 +63,14 @@ export const updatePassword = (passwordData) => api.patch('/password', passwordD
 
 // Actualizar estado del emprendedor
 
-export const updateEstadoEmprendedor = (estadoData) => api.patch('/estado', estadoData);
+export const updateEstadoEmprendedor = (estadoData) => {
+    return api.patch('/estado', estadoData)
+        .then(response => response.data)
+        .catch(error => {
+            console.error('Error al actualizar el estado del emprendedor:', error);
+            throw error;
+        })
+};
 
 // Correo para recuperar cntraseña
 export const recuperarContrasenaEmprendedor = async(correo_electronico) => {
