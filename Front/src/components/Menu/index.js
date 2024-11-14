@@ -12,6 +12,7 @@ function Menu(){
     const navigate = useNavigate();
     const routes = [{ to: "/", text: "Inicio" }];
 
+    
     if (auth.token) {
         const decodedToken = jwtDecode(auth.token);
         
@@ -28,8 +29,10 @@ function Menu(){
 
         // Emprendedor
         if (decodedToken.role === "emprendedor") {
-            routes.puch(
+            routes.push(
 
+                {to:"/gestionProducto", text:"Gestion Productos"},
+                {to:"/tablaP", text:"Productos"},
         );   
         }
 
@@ -43,8 +46,7 @@ function Menu(){
         routes.push(
             { to: "/crearCuenta", text: "Crear cuenta" },
             { to: "/login", text: "Iniciar sesión" },
-            {to:"/gestionProducto", text:"Gestion Productos"},
-            {to:"/tablaP", text:"Productos"},
+
 
         );    
     }

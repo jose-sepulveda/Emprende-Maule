@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { crearProducto } from '../services/producto';
-import { getCategorias } from '../services/categoria'; 
+import { getCategorias } from '../services/categoria';
+import { AuthContext } from '../Auth/AuthContext'; // Contexto de autenticación
 import '../Styles/gestionProductos.css';
 
 const FormCrearProducto = () => {
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm();
     const [categorias, setCategorias] = useState([]);
+    const { auth } = useContext(AuthContext); // Obtener id_emprendedor desde el contexto
 
     useEffect(() => {
         getCategorias()
             .then(response => {
-                setCategorias(response.data); // Verifica la respuesta de la API
+                setCategorias(response.data); // Obtener categorías
             })
             .catch(error => {
                 console.error("Error al obtener las categorías:", error);
@@ -21,6 +23,7 @@ const FormCrearProducto = () => {
     }, []);
 
     const enviar = async (data) => {
+        // Preparar el objeto producto
         const producto = {
             nombre_producto: data.nombre_producto,
             precio_producto: data.precio_producto,
@@ -28,8 +31,12 @@ const FormCrearProducto = () => {
             id_categoria: data.id_categoria, 
             cantidad_disponible: data.cantidad_disponible,
             descuento: data.descuento,
-            imagen: data.imagen[0] // La imagen se maneja como un archivo
+            imagen: data.imagen[0], // La imagen se maneja como un archivo
+            id_emprendedor: auth.id, // Aquí se agrega el id_emprendedor desde el contexto
         };
+
+        // Verificar que los datos estén siendo enviados correctamente
+        console.log('Datos enviados:', producto);
 
         try {
             const response = await crearProducto(producto);
@@ -43,23 +50,41 @@ const FormCrearProducto = () => {
 
     return (
         <div className="form-container-prod">
-                <h2>Añadir nuevo producto</h2>
+            <h2>Añadir nuevo producto</h2>
             <form className="form-prod" onSubmit={handleSubmit(enviar)}>
                 <div>
                     <label htmlFor="nombre_producto">Nombre</label>
-                    <input id="nombre_producto" type="text" required {...register("nombre_producto")} />
+                    <input 
+                        id="nombre_producto" 
+                        type="text" 
+                        {...register("nombre_producto", { required: "El nombre es obligatorio" })} 
+                    />
+                    {errors.nombre_producto && <span>{errors.nombre_producto.message}</span>}
                 </div>
                 <div>
                     <label htmlFor="precio_producto">Precio</label>
-                    <input id="precio_producto" type="number" required {...register("precio_producto")} />
+                    <input 
+                        id="precio_producto" 
+                        type="number" 
+                        {...register("precio_producto", { required: "El precio es obligatorio", min: 0 })} 
+                    />
+                    {errors.precio_producto && <span>{errors.precio_producto.message}</span>}
                 </div>
                 <div>
                     <label htmlFor="descripcion_producto">Descripción</label>
-                    <input id="descripcion_producto" type="text" required {...register("descripcion_producto")} />
+                    <input 
+                        id="descripcion_producto" 
+                        type="text" 
+                        {...register("descripcion_producto", { required: "La descripción es obligatoria" })} 
+                    />
+                    {errors.descripcion_producto && <span>{errors.descripcion_producto.message}</span>}
                 </div>
                 <div>
                     <label htmlFor="id_categoria">Categoría</label>
-                    <select id="id_categoria" {...register("id_categoria")} required>
+                    <select 
+                        id="id_categoria" 
+                        {...register("id_categoria", { required: "Seleccione una categoría" })} 
+                    >
                         <option value="">Seleccione una categoría</option>
                         {categorias && categorias.length > 0 ? (
                             categorias.map(categoria => (
@@ -71,14 +96,25 @@ const FormCrearProducto = () => {
                             <option disabled>Cargando categorías...</option>
                         )}
                     </select>
+                    {errors.id_categoria && <span>{errors.id_categoria.message}</span>}
                 </div>
                 <div>
                     <label htmlFor="cantidad_disponible">Cantidad Disponible</label>
-                    <input id="cantidad_disponible" type="number" required {...register("cantidad_disponible")} />
+                    <input 
+                        id="cantidad_disponible" 
+                        type="number" 
+                        {...register("cantidad_disponible", { required: "La cantidad es obligatoria", min: 1 })} 
+                    />
+                    {errors.cantidad_disponible && <span>{errors.cantidad_disponible.message}</span>}
                 </div>
                 <div>
                     <label htmlFor="descuento">Descuento</label>
-                    <input id="descuento" type="number" {...register("descuento")} />
+                    <input 
+                        id="descuento" 
+                        type="number" 
+                        {...register("descuento", { min: 0, max: 100 })} 
+                    />
+                    {errors.descuento && <span>{errors.descuento.message}</span>}
                 </div>
                 <div className='file-uploads-p'>
                     <label htmlFor="imagen">Imagen</label>
