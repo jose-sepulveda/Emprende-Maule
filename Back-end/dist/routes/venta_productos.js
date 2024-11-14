@@ -5,4 +5,7 @@ const venta_productos_1 = require("../controllers/venta_productos");
 const router = (0, express_1.Router)();
 router.delete('/:id_venta_productos', venta_productos_1.deleteVentaProducto);
 router.put('/:id_venta_productos', venta_productos_1.updateVentaProducto);
+router.get('/list', venta_productos_1.getVentaProductos);
+router.get('/venta/:id_venta', venta_productos_1.getVentaProductosVenta);
+router.get('/:id_venta_productos', venta_productos_1.getVentaProducto);
 exports.default = router;
