@@ -115,7 +115,7 @@ exports.crearEmprendedor = crearEmprendedor;
 const getEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { rut_emprendedor } = req.params;
     try {
-        const rutEmprendedor = yield emprendedor_1.Emprendedor.findOne({
+        const emprendedor = yield emprendedor_1.Emprendedor.findOne({
             attributes: [
                 'id_emprendedor',
                 'rut_emprendedor',
@@ -134,13 +134,17 @@ const getEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 'estado_emprendedor',
             ], where: { rut_emprendedor: rut_emprendedor }
         });
-        if (!rutEmprendedor) {
+        if (!emprendedor) {
             if (!res.headersSent) {
                 res.status(404).json({ msg: 'El rut de este emprendedor no existe' });
             }
         }
+        const imagenProductosUrl = (emprendedor === null || emprendedor === void 0 ? void 0 : emprendedor.getDataValue("imagen_productos")) ? yield (0, googleDrive_1.setPublicAccessToFile)(emprendedor.getDataValue("imagen_productos")) : null;
+        const imagenLocalUrl = (emprendedor === null || emprendedor === void 0 ? void 0 : emprendedor.getDataValue("imagen_local")) ? yield (0, googleDrive_1.setPublicAccessToFile)(emprendedor.getDataValue("imagen_local")) : null;
+        const comprobanteUrl = (emprendedor === null || emprendedor === void 0 ? void 0 : emprendedor.getDataValue("comprobante")) ? yield (0, googleDrive_1.setPublicAccessToFile)(emprendedor.getDataValue("comprobante")) : null;
+        // Responder con los datos del emprendedor y los enlaces públicos
         res.json({
-            rutEmprendedor,
+            emprendedor: Object.assign(Object.assign({}, emprendedor === null || emprendedor === void 0 ? void 0 : emprendedor.toJSON()), { imagen_productos: imagenProductosUrl, imagen_local: imagenLocalUrl, comprobante: comprobanteUrl }),
         });
     }
     catch (error) {

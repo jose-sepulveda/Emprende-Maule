@@ -10,8 +10,8 @@ import routerCliente from '../routes/cliente';
 import routerEmprendedor from '../routes/emprendedor';
 import routerProducto from '../routes/producto';
 import routerResena from '../routes/resena';
-import routerVentas from '../routes/ventas';
 import routerVentaProductos from '../routes/venta_productos';
+import routerVentas from '../routes/ventas';
 import { Administrador } from './administrador';
 import { Carro } from './carro';
 import { Carro_productos } from './carro_productos';
@@ -20,8 +20,8 @@ import { Cliente } from './cliente';
 import { Emprendedor } from './emprendedor';
 import { Productos } from './producto';
 import { Resena } from './resena';
+import { Venta_productos } from './venta_productos';
 import { Ventas } from './ventas';
-import { Venta_productos} from './venta_productos';
 
 class Server {
     private app: Application;
