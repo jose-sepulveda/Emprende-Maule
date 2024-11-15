@@ -114,16 +114,20 @@ const getFilesFromDrive = (fileId) => __awaiter(void 0, void 0, void 0, function
     try {
         const auth = new googleapis_1.google.auth.GoogleAuth({
             keyFile: path_1.default.resolve(__dirname, '../config/credencial.json'),
-            scopes: ['https://www.googleapis.com/auth/drive.readonly'],
+            scopes: ['https://www.googleapis.com/auth/drive'],
         });
         const drive = googleapis_1.google.drive({ version: 'v3', auth });
-        // Obtener los metadatos del archivo
-        const response = yield drive.files.get({
+        // Configurar el archivo como compartido públicamente
+        yield drive.permissions.create({
             fileId,
-            fields: 'webViewLink', // Solo solicitamos el enlace para ver el archivo
+            requestBody: {
+                role: 'reader',
+                type: 'anyone',
+            },
         });
-        const fileLink = response.data.webViewLink; // Devuelve el enlace para visualizar el archivo
-        return fileLink || null;
+        // Construir manualmente el enlace de visualización
+        const fileLink = `https://drive.google.com/file/d/${fileId}/view?usp=sharing`;
+        return fileLink;
     }
     catch (error) {
         console.error('Error al obtener el archivo de Google Drive:', error);
@@ -131,6 +135,7 @@ const getFilesFromDrive = (fileId) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.getFilesFromDrive = getFilesFromDrive;
+// Función para configurar el acceso público del archivo en Google Drive
 const setPublicAccessToFile = (fileId) => __awaiter(void 0, void 0, void 0, function* () {
     const auth = new googleapis_1.google.auth.GoogleAuth({
         keyFile: path_1.default.resolve(__dirname, '../config/credencial.json'),
@@ -138,16 +143,15 @@ const setPublicAccessToFile = (fileId) => __awaiter(void 0, void 0, void 0, func
     });
     const drive = googleapis_1.google.drive({ version: 'v3', auth });
     try {
-        // Obtenemos el archivo para asegurarnos de que se pueda acceder públicamente
+        // Comprobar si el archivo ya es público
         const file = yield drive.files.get({
             fileId: fileId,
-            fields: 'webViewLink,permissions', // Obtén los permisos y el enlace de vista
+            fields: 'webViewLink, permissions',
         });
-        // Verifica si el archivo tiene permisos públicos
         const permissions = file.data.permissions || [];
         const isPublic = permissions.some(permission => permission.role === 'reader' && permission.type === 'anyone');
         if (!isPublic) {
-            // Cambia los permisos para hacerlo público
+            // Si el archivo no es público, asigna los permisos para hacerlo público
             yield drive.permissions.create({
                 fileId: fileId,
                 requestBody: {
@@ -156,12 +160,16 @@ const setPublicAccessToFile = (fileId) => __awaiter(void 0, void 0, void 0, func
                 },
             });
         }
-        // Retorna el enlace público accesible directamente
-        return `https://drive.google.com/uc?export=view&id=${fileId}`;
+        // Obtener el enlace actualizado de visualización
+        const updatedFile = yield drive.files.get({
+            fileId: fileId,
+            fields: 'webViewLink',
+        });
+        return updatedFile.data.webViewLink || null;
     }
     catch (error) {
         console.error('Error al obtener o hacer público el archivo de Google Drive:', error);
-        throw error; // Lanza el error para manejarlo donde sea necesario
+        throw error;
     }
 });
 exports.setPublicAccessToFile = setPublicAccessToFile;

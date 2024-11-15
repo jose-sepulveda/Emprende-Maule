@@ -78,9 +78,9 @@ const crearEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, functio
         const imagenProductosPath = path_1.default.join(__dirname, '../uploads', files['imagen_productos'][0].filename);
         const comprobanteFileId = yield (0, googleDrive_1.uploadFileToDrive)(comprobantePath, files['comprobante'][0].originalname, 'aplication/pdf');
         fs_1.default.unlinkSync(comprobantePath);
-        const imagenLocalFileId = yield (0, googleDrive_1.uploadFileToDrive)(imagenLocalPath, files['imagen_local'][0].originalname, 'image/jpeg');
+        const imagenLocalFileId = yield (0, googleDrive_1.uploadFileToDrive)(imagenLocalPath, files['imagen_local'][0].originalname, 'image/png');
         fs_1.default.unlinkSync(imagenLocalPath);
-        const imagenProductosFileId = yield (0, googleDrive_1.uploadFileToDrive)(imagenProductosPath, files['imagen_productos'][0].originalname, 'image/jpeg');
+        const imagenProductosFileId = yield (0, googleDrive_1.uploadFileToDrive)(imagenProductosPath, files['imagen_productos'][0].originalname, 'image/png');
         fs_1.default.unlinkSync(imagenProductosPath);
         const nuevoEmprendedor = yield emprendedor_1.Emprendedor.create({
             "rut_emprendedor": rut_emprendedor,
@@ -135,16 +135,11 @@ const getEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, function*
             ], where: { rut_emprendedor: rut_emprendedor }
         });
         if (!emprendedor) {
-            if (!res.headersSent) {
-                res.status(404).json({ msg: 'El rut de este emprendedor no existe' });
-            }
+            return res.status(404).json({ msg: 'El rut de este emprendedor no existe' });
         }
-        const imagenProductosUrl = (emprendedor === null || emprendedor === void 0 ? void 0 : emprendedor.getDataValue("imagen_productos")) ? yield (0, googleDrive_1.setPublicAccessToFile)(emprendedor.getDataValue("imagen_productos")) : null;
-        const imagenLocalUrl = (emprendedor === null || emprendedor === void 0 ? void 0 : emprendedor.getDataValue("imagen_local")) ? yield (0, googleDrive_1.setPublicAccessToFile)(emprendedor.getDataValue("imagen_local")) : null;
-        const comprobanteUrl = (emprendedor === null || emprendedor === void 0 ? void 0 : emprendedor.getDataValue("comprobante")) ? yield (0, googleDrive_1.setPublicAccessToFile)(emprendedor.getDataValue("comprobante")) : null;
         // Responder con los datos del emprendedor y los enlaces públicos
         res.json({
-            emprendedor: Object.assign(Object.assign({}, emprendedor === null || emprendedor === void 0 ? void 0 : emprendedor.toJSON()), { imagen_productos: imagenProductosUrl, imagen_local: imagenLocalUrl, comprobante: comprobanteUrl }),
+            emprendedor
         });
     }
     catch (error) {

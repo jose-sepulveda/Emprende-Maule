@@ -27,11 +27,9 @@ const DetalleEmprendedor = () => {
         return `https://drive.google.com/uc?export=view&id=${fileId}`;
     };
     
-    if (!emprendedor || Object.keys(emprendedor).length === 0) {
+    if (!emprendedor) {
         return <p>  Cargando...</p>;
     }
-
-    //console.log(emprendedor.imagen_productos)
 
     return (
         <div className='detalle-emprendedor'>

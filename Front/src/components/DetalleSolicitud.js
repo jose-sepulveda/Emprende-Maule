@@ -45,73 +45,69 @@ const DetalleSolicitud = () => {
         }
     };
 
+
+
     if (!emprendedor || Object.keys(emprendedor).length === 0) {
         return <p>  Cargando...</p>;
     }
 
-    
+    console.log(`https://drive.google.com/uc?export=view&id=${emprendedor.imagen_productos}`)
 
     return (
         <div className='detalle-emprendedor'>
-            <h2>Detalles de Solicitud de Registro</h2>
-            <p><strong>Nombre:</strong> {emprendedor.nombre_emprendedor}</p>
-            <p><strong>Apellido Paterno:</strong> {emprendedor.apellido1_emprendedor}</p>
-            <p><strong>Apellido Materno:</strong> {emprendedor.apellido2_emprendedor}</p>
-            <p><strong>Dirección:</strong> {emprendedor.direccion}</p>
-            <p><strong>Telefono:</strong> {emprendedor.telefono}</p>
-            <p><strong>Correo Electrónico:</strong> {emprendedor.correo_electronico}</p>
-            <p><strong>Tipo de Cuenta Bancaria:</strong> {emprendedor.tipo_de_cuenta}</p>
-            <p><strong>Número de Cuenta Bancaria:</strong> {emprendedor.numero_de_cuenta}</p>
-            <p><strong>Estado:</strong> {emprendedor.estado_emprendedor}</p>
-            <h3 className='documentos-title'>Archivos Adjuntados</h3>
-
-            <h3>Documentos Tributarios</h3>
-            <div>
-                {emprendedor.comprobante && (
-                    <a href={emprendedor.comprobante} target="_blank" rel="noopener noreferrer">
-                        Comprobante
-                    </a>
-                )}
-            </div> 
-                    
-            <h3>Imágenes de sus Productos</h3>
-            <div>
-                {emprendedor.imagen_productos && (
-                    <img 
-                        src={emprendedor.imagen_productos} 
-                        alt="Imagen de productos" 
-                    />
-                )}
-            </div>
-
-            <h3>Imágenes de su Local o Domicilio</h3>
-            <div>
-                {emprendedor.imagen_local && (
-                    <img 
-                        src={emprendedor.imagen_local} 
-                        alt="Imagen del local"
-                    />
-                )}
-            </div>
-
-            <div className='actions'>
-                <button
-                    className='aprobar'
-                    onClick={() => handleUpdateEstado("Aprobado")}
-                    disabled={loading}
-                >
-                    {loading ? "Aprobando..." : "Aprobar Solicitud"}
-                </button>
-
-                <button
-                    className='rechazar'
-                    onClick={() => handleUpdateEstado("Rechazado")}
-                    disabled={loading}
-                >
-                    {loading ? "Rechazando..." : "Rechazar Solicitud"}
-                </button>
-            </div>
+    <h2>Detalles de Solicitud de Registro</h2>
+    {emprendedor && (
+      <>
+        <p><strong>Nombre:</strong> {emprendedor.nombre_emprendedor}</p>
+        <p><strong>Apellido Paterno:</strong> {emprendedor.apellido1_emprendedor}</p>
+        <p><strong>Apellido Materno:</strong> {emprendedor.apellido2_emprendedor}</p>
+        <p><strong>Dirección:</strong> {emprendedor.direccion}</p>
+        <p><strong>Telefono:</strong> {emprendedor.telefono}</p>
+        <p><strong>Correo Electrónico:</strong> {emprendedor.correo_electronico}</p>
+        <p><strong>Tipo de Cuenta Bancaria:</strong> {emprendedor.tipo_de_cuenta}</p>
+        <p><strong>Número de Cuenta Bancaria:</strong> {emprendedor.numero_de_cuenta}</p>
+        <p><strong>Estado:</strong> {emprendedor.estado_emprendedor}</p>
+        <h3 className='documentos-title'>Archivos Adjuntados</h3>
+        <h3>Documentos Tributarios</h3>
+        <div>
+          {emprendedor.comprobante && (
+            <a href={emprendedor.comprobante} target="_blank" rel="noopener noreferrer">
+              Comprobante
+            </a>
+          )}
         </div>
+        <h3>Imágenes de sus Productos</h3>
+
+        <div>
+          {emprendedor.imagen_productos && (
+            <img src={`https://drive.google.com/thumbnail?id=${emprendedor.imagen_productos}&sz=w1000`}alt="Imagen de productos" />
+          )}
+        </div>
+        <h3>Imágenes de su Local o Domicilio</h3>
+        <div>
+          {emprendedor.imagen_local && (
+            <a href={emprendedor.imagen_local}>Local</a>
+          )}
+        </div>
+        <div className='actions'>
+          <button
+            className='aprobar'
+            onClick={() => handleUpdateEstado("Aprobado")}
+            disabled={loading}
+          >
+            {loading ? "Aprobando..." : "Aprobar Solicitud"}
+          </button>
+          <button
+            className='rechazar'
+            onClick={() => handleUpdateEstado("Rechazado")}
+            disabled={loading}
+          >
+            {loading ? "Rechazando..." : "Rechazar Solicitud"}
+          </button>
+        </div>
+      </>
+    )}
+  </div>
     )
     }
 
