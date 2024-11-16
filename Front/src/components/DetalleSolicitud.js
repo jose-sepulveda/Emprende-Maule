@@ -83,15 +83,18 @@ const DetalleSolicitud = () => {
         <div className='contenedor-imagen-producto'>
           {emprendedor.imagen_productos && (
             <img 
-              className='imagen-productos'
+              className='imagen-producto'
               src={generarUrl(emprendedor.imagen_productos)}
               alt="Imagen de productos" />
           )}
         </div>
         <h3>Imágenes de su Local o Domicilio</h3>
-        <div>
+        <div className='contenedor-imagen-local'>
           {emprendedor.imagen_local && (
-            <img src={generarUrl(emprendedor.imagen_local)} alt='Imagen de Local'/>
+            <img
+              className='imagen-local' 
+              src={generarUrl(emprendedor.imagen_local)} 
+              alt='Imagen de Local'/>
           )}
         </div>
         <div className='actions'>

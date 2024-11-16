@@ -55,7 +55,7 @@ const DetalleEmprendedor = () => {
             </div> 
                     
             <h3>Imágenes de sus Productos</h3>
-            <div className='contenerdor-imagen-producto'>
+            <div className='contenedor-imagen-producto'>
                 {emprendedor.imagen_productos && (
                     <img 
                         className='imagen-producto'
@@ -66,7 +66,7 @@ const DetalleEmprendedor = () => {
             </div>
 
             <h3>Imágenes de su Local o Domicilio</h3>
-            <div className='contenerdor-imagen-local'>
+            <div className='contenedor-imagen-local'>
                 {emprendedor.imagen_local && (
                     <img 
                         className='imagen-local'
