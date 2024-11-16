@@ -4,7 +4,7 @@ import path from "path";
 import sequelize from "sequelize";
 import { Categorias } from "../models/categoria";
 import { Productos } from "../models/producto";
-import { uploadPhoToToDrive, getFilesFromDrive, deleteFileFromDrive} from "../services/googleDrive";
+import { uploadPhoToToDrive, deleteFileFromDrive} from "../services/googleDrive";
 import { Emprendedor } from "../models/emprendedor";
 
 export const newProducto = async(req: Request, res: Response) =>{
@@ -66,10 +66,12 @@ export const getProducto = async(req: Request, res: Response) => {
                 'imagen',
                 'id_emprendedor'
             ],
-            include: [{
+            include: [
+                {
                 model: Categorias,
                 attributes: []
-            }],
+                }
+            ],
             where: { cod_producto }
         });
 
@@ -77,13 +79,7 @@ export const getProducto = async(req: Request, res: Response) => {
             return res.status(404).json({ message: "El producto no existe" });
         }
 
-        const productoData = producto.get();
-        const imagenFile = productoData.imagen ? await getFilesFromDrive(productoData.imagen) : null;
-
-        res.json({
-            ...productoData,
-            imagen: imagenFile || null
-        });
+        return res.status(200).json(producto);
 
     } catch (error) {
         console.error("Ocurrió un error al obtener el producto:", error);
@@ -104,28 +100,12 @@ export const getProductos = async(req: Request, res: Response) =>{
                 attributes: [],
             }
         ]
-    });
-
-    const productosConImagenes = await Promise.all(
-        listaProductos.map(async (producto) => {
-            const productoData = producto.get();
-            const imagenFile = productoData.imagen ? await getFilesFromDrive(productoData.imagen) : null;
-            return {
-                ...productoData,
-                imagen: imagenFile || null
-            };
-        })
-    );
-
-    
-    res.json(productosConImagenes);
-
+      })
+      res.json(listaProductos);
     }catch(error){
-        console. error("Ocurrio un error al obtener los productos:", error);
-        return res.status(400).json({
+        res.status(400).json({
             message: 'Ocurrio un error al obtener los productos',
-            error
-        });
+        })
     }
 };
 
@@ -222,13 +202,7 @@ export const getProductosByCategoria = async(req: Request, res: Response) => {
             });
         }
 
-        const productosConImagen = await Promise.all(productos.map(async (producto) => {
-            const imagenId = producto.getDataValue('imagen');
-            const imagenUrl = imagenId ? await getFilesFromDrive(imagenId) : null;
-            return { ...producto.get(), imagen: imagenUrl };
-        }));
-            
-        res.json(productosConImagen);
+        return res.json(productos);
 
     } catch (error) {
         res.status(400).json({
@@ -261,13 +235,7 @@ export const getProductosByEmprendedor = async (req: Request, res: Response) => 
             return res.status(204).json();
         }
 
-        const productosConImagen = await Promise.all(productos.map(async (producto) => {
-            const imagenId = producto.getDataValue('imagen');
-            const imagenUrl = imagenId ? await getFilesFromDrive(imagenId) : null;
-            return { ...producto.get(), imagen: imagenUrl };
-        }));
-
-        res.json(productosConImagen);
+        return res.json(productos);
 
     } catch(error) {
         console.error("Error al consultar productos por emprendedor:", error);

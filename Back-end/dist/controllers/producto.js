@@ -74,18 +74,18 @@ const getProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 'imagen',
                 'id_emprendedor'
             ],
-            include: [{
+            include: [
+                {
                     model: categoria_1.Categorias,
                     attributes: []
-                }],
+                }
+            ],
             where: { cod_producto }
         });
         if (!producto) {
             return res.status(404).json({ message: "El producto no existe" });
         }
-        const productoData = producto.get();
-        const imagenFile = productoData.imagen ? yield (0, googleDrive_1.getFilesFromDrive)(productoData.imagen) : null;
-        res.json(Object.assign(Object.assign({}, productoData), { imagen: imagenFile || null }));
+        return res.status(200).json(producto);
     }
     catch (error) {
         console.error("Ocurrió un error al obtener el producto:", error);
@@ -106,18 +106,11 @@ const getProductos = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 }
             ]
         });
-        const productosConImagenes = yield Promise.all(listaProductos.map((producto) => __awaiter(void 0, void 0, void 0, function* () {
-            const productoData = producto.get();
-            const imagenFile = productoData.imagen ? yield (0, googleDrive_1.getFilesFromDrive)(productoData.imagen) : null;
-            return Object.assign(Object.assign({}, productoData), { imagen: imagenFile || null });
-        })));
-        res.json(productosConImagenes);
+        res.json(listaProductos);
     }
     catch (error) {
-        console.error("Ocurrio un error al obtener los productos:", error);
-        return res.status(400).json({
+        res.status(400).json({
             message: 'Ocurrio un error al obtener los productos',
-            error
         });
     }
 });
@@ -207,12 +200,7 @@ const getProductosByCategoria = (req, res) => __awaiter(void 0, void 0, void 0, 
                 message: 'No hay productos en esta categoria'
             });
         }
-        const productosConImagen = yield Promise.all(productos.map((producto) => __awaiter(void 0, void 0, void 0, function* () {
-            const imagenId = producto.getDataValue('imagen');
-            const imagenUrl = imagenId ? yield (0, googleDrive_1.getFilesFromDrive)(imagenId) : null;
-            return Object.assign(Object.assign({}, producto.get()), { imagen: imagenUrl });
-        })));
-        res.json(productosConImagen);
+        return res.json(productos);
     }
     catch (error) {
         res.status(400).json({
@@ -242,12 +230,7 @@ const getProductosByEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0
         if (!productos || productos.length === 0) {
             return res.status(204).json();
         }
-        const productosConImagen = yield Promise.all(productos.map((producto) => __awaiter(void 0, void 0, void 0, function* () {
-            const imagenId = producto.getDataValue('imagen');
-            const imagenUrl = imagenId ? yield (0, googleDrive_1.getFilesFromDrive)(imagenId) : null;
-            return Object.assign(Object.assign({}, producto.get()), { imagen: imagenUrl });
-        })));
-        res.json(productosConImagen);
+        return res.json(productos);
     }
     catch (error) {
         console.error("Error al consultar productos por emprendedor:", error);
