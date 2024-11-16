@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { getEmprendedor, updateEstadoEmprendedor } from '../services/emprendedor';
 import "../Styles/detalle-solicitud.css";
+;
 
 const DetalleSolicitud = () => {
 
@@ -45,13 +46,14 @@ const DetalleSolicitud = () => {
         }
     };
 
+    const generarUrl = (fileId) => {
+      return `https://drive.google.com/thumbnail?id=${fileId}&sz=w1000`;
+    }
 
 
     if (!emprendedor || Object.keys(emprendedor).length === 0) {
         return <p>  Cargando...</p>;
     }
-
-    console.log(`https://drive.google.com/uc?export=view&id=${emprendedor.imagen_productos}`)
 
     return (
         <div className='detalle-emprendedor'>
@@ -78,15 +80,18 @@ const DetalleSolicitud = () => {
         </div>
         <h3>Imágenes de sus Productos</h3>
 
-        <div>
+        <div className='contenedor-imagen-producto'>
           {emprendedor.imagen_productos && (
-            <img src={`https://drive.google.com/thumbnail?id=${emprendedor.imagen_productos}&sz=w1000`}alt="Imagen de productos" />
+            <img 
+              className='imagen-productos'
+              src={generarUrl(emprendedor.imagen_productos)}
+              alt="Imagen de productos" />
           )}
         </div>
         <h3>Imágenes de su Local o Domicilio</h3>
         <div>
           {emprendedor.imagen_local && (
-            <a href={emprendedor.imagen_local}>Local</a>
+            <img src={generarUrl(emprendedor.imagen_local)} alt='Imagen de Local'/>
           )}
         </div>
         <div className='actions'>

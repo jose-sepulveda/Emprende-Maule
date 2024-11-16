@@ -120,3 +120,29 @@
     background-color: #b0b0b0;
     cursor: not-allowed;
 }
+
+.contenerdor-imagen-producto {
+    width: 500px;
+}
+
+.contenerdor-imagen-local {
+    width: 500px;
+}
+
+.imagen-producto {
+    object-fit: cover; 
+    border-radius: 8px; 
+    border: 1px solid black;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    margin: 10px; 
+}
+
+.imagen-local {
+    width: 200px; 
+    height: 150px; 
+    object-fit: cover;
+    border: 1px solid black;
+    border-radius: 8px; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    margin: 10px; 
+}

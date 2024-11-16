@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { getEmprendedor } from '../services/emprendedor';
-import "../Styles/detalle-emprendedor.css";
+import '../Styles/detalle-emprendedor.css';
 
 const DetalleEmprendedor = () => {
 
@@ -23,9 +23,9 @@ const DetalleEmprendedor = () => {
         fetchEmprendedor();
     }, [rut_emprendedor]);
 
-    const getGoogleDriveUrl = (fileId) => {
-        return `https://drive.google.com/uc?export=view&id=${fileId}`;
-    };
+    const generarUrl = (fileId) => {
+        return `https://drive.google.com/thumbnail?id=${fileId}&sz=w1000`;
+      }
     
     if (!emprendedor) {
         return <p>  Cargando...</p>;
@@ -55,20 +55,22 @@ const DetalleEmprendedor = () => {
             </div> 
                     
             <h3>Imágenes de sus Productos</h3>
-            <div>
+            <div className='contenerdor-imagen-producto'>
                 {emprendedor.imagen_productos && (
                     <img 
-                        src={emprendedor.imagen_productos} 
+                        className='imagen-producto'
+                        src={generarUrl(emprendedor.imagen_productos)} 
                         alt="Imagen de productos" 
                     />
                 )}
             </div>
 
             <h3>Imágenes de su Local o Domicilio</h3>
-            <div>
+            <div className='contenerdor-imagen-local'>
                 {emprendedor.imagen_local && (
                     <img 
-                        src={emprendedor.imagen_local} 
+                        className='imagen-local'
+                        src={generarUrl(emprendedor.imagen_local)} 
                         alt="Imagen del local"
                     />
                 )}
