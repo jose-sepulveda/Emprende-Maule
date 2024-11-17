@@ -93,19 +93,38 @@ export const getProducto = async(req: Request, res: Response) => {
 
 export const getProductos = async(req: Request, res: Response) =>{
     try{
-        const listaProductos = await Productos.findAll({attributes:['cod_producto','nombre_producto','precio_producto','descripcion_producto','id_emprendedor',[sequelize.col('categoria.nombre_categoria'), 'nombre_categoria'],'cantidad_disponible','imagen','cod_producto'],
+        const listaProductos = await Productos.findAll({
+            attributes:[
+                'cod_producto',
+                'nombre_producto',
+                'precio_producto',
+                'descripcion_producto',
+                'id_emprendedor',
+                'cantidad_disponible',
+                'imagen',
+                [sequelize.col('categoria.nombre_categoria'), 'nombre_categoria'],
+                [sequelize.col('emprendedor.nombre_emprendedor'), 'nombre_emprendedor'],
+                [sequelize.col('emprendedor.apellido1_emprendedor'), 'apellido1_emprendedor'],
+                [sequelize.col('emprendedor.apellido2_emprendedor'), 'apellido2_emprendedor'],
+        ],
         include: [
             {
                 model: Categorias,
                 attributes: [],
-            }
+            },
+            {
+                model: Emprendedor,
+                attributes: [],
+            },
         ]
-      })
+      });
+
       res.json(listaProductos);
     }catch(error){
+        console.error("Error al obtener los productos:", error);
         res.status(400).json({
             message: 'Ocurrio un error al obtener los productos',
-        })
+        });
     }
 };
 
