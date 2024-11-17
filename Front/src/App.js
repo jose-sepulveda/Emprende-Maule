@@ -17,7 +17,7 @@ import { GestionAdmin } from './pages/GestionAdmin.js';
 import { GestionCategorias } from './pages/GestionCategorias.js';
 import { GestionClientes } from './pages/GestionClientes.js';
 import { GestionEmprendedores } from './pages/GestionEmprendedores.js';
-
+import {AdminPage} from './pages/AdminPage.js';
 //cliente
 import LoginCliente from './components/LoginCliente.js';
 
@@ -90,6 +90,7 @@ function App() {
             <Route path= "/detalle-emprendedor/:rut_emprendedor" element= {<PrivateRoute><DetalleEmprendedor/></PrivateRoute>}/>
             <Route path= "/solicitudes-registro" element= {<PrivateRoute><SolicitudesRegistro/></PrivateRoute>}/>
             <Route path= "/detalle-solicitud/:rut_emprendedor" element= {<PrivateRoute><DetalleSolicitud/></PrivateRoute>}/>
+            <Route path= "/adminPage" element= {<PrivateRoute><AdminPage/></PrivateRoute>}/>
 
             {/*Cliente*/}
             <Route path='/login-cliente' element={<LoginCliente/>}/>

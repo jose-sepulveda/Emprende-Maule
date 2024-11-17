@@ -1,6 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 import React from "react";
-import { FaShoppingCart } from 'react-icons/fa';
+import { FaShoppingCart, FaSignOutAlt  } from 'react-icons/fa';
 import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Auth/AuthContext";
 import Logo from '../../Image/logoEM.png';
@@ -19,15 +19,15 @@ function Menu(){
         // Admin
         if (decodedToken.role === "administrador") {
             routes.push(
-                { to: "/gestionCategorias", text: "Gestion Categorias" },
-                { to: "/gestionClientes", text: "Gestion Clientes" },
-                { to: "/gestionEmprendedores", text: "Gestion Emprendedores" },
-                {to:"/gestionAdmin", text:"Gestion Admin"},
-                {to:"/solicitudes-registro", text:"Solicitudes de Registro"}
+                //{ to: "/gestionCategorias", text: "Gestion Categorias" },
+                //{ to: "/gestionClientes", text: "Gestion Clientes" },
+                //{ to: "/gestionEmprendedores", text: "Gestion Emprendedores" },
+                //{to:"/gestionAdmin", text:"Gestion Admin"},
+                //{to:"/solicitudes-registro", text:"Solicitudes de Registro"},
+                {to:"/adminPage", text:"Administrador"}
             );
         }
  
-
         // Emprendedor
         if (decodedToken.role === "emprendedor") {
             routes.push(
@@ -80,11 +80,6 @@ function Menu(){
                     </li>
                 ) )
                 }
-                {
-                    auth.token?
-                    <button onClick={cerrarSesion}>Salir</button>:
-                    ""
-                }
                 <li>
                         <NavLink 
                             style={({ isActive }) => ({ color: isActive ? "Orange" : "Black" })}
@@ -92,6 +87,13 @@ function Menu(){
                             <FaShoppingCart size={24} /> 
                         </NavLink>
                 </li>
+                {
+                    auth.token?
+                    <button className="btn-logout" onClick={cerrarSesion}>
+                        <FaSignOutAlt size={24} />
+                    </button>:
+                    ""
+                }
             </ul>
         </div>
     </>
@@ -110,6 +112,7 @@ routes.push({to:"/gestionEmprendedores", text:"Gestion Emprededores"})
 routes.push({to:"/gestionAdmin", text:"Gestion Admin"})
 routes.push({to:"/tablaP", text:"Productos"})
 routes.push({to:"/solicitudes-registro", text:"Solicitudes de Registro"})
+routes.push({to:"/adminPage", text:"Administrador"})
 
 export { Menu };
 

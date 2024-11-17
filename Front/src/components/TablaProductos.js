@@ -52,7 +52,7 @@ const TablaProductos = () => {
     }
 
     return (
-        <div>
+        <div className='tabla-productos-container'>
             <h2>Mis Productos</h2>
             {productos.length === 0 ? (
                 <p>No tienes productos creados.</p>
