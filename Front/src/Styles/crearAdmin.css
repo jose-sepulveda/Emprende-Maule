@@ -1,0 +1,85 @@
+.contenedor-crear-adminxadmin {
+    padding: 20px;
+    max-width: 600px;
+    background-color: rgba(168, 164, 164, 0.125);
+    backdrop-filter: blur(1px);
+    border-radius: 10px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.contenedor-crear-adminxadmin h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+.contenedor-form-crear-adminxadmin {
+    background-color: rgba(255, 255, 255, 0.749);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    width: 500px;
+    height: 400px;
+}
+
+.contenedor-form-crear-adminxadmin div {
+    display: flex;
+    flex-direction: column;
+}
+
+.contenedor-form-crear-adminxadmin label {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.contenedor-form-crear-adminxadmin input {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.contenedor-form-crear-adminxadmin input:focus {
+    border-color: #F97316;
+}
+
+.contenedor-form-crear-adminxadmin button {
+    padding: 12px;
+    font-size: 16px;
+    background-color: #F97316;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.contenedor-form-crear-adminxadmin button:hover {
+    background-color: #e56712; /* Cambio sutil al hacer hover */
+}
+
+.contenedor-crear-adminxadmin p {
+    margin-top: 15px;
+    font-size: 16px;
+    color: #333;
+    text-align: center;
+    font-weight: bold;
+}
+
+@media (max-width: 600px) {
+    .contenedor-form-crear-adminxadmin {
+        grid-template-columns: 1fr; /* Cambia a una columna en pantallas pequeñas */
+    }
+}

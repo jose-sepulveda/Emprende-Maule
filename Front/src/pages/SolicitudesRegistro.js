@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { AuthContext } from '../Auth/AuthContext';
 import { getEmprendedores } from '../services/emprendedor';
-import "../Styles/gestion-emprendedores.css";
+import "../Styles/tablaSolRegistro.css";
 
 const SolicitudesRegistro = () => {
 
@@ -34,10 +34,10 @@ const SolicitudesRegistro = () => {
     
 
     return (
-        <div className='container'>
+        <div className='solicitudes-registro-container'>
             <h1>Solicitudes de Registro de Emprededores</h1>
 
-            <table>
+            <table className='solicitudes-registro-table'>
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -59,7 +59,7 @@ const SolicitudesRegistro = () => {
                             <td>
                                 <button
                                     id='ver' 
-                                    className='btn-ver'
+                                    className='solicitudes-registro-btn-ver'
                                     onClick={() => verDetalles(emprendedor.rut_emprendedor)}
                                 >
                                     Ver Solicitud

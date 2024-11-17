@@ -6,7 +6,7 @@
     backdrop-filter: blur(1px);
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.3); 
-    margin: 0 auto; /* Centra el contenedor */
+    margin: 0 auto; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,7 +19,7 @@ h2 {
     font-weight: 600;
     margin-bottom: 20px;
     color: #333;
-    text-align: center; /* Centra el texto */
+    text-align: center; 
 }
 
 /* Estilos del formulario */
@@ -52,8 +52,8 @@ h2 {
 .file-uploads-p {
     grid-column: span 2;
     display: flex;
-    justify-content: center; /* Centrado horizontal */
-    align-items: center;     /* Centrado vertical */
+    justify-content: center; 
+    align-items: center;     
     gap: 20px;
     width: 100%;   
 }

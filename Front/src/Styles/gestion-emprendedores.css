@@ -1,20 +1,21 @@
-/* General container style */
-.container {
-    margin: 20px;
-    padding: 20px;
+.gestion-emprendedores-container {
+    width: 80%; 
+    max-width: 700px; 
+    margin: 0 auto; 
+    padding: 10px;
+    background-color: #f9f9f9;
     border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Heading style */
-.container h1 {
+.gestion-emprendedores-container h1 {
     text-align: center;
     color: #333;
     font-size: 2rem;
     margin-bottom: 20px;
 }
 
-/* Table styles */
-table {
+.gestion-emprendedores-table {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
@@ -26,22 +27,23 @@ table {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-th, td {
+.gestion-emprendedores-table th, .gestion-emprendedores-table td {
     padding: 10px;
-    text-align: left;
+    text-align: center;
     border: 1px solid black;
     word-wrap: break-word;
     overflow: hidden;
     width: auto;
+    border: 1px solid #ddd; 
 }
 
-th {
-    color: black;
-    font-weight: bold;
+.gestion-emprendedores-table th {
+    background-color: #f98511;
+    color: white;
+    font-size: 16px;
 }
 
-/* Button styles */
-button {
+.gestion-emprendedores-container button {
     padding: 8px 15px;
     margin: 5px;
     border: none;
@@ -51,64 +53,40 @@ button {
     font-size: 1rem;
 }
 
-/* Specific button styles */
-.btn-eliminar {
+.gestion-emprendedores-btn-eliminar {
     background-color: #f44336;
     color: black;
 }
 
-.btn-eliminar:disabled {
+.gestion-emprendedores-btn-eliminar:disabled {
     background-color: #ccc;
     cursor: not-allowed;
 }
 
-.btn-eliminar:hover:not(:disabled) {
+.gestion-emprendedores-btn-eliminar:hover:not(:disabled) {
     background-color: #d32f2f;
 }
 
-.btn-ver {
+.gestion-emprendedores-btn-ver {
     background-color: #2196F3;
     color: black;
 }
 
-.btn-ver:hover {
+.gestion-emprendedores-btn-ver:hover {
     background-color: #1976D2;
 }
 
-.btn-actualizar {
+.gestion-emprendedores-btn-actualizar {
     background-color: #FFC107;
     color: black;
 }
 
-.btn-actualizar:hover {
+.gestion-emprendedores-btn-actualizar:hover {
     background-color: #FFA000;
 }
 
-/* Loading button style */
 button[disabled] {
     cursor: not-allowed;
     opacity: 0.6;
 }
 
-/* Responsive table */
-@media (max-width: 768px) {
-    table {
-        width: 100%;
-        display: block;
-        overflow-x: auto;
-    }
-
-    th, td {
-        padding: 8px;
-        font-size: 0.9rem;
-    }
-
-    .container {
-        margin: 10px;
-        padding: 15px;
-    }
-
-    .container h1 {
-        font-size: 1.5rem;
-    }
-}

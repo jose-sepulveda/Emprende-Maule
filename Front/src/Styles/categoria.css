@@ -1,109 +1,117 @@
-.container {
-    margin: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .inputCategoria {
-    border: none; /* Sin borde */
-    max-width: 300px;
-    height: 20px; 
-    padding: 6px 10px; 
-    font-size: 16px;
-    border-radius: 4px; 
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); 
-    outline: none;
+/* Estilos generales para la gestión de categorías */
+.gestion-categorias-container {
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-  table {
-    width: 80%; 
-    max-width: 500px; 
-    border-collapse: collapse; 
-    margin: 20px 0; 
-  }
-  
-  th, td {
-    padding: 10px;
-    border: 1px solid #cccbcb;
-    text-align: left;
-  }
+/* Estilos del input de nombre de categoría */
+.gestion-categorias-input {
+  border: none;
+  max-width: 300px;
+  height: 20px;
+  padding: 6px 10px;
+  font-size: 16px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  outline: none;
+}
 
-  thead tr{
-    background-color:  rgba(238, 238, 238, 0.514);
-  }
-  
-  button {
-    margin: 5px;
-    padding: 6px 12px;
-    border: none;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .btn-guardar {
-    background-color: #f98511;
-    color: white;
-  }
+/* Estilos para la tabla */
+.gestion-categorias-table {
+  width: 80%;
+  max-width: 500px;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
 
-  .btn-cancelar{
-    background-color: #f98511;
-  }
+/* Estilos para celdas y encabezados de tabla */
+.gestion-categorias-table th, 
+.gestion-categorias-table td {
+  padding: 10px;
+  border: 1px solid #cccbcb;
+  text-align: left;
+}
 
-  .btn-editar{
-    background-color: rgba(6, 124, 6, 0.763);
-    color: white;
-  }
+.gestion-categorias-table thead tr {
+  background-color: rgba(238, 238, 238, 0.514);
+}
 
-  .btn-eliminar{
-    background-color: rgb(232, 38, 38);
-    color: white;
-  }
-  .switch {
-    position: relative;
-    display: inline-block;
-    width: 34px;
-    height: 20px;
-  }
-  
-  .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-  
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.434);
-    transition: .4s;
-    border-radius: 20px;
-  }
-  
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 16px;
-    width: 16px;
-    left: 2px;
-    bottom: 2px;
-    background-color: white;
-    transition: .4s;
-    border-radius: 50%;
-  }
-  
-  input:checked + .slider {
-    background-color: #f98511;
-  }
-  
-  input:checked + .slider:before {
-    transform: translateX(14px);
-  }
-  
+/* Estilos para botones */
+.gestion-categorias-btn {
+  margin: 5px;
+  padding: 6px 12px;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* Estilos para los botones de acción */
+.gestion-categorias-btn-guardar {
+  background-color: #f98511;
+  color: white;
+}
+
+.gestion-categorias-btn-cancelar {
+  background-color: #f98511;
+}
+
+.gestion-categorias-btn-editar {
+  background-color: rgba(6, 124, 6, 0.763);
+  color: white;
+}
+
+.gestion-categorias-btn-eliminar {
+  background-color: rgb(232, 38, 38);
+  color: white;
+}
+
+/* Estilos del switch */
+.gestion-categorias-switch {
+  position: relative;
+  display: inline-block;
+  width: 34px;
+  height: 20px;
+}
+
+.gestion-categorias-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.gestion-categorias-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.434);
+  transition: .4s;
+  border-radius: 20px;
+}
+
+.gestion-categorias-slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+.gestion-categorias-switch input:checked + .gestion-categorias-slider {
+  background-color: #f98511;
+}
+
+.gestion-categorias-switch input:checked + .gestion-categorias-slider:before {
+  transform: translateX(14px);
+}

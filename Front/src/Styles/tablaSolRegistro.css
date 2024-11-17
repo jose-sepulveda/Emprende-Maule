@@ -1,0 +1,57 @@
+.solicitudes-registro-container {
+    width: 80%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.solicitudes-registro-container h1 {
+    text-align: center;
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.solicitudes-registro-table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+.solicitudes-registro-table th, .solicitudes-registro-table td {
+    padding: 12px 15px;
+    text-align: center;
+    border: 1px solid #ddd;
+    word-wrap: break-word;
+}
+
+.solicitudes-registro-table th {
+    background-color: #f98511;
+    color: white;
+    font-size: 16px;
+}
+
+.solicitudes-registro-table td {
+    min-width: 120px;  /* Controla el tamaño mínimo de las celdas */
+    max-width: 200px;  /* Controla el tamaño máximo de las celdas */
+}
+
+.solicitudes-registro-btn-ver {
+    padding: 8px 15px;
+    margin: 5px;
+    background-color: #2196F3;
+    color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 150px;
+}
+
+.solicitudes-registro-btn-ver:hover {
+    background-color: #1976D2;
+}
+

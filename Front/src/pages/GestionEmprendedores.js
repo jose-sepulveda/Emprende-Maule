@@ -55,10 +55,10 @@ const GestionEmprendedores = () => {
     }
 
     return (
-        <div className='container'>
+        <div className='gestion-emprendedores-container'>
             <h1>Gestión de Emprendedores</h1>
 
-            <table>
+            <table className="gestion-emprendedores-table">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -75,24 +75,23 @@ const GestionEmprendedores = () => {
                             <td>{emprendedor.rut_emprendedor}</td>
                             <td>
                                 <button
-                                    id='ver' 
-                                    className='btn-ver'
+                                    className='gestion-emprendedores-btn-ver'
                                     onClick={() => verDetalles(emprendedor.rut_emprendedor)}
                                 >
                                     Ver
                                 </button>
 
                                 <button 
-                                    id="actualizar" 
-                                    className="btn-actualizar" 
+                                    
+                                    className="gestion-emprendedores-btn-actualizar"  
                                     onClick={() => actualizarEmprendedor(emprendedor.rut_emprendedor)}
                                 >
                                     Actualizar
                                 </button>
 
                                 <button
-                                    id="eliminar" 
-                                    className='btn-eliminar' 
+                                     
+                                    className='gestion-emprendedores-btn-eliminar' 
                                     onClick={() => eliminarEmprendedor({ rut_emprendedor: emprendedor.rut_emprendedor })}
                                     disabled={loading[emprendedor.rut_emprendedor]}
                                 >

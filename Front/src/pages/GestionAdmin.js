@@ -1,6 +1,8 @@
+import FormCrearAdminxAdmin from '../components/FormCrearAdminxAdmin'
+
 function GestionAdmin(){
     return <>
-        <h3>Inicio  </h3>
+        <FormCrearAdminxAdmin/>
     </>
 }
 

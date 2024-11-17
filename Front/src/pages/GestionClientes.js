@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { deleteCliente, getClientes } from '../services/crearCliente';
+import '../Styles/gestionClientes.css';
 
 const GestionClientes = () => {
   const [clientes, setClientes] = useState([]);
@@ -26,16 +27,15 @@ const GestionClientes = () => {
         cargarClientes(); 
       } catch (error) {
         console.error('Error al eliminar cliente:', error);
-        //alert('Error al eliminar cliente');
       }
     }
   };
 
   return (
-    <div className="container">
+    <div className="gestion-clientes-container">
       <h1>Gestión de Clientes</h1>
 
-      <table>
+      <table className='gestion-clientes-table'>
         <thead>
           <tr>
             <th>Nombre</th>
@@ -49,7 +49,7 @@ const GestionClientes = () => {
               <td>{cliente.nombre_cliente} {cliente.apellido1_cliente} {cliente.apellido2_cliente}</td>
               <td>{cliente.correo}</td>
               <td>
-                <button id="eliminar" className="btn-eliminar" onClick={() => eliminarCliente(cliente.id_cliente)}>Eliminar</button>
+                <button className="gestion-clientes-btn-eliminar" onClick={() => eliminarCliente(cliente.id_cliente)}>Eliminar</button>
               </td>
             </tr>
           ))}
