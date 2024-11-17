@@ -78,4 +78,9 @@
 
 .producto-individual .producto-detalle .btn-agregar-carrito {
     background-color: orange;
+    color: white;
+    border: none;
+    width: 200px;
+    height: 30px;
+    border-radius: 10px;
 }

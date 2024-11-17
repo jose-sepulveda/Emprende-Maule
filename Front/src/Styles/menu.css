@@ -28,3 +28,19 @@
     height: 100px;
 }
 
+
+
+.btn-logout {
+    margin-right: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: black;
+    font-size: 24px;
+    transition: color 0.3s;
+    margin-left: 20px;
+}
+
+.btn-logout:hover {
+    color: #f98000; 
+}

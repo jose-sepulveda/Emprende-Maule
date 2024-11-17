@@ -1,22 +1,22 @@
 /* Contenedor principal para centrar la tabla */
 .tabla-productos-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #f4f4f4; /* Color de fondo opcional */
+  height: 50vh;
   margin: 0;
 }
 
 /* Estilo general para la tabla */
 .tabla-productos {
-  width: 80%; /* Ajusta el ancho de la tabla según sea necesario */
+  width: 80%; 
   border-collapse: collapse;
   font-size: 16px;
   font-family: Arial, sans-serif;
   text-align: center;
   background-color: #f9f9f9;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para destacar la tabla */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
 /* Estilo para las celdas */
@@ -24,8 +24,8 @@
 .tabla-productos td {
   border: 1px solid #ddd;
   padding: 12px;
-  text-align: center; /* Centrado horizontal */
-  vertical-align: middle; /* Centrado vertical */
+  text-align: center; 
+  vertical-align: middle; 
 }
 
 /* Estilo para los encabezados */
@@ -44,7 +44,7 @@
   border-radius: 5px;
   border: none;
   display: inline-block;
-  vertical-align: middle; /* Asegura que la imagen se alinee bien */
+  vertical-align: middle; 
 }
 
 /* Estilo para las filas */
@@ -69,7 +69,7 @@
   width: 100px;
   height: 30px;
   display: inline-block;
-  vertical-align: middle; /* Alinea los botones correctamente */
+  vertical-align: middle; 
 }
 
 .tabla-productos button:hover {
@@ -92,5 +92,5 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   display: inline-block;
-  vertical-align: middle; /* Asegura la alineación de los inputs */
+  vertical-align: middle;
 }
