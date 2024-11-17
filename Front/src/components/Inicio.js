@@ -26,16 +26,18 @@ const Inicio = () => {
     };
 
     const generarUrlImagen = (fileId) => {
-        return `https://drive.google.com/thumbnail?id=${fileId}&sz=w200`;
+        return `https://drive.google.com/thumbnail?id=${fileId}&sz=w1000`;
     };
 
     const agruparPorEmprendedor = (productos) => {
         return productos.reduce((acc, producto) => {
-            const { id_emprendedor } = producto;
+            const { id_emprendedor, nombre_emprendedor, apellido1_emprendedor, apellido2_emprendedor } = producto;
+            const nombreCompleto = `${nombre_emprendedor} ${apellido1_emprendedor} ${apellido2_emprendedor}`;
+
             if (!acc[id_emprendedor]) {
-                acc[id_emprendedor] = [];
+                acc[id_emprendedor] = { nombre: nombreCompleto, productos: [] };
             }
-            acc[id_emprendedor].push(producto);
+            acc[id_emprendedor].productos.push(producto);
             return acc;
         }, {});
     };
@@ -58,10 +60,9 @@ const Inicio = () => {
                 <div className="productos-container">
                     {Object.keys(productosAgrupados).map((emprendedorId) => (
                         <div key={emprendedorId} className="emprendedor-seccion">
-                            <h2>Productos de Emprendedor {emprendedorId}</h2>
+                            <h2>Productos de {productosAgrupados[emprendedorId].nombre}</h2>
                             <div className="productos-fila">
-                                {productosAgrupados[emprendedorId].map((producto) => (
-                                    // Usamos Link aquí para envolver todo el contenido de la tarjeta
+                                {productosAgrupados[emprendedorId].productos.map((producto) => (
                                     <Link to={`/producto/${producto.cod_producto}`} key={producto.cod_producto} className="producto-card" style={{ textDecoration: 'none' }}>
                                         <div className="producto-image">
                                             {producto.imagen ? (

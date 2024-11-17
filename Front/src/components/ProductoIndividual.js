@@ -56,8 +56,8 @@ const ProductoIndividual = () => {
                     <div className='detalle'>
                         <h2>{producto.nombre_producto}</h2>
                         <div className="campo">
-                            <strong>Vendido por id_empredendedor</strong>
-                            <p>{producto.id_emprendedor}</p>
+                            <strong>Vendido por</strong>
+                            <p>{producto.nombre_emprendedor} {producto.apellido1_emprendedor} {producto.apellido2_emprendedor}</p>
                         </div>
                         <div className="campo">
                             <strong>Descripción:</strong>
