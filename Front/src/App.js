@@ -8,6 +8,9 @@ import { LoginPage } from './pages/LoginPage';
 import FormCrearCliente from './components/FormCrearCliente.js'; //formulario crear cliente
 import { CrearCuentaPage } from './pages/CrearCuentaPage';
 
+import Inicio from './components/Inicio';
+import ProductoIndividual from './components/ProductoIndividual';
+
 //Admin
 import LoginAministrador from './components/LoginAministrador.js';
 import { GestionAdmin } from './pages/GestionAdmin.js';
@@ -69,6 +72,8 @@ function App() {
             
             {/*Pagina de inicio*/}
             <Route path="/login" element={<LoginPage />}/> 
+            <Route path="/" element={<Inicio />} />
+            <Route path="/producto/:id" element={<ProductoIndividual />} /> 
             
             {/*crear cuentas cliente y emprendedor*/}
             <Route path="/crearCuenta" element={<CrearCuentaPage />}/> 

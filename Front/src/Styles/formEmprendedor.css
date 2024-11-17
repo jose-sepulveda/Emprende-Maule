@@ -1,5 +1,5 @@
-/* Contenedor principal */
-.form-container {
+/* Contenedor principal del formulario */
+.form-container-emprendedor {
     margin: 0 auto;
     padding: 20px;
     max-width: 1000px;
@@ -10,7 +10,7 @@
 }
 
 /* Título del formulario */
-h2 {
+.form-container-emprendedor h2 {
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 20px;
@@ -21,7 +21,7 @@ h2 {
 }
 
 /* Estilos del formulario */
-form {
+.form-emprendedor {
     background-color: rgba(255, 255, 255, 0.749);
     padding: 30px;
     border-radius: 8px;
@@ -32,29 +32,29 @@ form {
 }
 
 /* Contenedor de cada campo */
-form > div {
+.form-emprendedor .form-group-emprendedor {
     display: flex;
     flex-direction: column;
     gap: 5px;
 }
 
 /* Campos que ocupan 2 columnas */
-form > div:nth-child(7) {
+.form-emprendedor .form-group-emprendedor:nth-child(7) {
     grid-column: span 2;
 }
 
-form > div:nth-child(8) { /* Campo 8 */
+.form-emprendedor .form-group-emprendedor:nth-child(8) { 
     grid-column: 1 / span 2; 
 }
-form > div:nth-child(9) { /* Campo 9 */
+.form-emprendedor .form-group-emprendedor:nth-child(9) { 
     grid-column: 3/ span 1; 
 }
-form > div:nth-child(10) { /* Campo 10 */
+.form-emprendedor .form-group-emprendedor:nth-child(10) { 
     grid-column: 4 / span 1; 
 }
 
 /* Contenedor para los botones de archivo */
-.file-uploads {
+.form-emprendedor .file-uploads {
     grid-column: span 3;
     display: grid;
     grid-template-columns: repeat(3, auto);
@@ -63,14 +63,14 @@ form > div:nth-child(10) { /* Campo 10 */
 }
 
 /* Labels */
-label {
+.form-emprendedor label {
     font-size: 14px;
     font-weight: 500;
     color: #000000;
 }
 
 /* Inputs */
-input {
+.form-emprendedor input {
     padding: 8px 12px;
     border: 1px solid #D1D5DB;
     border-radius: 6px;
@@ -79,17 +79,17 @@ input {
     transition: border-color 0.2s;
 }
 
-input:focus {
+.form-emprendedor input:focus {
     border-color: #F97316;
 }
 
 /* Estilos específicos para inputs tipo file */
-input[type="file"] {
+.form-emprendedor input[type="file"] {
     display: none;
 }
 
 /* Botones para upload */
-.file-uploads label {
+.form-emprendedor .file-uploads label {
     background-color: #F97316;
     color: white;
     padding: 8px 16px;
@@ -99,12 +99,12 @@ input[type="file"] {
     transition: background-color 0.2s;
 }
 
-.file-uploads label:hover {
+.form-emprendedor .file-uploads label:hover {
     background-color: #EA580C;
 }
 
 /* Botón de submit */
-button[type="submit"] {
+.form-emprendedor button[type="submit"] {
     grid-column: 4;
     justify-self: center;
     background-color: #F97316;
@@ -118,7 +118,6 @@ button[type="submit"] {
     margin-top: 10px;
 }
 
-button[type="submit"]:hover {
+.form-emprendedor button[type="submit"]:hover {
     background-color: #EA580C;
 }
-

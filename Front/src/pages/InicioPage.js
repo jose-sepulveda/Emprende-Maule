@@ -1,9 +1,10 @@
 import '../Styles/inicio.css';
+import Inicio from '../components/Inicio';
 
 function InicioPage() {
     return (
         <>
-            <h3>Inicio</h3>
+            <Inicio/>
         </>
     );
 }

@@ -30,7 +30,6 @@ const FormCrearProducto = () => {
             descripcion_producto: data.descripcion_producto,
             id_categoria: data.id_categoria, 
             cantidad_disponible: data.cantidad_disponible,
-            descuento: data.descuento,
             imagen: data.imagen[0], // La imagen se maneja como un archivo
             id_emprendedor: auth.id, // Aquí se agrega el id_emprendedor desde el contexto
         };
@@ -106,15 +105,6 @@ const FormCrearProducto = () => {
                         {...register("cantidad_disponible", { required: "La cantidad es obligatoria", min: 1 })} 
                     />
                     {errors.cantidad_disponible && <span>{errors.cantidad_disponible.message}</span>}
-                </div>
-                <div>
-                    <label htmlFor="descuento">Descuento</label>
-                    <input 
-                        id="descuento" 
-                        type="number" 
-                        {...register("descuento", { min: 0, max: 100 })} 
-                    />
-                    {errors.descuento && <span>{errors.descuento.message}</span>}
                 </div>
                 <div className='file-uploads-p'>
                     <label htmlFor="imagen">Imagen</label>

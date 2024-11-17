@@ -47,3 +47,29 @@ export const obtenerProductosPorEmprendedor = async (id_emprendedor) => {
         throw error;
     }
 };
+
+
+
+
+// Obtener todos los productos
+export const getProductos = async () => {
+    try {
+        const response = await api.get('/list'); // Llamar a la ruta '/list'
+        return response.data; // Devolver la lista de productos
+    } catch (error) {
+        console.error("Error al obtener los productos:", error);
+        throw error;
+    }
+};
+
+
+export const eliminarProducto = async (cod_producto) => {
+    try {
+        const response = await api.delete(`/${cod_producto}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error al eliminar el producto:", error);
+        throw error;
+    }
+};
+

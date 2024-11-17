@@ -1,0 +1,64 @@
+.productos-container {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 20px;
+}
+
+.emprendedor-seccion {
+    margin-bottom: 40px;
+}
+
+.productos-fila {
+    display: flex;
+    flex-wrap: nowrap; 
+    gap: 20px;
+    overflow-x: auto; 
+    padding-bottom: 10px; 
+    justify-content: center;
+}
+
+.producto-card {
+    background-color: #fff;
+    border-radius: 0px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 200px;
+    height: 200px;
+    padding: 15px;
+    text-align: center;
+    transition: transform 0.3s ease;
+    border: none;
+}
+
+.producto-card:hover {
+    transform: translateY(-5px);
+}
+
+.producto-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+    width: 200px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    border-radius: 0px;
+}
+
+.producto-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0px;
+    border:none;
+}
+
+.producto-info p {
+    color: #000000;
+
+}
+
+.producto-info strong {
+    font-size: 1.1rem;
+    color: #000000;
+}

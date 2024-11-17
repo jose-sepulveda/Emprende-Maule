@@ -1,4 +1,4 @@
-/* Contenedor principal */
+/* Contenedor principal del formulario cliente */
 .form-container-cliente {
   margin: 0 auto;
   padding: 20px;
@@ -6,7 +6,7 @@
   background-color: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(1px);
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.3); 
+  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 /* Estilos del formulario */
@@ -22,7 +22,7 @@
 }
 
 /* Contenedor de cada campo dentro del formulario */
-.form-cliente form > div {
+.form-cliente > div {
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -69,22 +69,22 @@
 }
 
 /* Cada campo ocupa una columna de manera predeterminada */
-.form-cliente form > div:nth-child(1),
-.form-cliente form > div:nth-child(2),
-.form-cliente form > div:nth-child(3),
-.form-cliente form > div:nth-child(4),
-.form-cliente form > div:nth-child(5),
-.form-cliente form > div:nth-child(6) {
+.form-cliente > div:nth-child(1),
+.form-cliente > div:nth-child(2),
+.form-cliente > div:nth-child(3),
+.form-cliente > div:nth-child(4),
+.form-cliente > div:nth-child(5),
+.form-cliente > div:nth-child(6) {
   grid-column: span 1; /* Cada campo ocupa una columna */
 }
 
 /* Campos 7 y 8 deben ocupar una fila de 2 columnas */
-.form-cliente form > div:nth-child(7),
-.form-cliente form > div:nth-child(8) {
+.form-cliente > div:nth-child(7),
+.form-cliente > div:nth-child(8) {
   grid-column: span 2; /* Ocupa las dos columnas de la fila */
 }
 
 /* Ajustar a una sola fila si lo necesitas */
-.form-cliente form > div:nth-child(9) {
+.form-cliente > div:nth-child(9) {
   grid-column: span 2; /* Para ocupar toda la fila */
 }

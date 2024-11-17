@@ -1,131 +1,96 @@
-/* Estilos para el contenedor de la tabla */
-.productos-table-container {
-    margin: 0 auto;
-    padding: 40px;
-    max-width: 1000px;
-    background-color: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(1px);
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.3); 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+/* Contenedor principal para centrar la tabla */
+.tabla-productos-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f4; /* Color de fondo opcional */
+  margin: 0;
 }
 
-.productos-table-title {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #000000;
+/* Estilo general para la tabla */
+.tabla-productos {
+  width: 80%; /* Ajusta el ancho de la tabla según sea necesario */
+  border-collapse: collapse;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para destacar la tabla */
 }
 
-/* Estilos para la tabla */
-.productos-table {
-    background-color: #ffffffd0;
-    width: 800px;
-    border-collapse: collapse;
-    margin-bottom: 20px;
+/* Estilo para las celdas */
+.tabla-productos th,
+.tabla-productos td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center; /* Centrado horizontal */
+  vertical-align: middle; /* Centrado vertical */
 }
 
-.productos-table th,
-.productos-table td {
-    padding: 10px;
-    text-align: center;
-    border: 1px solid #ccc9c9;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+/* Estilo para los encabezados */
+.tabla-productos th {
+  background-color: #f98511;
+  color: white;
+  font-weight: bold;
+  text-align: center;
 }
 
-.productos-table th {
-    background-color: #f98511;
-    color: white;
-    font-weight: bold;
-    width: 250px;
+/* Estilo para las imágenes dentro de las celdas */
+.tabla-productos td img.imagen-producto {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 5px;
+  border: none;
+  display: inline-block;
+  vertical-align: middle; /* Asegura que la imagen se alinee bien */
 }
 
-.productos-table td {
-    width: 150px;
+/* Estilo para las filas */
+.tabla-productos tr:nth-child(even) {
+  background-color: #f2f2f2;
 }
 
-/* Estilos para botones */
-.productos-btn {
-    padding: 8px 12px;
-    margin: 4px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    color: white;
+.tabla-productos tr:hover {
+  background-color: #dddddd20;
 }
 
-.productos-btn:hover {
-    opacity: 0.9;
+/* Estilo para los botones */
+.tabla-productos button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  margin: 2px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  width: 100px;
+  height: 30px;
+  display: inline-block;
+  vertical-align: middle; /* Alinea los botones correctamente */
 }
 
-.productos-btn.actualizar {
-    background-color: #4CAF50;
+.tabla-productos button:hover {
+  background-color: #45a049;
 }
 
-.productos-btn.eliminar {
-    background-color: #f44336;
+.tabla-productos button:nth-child(2) {
+  background-color: #f44336;
 }
 
-/* Estilos para el modal */
-.productos-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+.tabla-productos button:nth-child(2):hover {
+  background-color: #d32f2f;
 }
 
-.productos-modal-form {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 400px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.productos-modal-title {
-    text-align: center;
-    margin-bottom: 15px;
-    color: #333;
-}
-
-.productos-modal-form label {
-    display: block;
-    margin-top: 10px;
-    font-weight: bold;
-    color: #555;
-}
-
-.productos-modal-form input {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-.productos-modal-submit-btn {
-    width: 100%;
-    padding: 10px;
-    margin-top: 15px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.productos-modal-submit-btn:hover {
-    background-color: #45a049;
+/* Estilo para el input en edición */
+.tabla-productos input[type="text"] {
+  width: 90%;
+  padding: 6px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  display: inline-block;
+  vertical-align: middle; /* Asegura la alineación de los inputs */
 }

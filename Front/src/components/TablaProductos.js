@@ -1,29 +1,55 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { obtenerProductosPorEmprendedor } from '../services/producto';
+import { obtenerProductosPorEmprendedor, eliminarProducto } from '../services/producto';
 import { AuthContext } from '../Auth/AuthContext';
+import '../Styles/tablaProductos.css';
 
 const TablaProductos = () => {
     const { auth } = useContext(AuthContext);
     const [productos, setProductos] = useState([]);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (auth?.id) {
+            setLoading(true);
             obtenerProductosPorEmprendedor(auth.id)
-                .then(setProductos)
+                .then((data) => {
+                    setProductos(data);
+                    setLoading(false);
+                })
                 .catch(() => {
-                    console.error("Error al cargar productos");
+                    setError('Error al cargar los productos.');
+                    setLoading(false);
                 });
         }
     }, [auth]);
 
-    // Función para convertir el link de Google Drive a un enlace directo
-    const convertirUrlDeDrive = (webViewLink) => {
-        const fileId = webViewLink.split('/d/')[1]?.split('/')[0];
-        if (fileId) {
-            return `https://drive.google.com/uc?export=view&id=${fileId}`;
-        }
-        return '';  // Si no se puede extraer el ID, retorna un string vacío
+    const generarUrlImagen = (fileId) => {
+        return `https://drive.google.com/thumbnail?id=${fileId}&sz=w200`;
     };
+
+    const handleEliminar = async (cod_producto) => {
+        if (window.confirm('¿Estás seguro de eliminar este producto?')) {
+            try {
+                await eliminarProducto(cod_producto);
+                obtenerProductosPorEmprendedor(auth.id)
+                    .then((data) => {
+                        setProductos(data);
+                    });
+                alert('Producto eliminado exitosamente.');
+            } catch (error) {
+                alert('Error al eliminar el producto.');
+            }
+        }
+    };
+
+    if (loading) {
+        return <p>Cargando productos...</p>;
+    }
+
+    if (error) {
+        return <p>{error}</p>;
+    }
 
     return (
         <div>
@@ -31,23 +57,48 @@ const TablaProductos = () => {
             {productos.length === 0 ? (
                 <p>No tienes productos creados.</p>
             ) : (
-                <ul>
-                    {productos.map((producto) => (
-                        <li key={producto.cod_producto}>
-                            <h3>{producto.nombre_producto}</h3>
-                            <p>{producto.descripcion_producto}</p>
-                            <p>Precio: ${producto.precio_producto}</p>
-                            <p>Categoría: {producto.nombre_categoria}</p>
-                            {producto.imagen && (
-                                <img 
-                                    src={convertirUrlDeDrive(producto.imagen)} 
-                                    alt={producto.nombre_producto} 
-                                    style={{ width: '150px', height: '150px' }} 
-                                />
-                            )}
-                        </li>
-                    ))}
-                </ul>
+                <table className="tabla-productos">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                            <th>Descuento</th>
+                            <th>Categoría</th>
+                            <th>Imagen</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {productos.map((producto) => (
+                            <tr key={producto.cod_producto}>
+                                <td>{producto.nombre_producto}</td>
+                                <td>{producto.descripcion_producto}</td>
+                                <td>{producto.cantidad_disponible}</td>
+                                <td>{`$${producto.precio_producto}`}</td>
+                                <td></td>
+                                <td>{producto.categoria?.nombre_categoria || 'Sin categoría'}</td>
+                                <td>
+                                    {producto.imagen ? (
+                                        <img
+                                            src={generarUrlImagen(producto.imagen)}
+                                            alt={producto.nombre_producto}
+                                            className="imagen-producto"
+                                        />
+                                    ) : (
+                                        'Sin imagen'
+                                    )}
+                                </td>
+                                <td>
+                                    <button onClick={() => handleEliminar(producto.cod_producto)}>
+                                        Eliminar
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             )}
         </div>
     );

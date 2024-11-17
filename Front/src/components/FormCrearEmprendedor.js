@@ -40,10 +40,10 @@ const FormCrearEmprendedor = () => {
     }
 
     return (
-        <div className="form-container">
-            <h2>Formulario de registro emprendedor</h2>
-            <form onSubmit={handleSubmit(enviar)}>
-                <div>
+        <div className="form-container-emprendedor">
+            <h2 >Formulario de registro emprendedor</h2>
+            <form className='form-emprendedor' onSubmit={handleSubmit(enviar)}>
+                <div className="form-group-emprendedor" >
                     <label htmlFor="nombre_emprendedor">Nombre</label>
                     <input id="nombre_emprendedor" type="text" required {...register("nombre_emprendedor")}/>
                 </div>
