@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { toast } from 'react-toastify';
 import '../Styles/formEmprendedor.css';
@@ -6,38 +6,42 @@ import { crearEmprendedor } from '../services/emprendedor';
 
 const FormCrearEmprendedor = () => {
 
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, watch } = useForm();
+    const [loading, setLoading] = useState(false);
+
+    const comprobante = watch("comprobante");
+    const imagenProductos = watch("imagen_productos");
+    const imagenLocal = watch("imagen_local");
 
     const enviar = async(data) => {
+        setLoading(true);
         const emprendedor = {
             nombre_emprendedor: data.nombre_emprendedor,
-            apellido1_emprendedor: data['apellido1_emprendedor'],
-            apellido2_emprendedor: data['apellido2_emprendedor'],
+            apellido1_emprendedor: data.apellido1_emprendedor,
+            apellido2_emprendedor: data.apellido2_emprendedor,
             rut_emprendedor: data.rut_emprendedor,
             telefono: data.telefono,
             contrasena: data.contrasena,
             correo_electronico: data.correo_electronico,
             direccion: data.direccion,
-            tipo_de_cuenta: data['tipo_de_cuenta'],
-            numero_de_cuenta: data['numero_de_cuenta'],
-            // Añadir los archivos al objeto emprendedor
+            tipo_de_cuenta: data.tipo_de_cuenta,
+            numero_de_cuenta: data.numero_de_cuenta,
             comprobante: data.comprobante[0],
-            imagen_productos: data['imagen_productos'][0],
-            imagen_local: data['imagen_local'][0]
+            imagen_productos: data.imagen_productos[0],
+            imagen_local: data.imagen_local[0]
         };
 
-        crearEmprendedor(emprendedor)
-            .then(response => {
-                console.log("Emprendedor registrado:", response.data);
-                toast.success("Emprendedor registrado correctamente")
-            })
-            .catch(error => {
-                console.error("Error al registrar emprendedor:", error);
-                toast.error("Error al registrar emprendedor");
-            });
-
-        console.log(emprendedor)
-    }
+        try {
+            const response = await crearEmprendedor(emprendedor);
+            console.log("Emprendedor registrado:", response.data);
+            toast.success("Emprendedor registrado correctamente");
+        } catch (error) {
+            console.error("Error al registrar emprendedor:", error);
+            toast.error("Error al registrar emprendedor");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="form-container-emprendedor">
@@ -87,18 +91,21 @@ const FormCrearEmprendedor = () => {
                     <div>
                         <label htmlFor="comprobante">Subir Comprobante</label>
                         <input id="comprobante" type="file" required {...register("comprobante")}/>
+                        <p>{comprobante?.length || 0} archivo(s) seleccionado(s)</p>
                     </div>
                     <div>
                         <label htmlFor="imagen_productos">Subir Imagenes del Producto</label>
                         <input id="imagen_productos" type="file" required {...register("imagen_productos")}/>
+                        <p>{imagenProductos?.length || 0} archivo(s) seleccionado(s)</p>
                     </div>
                     <div>
                         <label htmlFor="imagen_local">Subir Imagenes del Local</label>
                         <input id="imagen_local" type="file" required {...register("imagen_local")}/>
+                        <p>{imagenLocal?.length || 0} archivo(s) seleccionado(s)</p>
                     </div>
                 </div>
                 
-                <button type="submit">Registrar</button>
+                <button type="submit">{loading ? "Registrando..." : "Registrar"}</button>
             </form>
         </div>
     )

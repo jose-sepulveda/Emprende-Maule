@@ -55,41 +55,7 @@ const DetalleEmprendedor = () => {
             <p><strong>Correo Electrónico:</strong> {emprendedor.correo_electronico}</p>
             <p><strong>Tipo de Cuenta Bancaria:</strong> {emprendedor.tipo_de_cuenta}</p>
             <p><strong>Número de Cuenta Bancaria:</strong> {emprendedor.numero_de_cuenta}</p>
-            <p><strong>Estado:</strong> {emprendedor.estado_emprendedor}</p>
-            <h3 className='documentos-title'>Archivos Adjuntados</h3>
-
-            <h3>Documentos Tributarios</h3>
-            <div>
-                {emprendedor.comprobante && (
-                    <a href={generarUrlPdf(emprendedor.comprobante)} target="_blank" rel="noopener noreferrer">
-                        Comprobante
-                    </a>
-                )}
-            </div> 
-                    
-            <h3>Imágenes de sus Productos</h3>
-            <div className='contenedor-imagen-producto'>
-                {emprendedor.imagen_productos && (
-                    <img 
-                        className='imagen-producto'
-                        src={generarUrl(emprendedor.imagen_productos)} 
-                        alt="Imagen de productos" 
-                    />
-                )}
-            </div>
-
-            <h3>Imágenes de su Local o Domicilio</h3>
-            <div className='contenedor-imagen-local'>
-                {emprendedor.imagen_local && (
-                    <img 
-                        className='imagen-local'
-                        src={generarUrl(emprendedor.imagen_local)} 
-                        alt="Imagen del local"
-                    />
-                )}
-            </div>
-
-                 
+            <p><strong>Estado:</strong> {emprendedor.estado_emprendedor}</p>                 
         </div>
     )
     }
