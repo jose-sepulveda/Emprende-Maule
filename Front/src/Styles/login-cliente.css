@@ -14,7 +14,7 @@
   width: 100%;
   padding: 12px;
   padding-right: 35px; /* espacio para el icono */
-  margin-top: 5px;
+  margin-bottom: 15px;
   border: 1.5px solid #aaa;
   border-radius: 5px;
   font-size: 14px;
@@ -38,12 +38,12 @@
 .password-toggle-button {
   position: absolute;
   right: 10px;
-  top: 30%;
+  top: 40%;
   transform: translateY(-50%);
   background-color: none;
   border: none;
   cursor: pointer;
-  color: #666;
+  color: black;
   outline: none;
   padding: 0;
   font-size: 16px;

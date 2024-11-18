@@ -135,7 +135,6 @@ const getFilesFromDrive = (fileId) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.getFilesFromDrive = getFilesFromDrive;
-// Función para configurar el acceso público del archivo en Google Drive
 const setPublicAccessToFile = (fileId) => __awaiter(void 0, void 0, void 0, function* () {
     const auth = new googleapis_1.google.auth.GoogleAuth({
         keyFile: path_1.default.resolve(__dirname, '../config/credencial.json'),
@@ -143,15 +142,19 @@ const setPublicAccessToFile = (fileId) => __awaiter(void 0, void 0, void 0, func
     });
     const drive = googleapis_1.google.drive({ version: 'v3', auth });
     try {
-        // Comprobar si el archivo ya es público
         const file = yield drive.files.get({
             fileId: fileId,
-            fields: 'webViewLink, permissions',
+            fields: 'mimeType, permissions',
         });
+        const mimeType = file.data.mimeType;
+        const imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/bmp'];
+        if (!mimeType || !imageMimeTypes.includes(mimeType)) {
+            console.error(`El archivo con ID ${fileId} no es una imagen. Tipo MIME: ${mimeType}`);
+            return null;
+        }
         const permissions = file.data.permissions || [];
         const isPublic = permissions.some(permission => permission.role === 'reader' && permission.type === 'anyone');
         if (!isPublic) {
-            // Si el archivo no es público, asigna los permisos para hacerlo público
             yield drive.permissions.create({
                 fileId: fileId,
                 requestBody: {
@@ -160,12 +163,7 @@ const setPublicAccessToFile = (fileId) => __awaiter(void 0, void 0, void 0, func
                 },
             });
         }
-        // Obtener el enlace actualizado de visualización
-        const updatedFile = yield drive.files.get({
-            fileId: fileId,
-            fields: 'webViewLink',
-        });
-        return updatedFile.data.webViewLink || null;
+        return fileId;
     }
     catch (error) {
         console.error('Error al obtener o hacer público el archivo de Google Drive:', error);

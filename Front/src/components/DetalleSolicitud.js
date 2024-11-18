@@ -16,7 +16,7 @@ const DetalleSolicitud = () => {
         const fetchEmprendedor = async () => {
         try {
             const response = await getEmprendedor(rut_emprendedor); 
-            setEmprendedor(response.data.emprendedor || {});
+            setEmprendedor(response.data || {});
             toast.success("Emprendedor obtenido correctamente")
         } catch (error) {
             console.error("Error al obtener los detalles del emprendedor:", error);
@@ -50,6 +50,12 @@ const DetalleSolicitud = () => {
       return `https://drive.google.com/thumbnail?id=${fileId}&sz=w1000`;
     }
 
+    const generarUrlPdf = (fileId) => {
+        if (!fileId) {
+            throw new Error('El ID del archivo no puede estar vacío.');
+        }
+        return `https://drive.google.com/uc?export=download&id=${fileId}`;
+    }
 
     if (!emprendedor || Object.keys(emprendedor).length === 0) {
         return <p>  Cargando...</p>;
@@ -73,7 +79,7 @@ const DetalleSolicitud = () => {
         <h3>Documentos Tributarios</h3>
         <div>
           {emprendedor.comprobante && (
-            <a href={emprendedor.comprobante} target="_blank" rel="noopener noreferrer">
+            <a href={generarUrlPdf(emprendedor.comprobante)} target="_blank" rel="noopener noreferrer">
               Comprobante
             </a>
           )}

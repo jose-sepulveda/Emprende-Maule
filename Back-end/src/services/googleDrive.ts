@@ -142,7 +142,6 @@ export const getFilesFromDrive = async (fileId: string) => {
     }
 };
 
-// Función para configurar el acceso público del archivo en Google Drive
 export const setPublicAccessToFile = async (fileId: string) => {
     const auth = new google.auth.GoogleAuth({
         keyFile: path.resolve(__dirname, '../config/credencial.json'),
@@ -152,17 +151,23 @@ export const setPublicAccessToFile = async (fileId: string) => {
     const drive = google.drive({ version: 'v3', auth });
 
     try {
-        // Comprobar si el archivo ya es público
         const file = await drive.files.get({
             fileId: fileId,
-            fields: 'webViewLink, permissions',
+            fields: 'mimeType, permissions',
         });
+
+        const mimeType = file.data.mimeType;
+        const imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/bmp'];
+
+        if (!mimeType || !imageMimeTypes.includes(mimeType)) {
+            console.error(`El archivo con ID ${fileId} no es una imagen. Tipo MIME: ${mimeType}`);
+            return null; 
+        }
 
         const permissions = file.data.permissions || [];
         const isPublic = permissions.some(permission => permission.role === 'reader' && permission.type === 'anyone');
 
         if (!isPublic) {
-            // Si el archivo no es público, asigna los permisos para hacerlo público
             await drive.permissions.create({
                 fileId: fileId,
                 requestBody: {
@@ -172,13 +177,7 @@ export const setPublicAccessToFile = async (fileId: string) => {
             });
         }
 
-        // Obtener el enlace actualizado de visualización
-        const updatedFile = await drive.files.get({
-            fileId: fileId,
-            fields: 'webViewLink',
-        });
-
-        return updatedFile.data.webViewLink || null;
+        return fileId;
 
     } catch (error) {
         console.error('Error al obtener o hacer público el archivo de Google Drive:', error);

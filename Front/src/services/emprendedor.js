@@ -118,3 +118,5 @@ export const getEmprendedoresPorEstado = async (estado) => {
         throw error;
     }
 };
+
+export const getEmprendedorById = (id_emprendedor) => api.get(`/id/${id_emprendedor}`);

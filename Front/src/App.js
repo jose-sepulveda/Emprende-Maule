@@ -13,11 +13,11 @@ import ProductoIndividual from './components/ProductoIndividual';
 
 //Admin
 import LoginAministrador from './components/LoginAministrador.js';
+import { AdminPage } from './pages/AdminPage.js';
 import { GestionAdmin } from './pages/GestionAdmin.js';
 import { GestionCategorias } from './pages/GestionCategorias.js';
 import { GestionClientes } from './pages/GestionClientes.js';
 import { GestionEmprendedores } from './pages/GestionEmprendedores.js';
-import {AdminPage} from './pages/AdminPage.js';
 //cliente
 import LoginCliente from './components/LoginCliente.js';
 
@@ -37,6 +37,7 @@ import { PrivateRoute } from './Auth/PrivateRoute';
 import DetalleEmprendedor from './components/DetalleEmprendedor.js';
 import DetalleSolicitud from './components/DetalleSolicitud.js';
 import FormActualizarEmprendedor from './components/FormActualizarEmprendedor.js';
+import PerfilEmprendedor from './components/PerfilEmprendedor.js';
 import ResetPasswordAdmin from './components/ResetPasswordAdmin.js';
 import ResetPasswordCliente from './components/ResetPasswordCliente.js';
 import ResetPasswordEmprendedor from './components/ResetPasswordEmprendedor.js';
@@ -48,10 +49,16 @@ function AuthProviderWithRouter({children}) {
 
   useEffect(() => {
     if (auth.token) {
-      const decodedToken = jwtDecode(auth.token);
-      const { exp } = decodedToken;
+      try {
+        const decodedToken = jwtDecode(auth.token);
+        const { exp } = decodedToken;
 
-      if (exp * 1000 < Date.now()) {
+        if (exp * 1000 < Date.now()) {
+          logout();
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Error al decodificar el token:", error);
         logout();
         navigate("/");
       }
@@ -101,6 +108,7 @@ function App() {
             <Route path="/gestionProducto" element={<GestionProducto/>}/> {/*este era privado pero solo quiero probar cositas */}
             <Route path="/tablaP" element={<TablaP/>}/>
             <Route path='/formCrearP' element={<CrearProducto/>}/>
+            <Route path='/perfil-emprendedor' element={<PerfilEmprendedor/>}/>
 
             {/*Recuperacion de contraseña*/}
 

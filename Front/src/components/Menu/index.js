@@ -1,6 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 import React from "react";
-import { FaShoppingCart, FaSignOutAlt  } from 'react-icons/fa';
+import { FaShoppingCart, FaSignOutAlt } from 'react-icons/fa';
 import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Auth/AuthContext";
 import Logo from '../../Image/logoEM.png';
@@ -34,6 +34,7 @@ function Menu(){
 
                 {to:"/gestionProducto", text:"Gestion Productos"},
                 {to:"/tablaP", text:"Productos"},
+                {to:"/perfil-emprendedor", text:"Mis Datos"}
         );   
         }
 

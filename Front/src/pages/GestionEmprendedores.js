@@ -49,11 +49,6 @@ const GestionEmprendedores = () => {
         navigate(`/detalle-emprendedor/${id_emprendedor}`);
     }
 
-
-    const actualizarEmprendedor = (rut_emprendedor) => {
-        navigate(`/actualizar-emprendedor/${rut_emprendedor}`);
-    }
-
     return (
         <div className='gestion-emprendedores-container'>
             <h1>Gestión de Emprendedores</h1>
@@ -79,14 +74,6 @@ const GestionEmprendedores = () => {
                                     onClick={() => verDetalles(emprendedor.rut_emprendedor)}
                                 >
                                     Ver
-                                </button>
-
-                                <button 
-                                    
-                                    className="gestion-emprendedores-btn-actualizar"  
-                                    onClick={() => actualizarEmprendedor(emprendedor.rut_emprendedor)}
-                                >
-                                    Actualizar
                                 </button>
 
                                 <button

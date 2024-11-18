@@ -39,12 +39,12 @@
 .login-admin-password-toggle-button {
   position: absolute;
   right: 10px;
-  top: 30%;
+  top: 40%;
   transform: translateY(-50%);
   background-color: none;
   border: none;
   cursor: pointer;
-  color: #666;
+  color: black;
   outline: none;
   padding: 0;
   font-size: 16px;

@@ -36,7 +36,7 @@ const FormActualizarEmprendedor = () => {
     };
 
     const back = () => {
-        navigate('/gestionEmprendedores')
+        navigate('/perfil-emprendedor')
     }
 
     const togglePasswordVisibility = () => {

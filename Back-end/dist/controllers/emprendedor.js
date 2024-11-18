@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getEmprendedoresPorEstado = exports.resetPasswordEmprendedor = exports.recuperarContrasenaEmprendedor = exports.updateEstadoEmprendedor = exports.deleteEmprendedor = exports.updateEmprendedor = exports.updatePassword = exports.loginEmprendedor = exports.getEmprendedor = exports.crearEmprendedor = exports.getEmprendedores = void 0;
+exports.getEmprendedorById = exports.getEmprendedoresPorEstado = exports.resetPasswordEmprendedor = exports.recuperarContrasenaEmprendedor = exports.updateEstadoEmprendedor = exports.deleteEmprendedor = exports.updateEmprendedor = exports.updatePassword = exports.loginEmprendedor = exports.getEmprendedor = exports.crearEmprendedor = exports.getEmprendedores = void 0;
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const fs_1 = __importDefault(require("fs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -137,10 +137,14 @@ const getEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, function*
         if (!emprendedor) {
             return res.status(404).json({ msg: 'El rut de este emprendedor no existe' });
         }
+        const imagenProductosUrl = emprendedor.getDataValue('imagen_productos')
+            ? yield (0, googleDrive_1.setPublicAccessToFile)(emprendedor.getDataValue('imagen_productos'))
+            : null;
+        const imagenLocalUrl = emprendedor.getDataValue('imagen_local')
+            ? yield (0, googleDrive_1.setPublicAccessToFile)(emprendedor.getDataValue('imagen_local'))
+            : null;
         // Responder con los datos del emprendedor y los enlaces públicos
-        res.json({
-            emprendedor
-        });
+        res.json(Object.assign(Object.assign({}, emprendedor.toJSON()), { imagen_productos: imagenProductosUrl, imagen_local: imagenLocalUrl }));
     }
     catch (error) {
         res.status(400).json({
@@ -152,26 +156,39 @@ const getEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.getEmprendedor = getEmprendedor;
 const loginEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { correo_electronico, contrasena } = req.body;
-    const emprendedor = yield emprendedor_1.Emprendedor.findOne({ where: { correo_electronico: correo_electronico } });
-    if (!emprendedor) {
-        return res.status(401).json({
-            msg: 'El correo ingresado no es valido'
+    try {
+        const emprendedor = yield emprendedor_1.Emprendedor.findOne({ where: { correo_electronico: correo_electronico } });
+        if (!emprendedor) {
+            return res.status(401).json({
+                msg: 'El correo ingresado no es valido'
+            });
+        }
+        if (emprendedor.dataValues.estado_emprendedor !== 'Aprobado') {
+            return res.status(403).json({
+                msg: 'Usuario no registrado'
+            });
+        }
+        const emprendedorPassword = yield bcrypt_1.default.compare(contrasena, emprendedor.dataValues.contrasena);
+        if (!emprendedorPassword) {
+            return res.status(401).json({
+                msg: 'Contraseña Incorrecta'
+            });
+        }
+        const rol = 'emprendedor';
+        const id_emprendedor = emprendedor.dataValues.id_emprendedor;
+        const token = jsonwebtoken_1.default.sign({
+            correo: correo_electronico,
+            role: rol,
+            id_emprendedor: id_emprendedor
+        }, process.env.SECRET_KEY || 'ACCESS', { expiresIn: '1h' });
+        res.json({ token, rol: rol, id_emprendedor: id_emprendedor });
+    }
+    catch (error) {
+        console.error('Error al intentar iniciar sesión:', error);
+        res.status(500).json({
+            msg: 'Ocurrió un error al intentar iniciar sesión. Por favor, intenta de nuevo.',
         });
     }
-    const emprendedorPassword = yield bcrypt_1.default.compare(contrasena, emprendedor.dataValues.contrasena);
-    if (!emprendedorPassword) {
-        return res.status(401).json({
-            msg: 'Contraseña Incorrecta'
-        });
-    }
-    const rol = 'emprendedor';
-    const id_emprendedor = emprendedor.dataValues.id_emprendedor;
-    const token = jsonwebtoken_1.default.sign({
-        correo: correo_electronico,
-        role: rol,
-        id_emprendedor: id_emprendedor
-    }, process.env.SECRET_KEY || 'ACCESS');
-    res.json({ token, rol: rol, id_emprendedor: id_emprendedor });
 });
 exports.loginEmprendedor = loginEmprendedor;
 const updatePassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -416,3 +433,23 @@ const getEmprendedoresPorEstado = (req, res) => __awaiter(void 0, void 0, void 0
     }
 });
 exports.getEmprendedoresPorEstado = getEmprendedoresPorEstado;
+const getEmprendedorById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id_emprendedor } = req.params;
+    try {
+        const emprendedor = yield emprendedor_1.Emprendedor.findByPk(id_emprendedor);
+        if (!emprendedor) {
+            return res.status(404).json({ msg: 'El ID de este emprendedor no existe' });
+        }
+        // Responder con los datos del emprendedor y los enlaces públicos
+        res.json({
+            emprendedor
+        });
+    }
+    catch (error) {
+        res.status(400).json({
+            msg: 'Ha ocurrido un error',
+            error
+        });
+    }
+});
+exports.getEmprendedorById = getEmprendedorById;

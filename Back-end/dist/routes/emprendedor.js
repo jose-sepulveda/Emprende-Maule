@@ -33,4 +33,5 @@ router.patch('/estado', auth_1.default, emprendedor_1.updateEstadoEmprendedor);
 router.post('/recuperar', emprendedor_1.recuperarContrasenaEmprendedor);
 router.post('/reset-password-emprendedor/:token', emprendedor_1.resetPasswordEmprendedor);
 router.get('/estado', emprendedor_1.getEmprendedoresPorEstado);
+router.get('/id/:id_emprendedor', emprendedor_1.getEmprendedorById);
 exports.default = router;

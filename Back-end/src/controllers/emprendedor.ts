@@ -4,7 +4,7 @@ import fs from 'fs';
 import jwt from 'jsonwebtoken';
 import path from 'path';
 import { Emprendedor } from "../models/emprendedor";
-import { deleteFileFromDrive, uploadFileToDrive } from '../services/googleDrive';
+import { deleteFileFromDrive, setPublicAccessToFile, uploadFileToDrive } from '../services/googleDrive';
 import { sendEmail } from '../services/mail';
 import { MulterRequest } from '../services/types';
 
@@ -134,9 +134,18 @@ export const getEmprendedor: RequestHandler = async(req, res) => {
             return res.status(404).json({msg: 'El rut de este emprendedor no existe'})
         }
 
+        const imagenProductosUrl = emprendedor.getDataValue('imagen_productos') 
+            ? await setPublicAccessToFile(emprendedor.getDataValue('imagen_productos')) 
+            : null;
+        const imagenLocalUrl = emprendedor.getDataValue('imagen_local') 
+            ? await setPublicAccessToFile(emprendedor.getDataValue('imagen_local')) 
+            : null;
+
         // Responder con los datos del emprendedor y los enlaces públicos
         res.json({
-            emprendedor
+            ...emprendedor.toJSON(),
+                imagen_productos: imagenProductosUrl,
+                imagen_local: imagenLocalUrl,
         });
     
     } catch (error) {
@@ -149,31 +158,47 @@ export const getEmprendedor: RequestHandler = async(req, res) => {
 
 export const loginEmprendedor = async(req: Request, res: Response) => {
     const { correo_electronico, contrasena} = req.body;
+    try {
+        const emprendedor = await Emprendedor.findOne({where: {correo_electronico: correo_electronico}});
 
-    const emprendedor = await Emprendedor.findOne({where: {correo_electronico: correo_electronico}});
+        if (!emprendedor) {
+            return res.status(401).json({
+                msg: 'El correo ingresado no es valido'
+            })
+        }
 
-    if (!emprendedor) {
-        return res.status(401).json({
-            msg: 'El correo ingresado no es valido'
-        })
+        if (emprendedor.dataValues.estado_emprendedor !== 'Aprobado') {
+            return res.status(403).json({
+                msg: 'Usuario no registrado'
+            })
+        }
+
+        const emprendedorPassword = await bcrypt.compare(contrasena, emprendedor.dataValues.contrasena);
+        if (!emprendedorPassword) {
+            return res.status(401).json({
+                msg: 'Contraseña Incorrecta'
+            })
+        }
+
+        const rol = 'emprendedor';
+        const id_emprendedor = emprendedor.dataValues.id_emprendedor;
+        const token = jwt.sign({
+            correo: correo_electronico,
+            role: rol,
+            id_emprendedor: id_emprendedor
+        }, process.env.SECRET_KEY || 'ACCESS',
+            { expiresIn: '1h'}
+        );
+
+        res.json({ token, rol: rol, id_emprendedor: id_emprendedor})
+    } catch (error) {
+        console.error('Error al intentar iniciar sesión:', error);
+        res.status(500).json({
+            msg: 'Ocurrió un error al intentar iniciar sesión. Por favor, intenta de nuevo.',
+        });
     }
 
-    const emprendedorPassword = await bcrypt.compare(contrasena, emprendedor.dataValues.contrasena);
-    if (!emprendedorPassword) {
-        return res.status(401).json({
-            msg: 'Contraseña Incorrecta'
-        })
-    }
-
-    const rol = 'emprendedor';
-    const id_emprendedor = emprendedor.dataValues.id_emprendedor;
-    const token = jwt.sign({
-        correo: correo_electronico,
-        role: rol,
-        id_emprendedor: id_emprendedor
-    }, process.env.SECRET_KEY || 'ACCESS');
-
-    res.json({ token, rol: rol, id_emprendedor: id_emprendedor})
+    
 }
 
 export const updatePassword = async(req: Request, res: Response) => {
@@ -497,3 +522,24 @@ export const getEmprendedoresPorEstado = async (req: Request, res: Response) => 
         });
     }
 };
+
+export const getEmprendedorById: RequestHandler = async(req, res) => {
+    const {id_emprendedor} = req.params;
+    try {
+        const emprendedor = await Emprendedor.findByPk(id_emprendedor); 
+        if (!emprendedor) {
+            return res.status(404).json({msg: 'El ID de este emprendedor no existe'})
+        }
+
+        // Responder con los datos del emprendedor y los enlaces públicos
+        res.json({
+            emprendedor
+        });
+    
+    } catch (error) {
+        res.status(400).json({
+            msg: 'Ha ocurrido un error',
+            error
+        })
+    }
+}
