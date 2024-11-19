@@ -18,6 +18,9 @@ const googleapis_1 = require("googleapis");
 const path_1 = __importDefault(require("path"));
 const uploadFileToDrive = (filePath, fileName, mimeType) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        if (!filePath || !fileName || !mimeType) {
+            throw new Error('Faltan argumentos necesarios: filePath, fileName o mimeType');
+        }
         const auth = new googleapis_1.google.auth.GoogleAuth({
             keyFile: path_1.default.resolve(__dirname, '../config/credencial.json'),
             scopes: ['https://www.googleapis.com/auth/drive']
@@ -147,8 +150,8 @@ const setPublicAccessToFile = (fileId) => __awaiter(void 0, void 0, void 0, func
             fields: 'mimeType, permissions',
         });
         const mimeType = file.data.mimeType;
-        const imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/bmp'];
-        if (!mimeType || !imageMimeTypes.includes(mimeType)) {
+        const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/bmp', 'aplication/pdf'];
+        if (!mimeType || !allowedMimeTypes.includes(mimeType)) {
             console.error(`El archivo con ID ${fileId} no es una imagen. Tipo MIME: ${mimeType}`);
             return null;
         }

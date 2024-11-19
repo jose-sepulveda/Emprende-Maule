@@ -26,11 +26,12 @@ const FormCrearEmprendedor = () => {
             direccion: data.direccion,
             tipo_de_cuenta: data.tipo_de_cuenta,
             numero_de_cuenta: data.numero_de_cuenta,
-            comprobante: data.comprobante[0],
-            imagen_productos: data.imagen_productos[0],
-            imagen_local: data.imagen_local[0]
+            comprobante: data.comprobante,
+            imagen_productos: data.imagen_productos,
+            imagen_local: data.imagen_local
         };
-
+        
+        console.log(emprendedor)
         try {
             const response = await crearEmprendedor(emprendedor);
             console.log("Emprendedor registrado:", response.data);
@@ -90,17 +91,29 @@ const FormCrearEmprendedor = () => {
                 <div className='file-uploads'>
                     <div>
                         <label htmlFor="comprobante">Subir Comprobante</label>
-                        <input id="comprobante" type="file" required {...register("comprobante")}/>
+                        <input 
+                            id="comprobante" 
+                            type="file" 
+                            multiple
+                            required {...register("comprobante")}/>
                         <p>{comprobante?.length || 0} archivo(s) seleccionado(s)</p>
                     </div>
                     <div>
                         <label htmlFor="imagen_productos">Subir Imagenes del Producto</label>
-                        <input id="imagen_productos" type="file" required {...register("imagen_productos")}/>
+                        <input
+                            id="imagen_productos"
+                            type="file" 
+                            multiple
+                            required {...register("imagen_productos")}/>
                         <p>{imagenProductos?.length || 0} archivo(s) seleccionado(s)</p>
                     </div>
                     <div>
                         <label htmlFor="imagen_local">Subir Imagenes del Local</label>
-                        <input id="imagen_local" type="file" required {...register("imagen_local")}/>
+                        <input 
+                            id="imagen_local" 
+                            type="file" 
+                            multiple
+                            required {...register("imagen_local")}/>
                         <p>{imagenLocal?.length || 0} archivo(s) seleccionado(s)</p>
                     </div>
                 </div>

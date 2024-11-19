@@ -18,9 +18,9 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 router.post('/new', upload.fields([
-    { name: 'comprobante', maxCount: 1},
-    { name: 'imagen_local', maxCount: 1},
-    { name: 'imagen_productos', maxCount: 1},
+    { name: 'comprobante', maxCount: 5},
+    { name: 'imagen_local', maxCount: 10},
+    { name: 'imagen_productos', maxCount: 10},
 ]), crearEmprendedor);
 router.post('/login', loginEmprendedor);
 router.get('/list', auth, getEmprendedores);

@@ -4,6 +4,9 @@ import path from 'path';
 
 export const uploadFileToDrive = async (filePath: string, fileName: string, mimeType: string) => {
     try {
+        if (!filePath || !fileName || !mimeType) {
+            throw new Error('Faltan argumentos necesarios: filePath, fileName o mimeType');
+        }
 
         const auth = new google.auth.GoogleAuth({
             keyFile: path.resolve(__dirname, '../config/credencial.json'),
@@ -157,9 +160,9 @@ export const setPublicAccessToFile = async (fileId: string) => {
         });
 
         const mimeType = file.data.mimeType;
-        const imageMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/bmp'];
+        const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/bmp','aplication/pdf'];
 
-        if (!mimeType || !imageMimeTypes.includes(mimeType)) {
+        if (!mimeType || !allowedMimeTypes.includes(mimeType)) {
             console.error(`El archivo con ID ${fileId} no es una imagen. Tipo MIME: ${mimeType}`);
             return null; 
         }

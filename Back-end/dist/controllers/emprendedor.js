@@ -73,15 +73,24 @@ const crearEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, functio
             res.status(400).json({ message: 'Faltan archivos' });
             return;
         }
-        const comprobantePath = path_1.default.join(__dirname, '../uploads', files['comprobante'][0].filename);
-        const imagenLocalPath = path_1.default.join(__dirname, '../uploads', files['imagen_local'][0].filename);
-        const imagenProductosPath = path_1.default.join(__dirname, '../uploads', files['imagen_productos'][0].filename);
-        const comprobanteFileId = yield (0, googleDrive_1.uploadFileToDrive)(comprobantePath, files['comprobante'][0].originalname, 'aplication/pdf');
-        fs_1.default.unlinkSync(comprobantePath);
-        const imagenLocalFileId = yield (0, googleDrive_1.uploadFileToDrive)(imagenLocalPath, files['imagen_local'][0].originalname, 'image/png');
-        fs_1.default.unlinkSync(imagenLocalPath);
-        const imagenProductosFileId = yield (0, googleDrive_1.uploadFileToDrive)(imagenProductosPath, files['imagen_productos'][0].originalname, 'image/png');
-        fs_1.default.unlinkSync(imagenProductosPath);
+        const subirArchivos = (archivos, tipoMime) => __awaiter(void 0, void 0, void 0, function* () {
+            var _a, _b;
+            const fileIds = [];
+            for (const archivo of archivos) {
+                const filePath = path_1.default.join(__dirname, '../uploads', (_a = archivo.filename) !== null && _a !== void 0 ? _a : 'archivo_default');
+                const fileName = (_b = archivo.originalname) !== null && _b !== void 0 ? _b : 'archivo_default';
+                const fileId = yield (0, googleDrive_1.uploadFileToDrive)(filePath, fileName, tipoMime);
+                fs_1.default.unlinkSync(filePath);
+                if (!fileId) {
+                    throw new Error(`Error al subir el archivo: ${fileName}`);
+                }
+                fileIds.push(fileId);
+            }
+            return fileIds;
+        });
+        const comprobanteFileIds = yield subirArchivos(files['comprobante'], 'aplication/pdf');
+        const imagenLocalFileIds = yield subirArchivos(files['imagen_local'], 'image/png');
+        const imagenProductosFileIds = yield subirArchivos(files['imagen_productos'], 'image/png');
         const nuevoEmprendedor = yield emprendedor_1.Emprendedor.create({
             "rut_emprendedor": rut_emprendedor,
             "contrasena": hashedPassword,
@@ -91,9 +100,9 @@ const crearEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, functio
             "direccion": direccion,
             "telefono": telefono,
             "correo_electronico": correo_electronico,
-            "imagen_productos": imagenProductosFileId,
-            "imagen_local": imagenLocalFileId,
-            "comprobante": comprobanteFileId,
+            "imagen_productos": imagenProductosFileIds.join(','),
+            "imagen_local": imagenLocalFileIds.join(','),
+            "comprobante": comprobanteFileIds.join(','),
             "tipo_de_cuenta": tipo_de_cuenta,
             "numero_de_cuenta": numero_de_cuenta,
             "estado_emprendedor": 'Pendiente',
@@ -137,14 +146,26 @@ const getEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, function*
         if (!emprendedor) {
             return res.status(404).json({ msg: 'El rut de este emprendedor no existe' });
         }
-        const imagenProductosUrl = emprendedor.getDataValue('imagen_productos')
-            ? yield (0, googleDrive_1.setPublicAccessToFile)(emprendedor.getDataValue('imagen_productos'))
-            : null;
-        const imagenLocalUrl = emprendedor.getDataValue('imagen_local')
-            ? yield (0, googleDrive_1.setPublicAccessToFile)(emprendedor.getDataValue('imagen_local'))
-            : null;
+        const obtenerIdPublicas = (fileIds) => __awaiter(void 0, void 0, void 0, function* () {
+            if (!fileIds)
+                return null;
+            const ids = fileIds.split(',');
+            const urls = yield Promise.all(ids.map((id) => __awaiter(void 0, void 0, void 0, function* () {
+                try {
+                    return yield (0, googleDrive_1.setPublicAccessToFile)(id);
+                }
+                catch (error) {
+                    console.error(`Error al obtener URL pública para el archivo ${id}:`, error);
+                    return null;
+                }
+            })));
+            return urls.filter((url) => url !== null);
+        });
+        const comprobanteFileIds = yield obtenerIdPublicas(emprendedor.getDataValue('comprobante'));
+        const imagenProductosIds = yield obtenerIdPublicas(emprendedor.getDataValue('imagen_productos'));
+        const imagenLocalIds = yield obtenerIdPublicas(emprendedor.getDataValue('imagen_local'));
         // Responder con los datos del emprendedor y los enlaces públicos
-        res.json(Object.assign(Object.assign({}, emprendedor.toJSON()), { imagen_productos: imagenProductosUrl, imagen_local: imagenLocalUrl }));
+        res.json(Object.assign(Object.assign({}, emprendedor.toJSON()), { comprobante: comprobanteFileIds, imagen_productos: imagenProductosIds, imagen_local: imagenLocalIds }));
     }
     catch (error) {
         res.status(400).json({
@@ -285,17 +306,24 @@ const deleteEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, functi
         if (!emprendedor) {
             return res.status(404).json({ msg: 'Emprendedor no encontrado' });
         }
-        const comprobanteId = emprendedor.getDataValue('comprobante');
-        const imagenLocalId = emprendedor.getDataValue('imagen_local');
-        const imagenProductosId = emprendedor.getDataValue('imagen_productos');
-        if (comprobanteId) {
-            yield (0, googleDrive_1.deleteFileFromDrive)(comprobanteId);
-        }
-        if (imagenLocalId) {
-            yield (0, googleDrive_1.deleteFileFromDrive)(imagenLocalId);
-        }
-        if (imagenProductosId) {
-            yield (0, googleDrive_1.deleteFileFromDrive)(imagenProductosId);
+        const archivos = [
+            emprendedor.getDataValue('comprobante'),
+            emprendedor.getDataValue('imagen_local'),
+            emprendedor.getDataValue('imagen_productos'),
+        ];
+        for (let fileId of archivos) {
+            if (fileId) {
+                const ids = fileId.split(',');
+                for (let id of ids) {
+                    try {
+                        yield (0, googleDrive_1.deleteFileFromDrive)(id.trim());
+                        console.log(`Archivo con ID ${id} eliminado`);
+                    }
+                    catch (error) {
+                        console.error(`Error al eliminar archivo con ID ${id}: `, error);
+                    }
+                }
+            }
         }
         yield emprendedor.destroy();
         return res.json({ msg: 'Emprendedor y sus archivos eliminados correctamente' });
@@ -332,12 +360,25 @@ const updateEstadoEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, 
             });
         }
         if (nuevoEstado == 'Rechazado') {
-            yield (0, googleDrive_1.deleteFileFromDrive)(emprendedor.getDataValue('comprobante'));
-            console.log(`Archivo con ID ${emprendedor.getDataValue('comprobante')} eliminado`);
-            yield (0, googleDrive_1.deleteFileFromDrive)(emprendedor.getDataValue('imagen_local'));
-            console.log(`Archivo con ID ${emprendedor.getDataValue('imagen_local')} eliminado`);
-            yield (0, googleDrive_1.deleteFileFromDrive)(emprendedor.getDataValue('imagen_productos'));
-            console.log(`Archivo con ID ${emprendedor.getDataValue('imagen_productos')} eliminado`);
+            const archivos = [
+                emprendedor.getDataValue('comprobante'),
+                emprendedor.getDataValue('imagen_local'),
+                emprendedor.getDataValue('imagen_productos'),
+            ];
+            for (let fileId of archivos) {
+                if (fileId) {
+                    const ids = fileId.split(',');
+                    for (let id of ids) {
+                        try {
+                            yield (0, googleDrive_1.deleteFileFromDrive)(id.trim());
+                            console.log(`Archivo con ID ${id} eliminado`);
+                        }
+                        catch (error) {
+                            console.error(`Error al eliminar archivo con ID ${id}: `, error);
+                        }
+                    }
+                }
+            }
             yield (0, mail_1.sendEmail)(emprendedor.getDataValue('correo_electronico'), 'Cuenta Rechazada', `Hola ${emprendedor.getDataValue('nombre_emprendedor')},
                 Lamentamos informarte que tu cuenta fue rechazada porque no cumplia con los requisitos para el registro`);
             yield emprendedor_1.Emprendedor.destroy({ where: { rut_emprendedor } });

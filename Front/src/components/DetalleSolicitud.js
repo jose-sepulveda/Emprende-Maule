@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { getEmprendedor, updateEstadoEmprendedor } from '../services/emprendedor';
 import "../Styles/detalle-solicitud.css";
-;
 
 const DetalleSolicitud = () => {
 
@@ -62,66 +61,76 @@ const DetalleSolicitud = () => {
     }
 
     return (
-        <div className='detalle-emprendedor'>
-    <h2>Detalles de Solicitud de Registro</h2>
-    {emprendedor && (
-      <>
-        <p><strong>Nombre:</strong> {emprendedor.nombre_emprendedor}</p>
-        <p><strong>Apellido Paterno:</strong> {emprendedor.apellido1_emprendedor}</p>
-        <p><strong>Apellido Materno:</strong> {emprendedor.apellido2_emprendedor}</p>
-        <p><strong>Dirección:</strong> {emprendedor.direccion}</p>
-        <p><strong>Telefono:</strong> {emprendedor.telefono}</p>
-        <p><strong>Correo Electrónico:</strong> {emprendedor.correo_electronico}</p>
-        <p><strong>Tipo de Cuenta Bancaria:</strong> {emprendedor.tipo_de_cuenta}</p>
-        <p><strong>Número de Cuenta Bancaria:</strong> {emprendedor.numero_de_cuenta}</p>
-        <p><strong>Estado:</strong> {emprendedor.estado_emprendedor}</p>
-        <h3 className='documentos-title'>Archivos Adjuntados</h3>
-        <h3>Documentos Tributarios</h3>
-        <div>
-          {emprendedor.comprobante && (
-            <a href={generarUrlPdf(emprendedor.comprobante)} target="_blank" rel="noopener noreferrer">
-              Comprobante
-            </a>
-          )}
-        </div>
-        <h3>Imágenes de sus Productos</h3>
+        <div className='detalle-solicitud'>
+          <h2>Detalles de Solicitud de Registro</h2>
+          {emprendedor && (
+            <>
+              <p><strong>Nombre:</strong> {emprendedor.nombre_emprendedor}</p>
+              <p><strong>Apellido Paterno:</strong> {emprendedor.apellido1_emprendedor}</p>
+              <p><strong>Apellido Materno:</strong> {emprendedor.apellido2_emprendedor}</p>
+              <p><strong>Dirección:</strong> {emprendedor.direccion}</p>
+              <p><strong>Telefono:</strong> {emprendedor.telefono}</p>
+              <p><strong>Correo Electrónico:</strong> {emprendedor.correo_electronico}</p>
+              <p><strong>Tipo de Cuenta Bancaria:</strong> {emprendedor.tipo_de_cuenta}</p>
+              <p><strong>Número de Cuenta Bancaria:</strong> {emprendedor.numero_de_cuenta}</p>
+              <p><strong>Estado:</strong> {emprendedor.estado_emprendedor}</p>
+              <h3 className='documentos-title'>Archivos Adjuntados</h3>
+              <h3>Documentos Tributarios</h3>
+              <div>
+                {emprendedor.comprobante && emprendedor.comprobante.length > 0 && (
+                  Array.from(emprendedor.comprobante).map((file, index) => (
+                  <a key={index} href={generarUrlPdf(emprendedor.comprobante)} target="_blank" rel="noopener noreferrer">
+                    Comprobante
+                  </a>
+                  ))
+                )}
+              </div>
+              <h3>Imágenes de sus Productos</h3>
 
-        <div className='contenedor-imagen-producto'>
-          {emprendedor.imagen_productos && (
-            <img 
-              className='imagen-producto'
-              src={generarUrl(emprendedor.imagen_productos)}
-              alt="Imagen de productos" />
+              <div className='contenedor-imagen-productos-solicitud'>
+                  {emprendedor.imagen_productos && emprendedor.imagen_productos.length > 0 && (
+                      Array.from(emprendedor.imagen_productos).map((file, index) => (
+                          <img 
+                              key={index}
+                              className='imagen-productos-solicitud'
+                              src={generarUrl(file)}
+                              alt={`Imagen de producto ${index + 1}`} 
+                          />
+                      ))
+                  )}
+              </div>
+              <h3>Imágenes de su Local o Domicilio</h3>
+              <div className='contenedor-imagen-local-solicitud'>
+                  {emprendedor.imagen_local && emprendedor.imagen_local.length > 0 && (
+                      Array.from(emprendedor.imagen_local).map((file, index) => (
+                          <img 
+                              key={index}
+                              className='imagen-local-solicitud'
+                              src={generarUrl(file)}
+                              alt={`Imagen de local ${index + 1}`} 
+                          />
+                      ))
+                  )}
+              </div>
+              <div className='actions'>
+                <button
+                  className='aprobar'
+                  onClick={() => handleUpdateEstado("Aprobado")}
+                  disabled={loading}
+                >
+                  {loading ? "Aprobando..." : "Aprobar Solicitud"}
+                </button>
+                <button
+                  className='rechazar'
+                  onClick={() => handleUpdateEstado("Rechazado")}
+                  disabled={loading}
+                >
+                  {loading ? "Rechazando..." : "Rechazar Solicitud"}
+                </button>
+              </div>
+            </>
           )}
         </div>
-        <h3>Imágenes de su Local o Domicilio</h3>
-        <div className='contenedor-imagen-local'>
-          {emprendedor.imagen_local && (
-            <img
-              className='imagen-local' 
-              src={generarUrl(emprendedor.imagen_local)} 
-              alt='Imagen de Local'/>
-          )}
-        </div>
-        <div className='actions'>
-          <button
-            className='aprobar'
-            onClick={() => handleUpdateEstado("Aprobado")}
-            disabled={loading}
-          >
-            {loading ? "Aprobando..." : "Aprobar Solicitud"}
-          </button>
-          <button
-            className='rechazar'
-            onClick={() => handleUpdateEstado("Rechazado")}
-            disabled={loading}
-          >
-            {loading ? "Rechazando..." : "Rechazar Solicitud"}
-          </button>
-        </div>
-      </>
-    )}
-  </div>
     )
     }
 

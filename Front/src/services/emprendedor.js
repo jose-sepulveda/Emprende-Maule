@@ -26,15 +26,42 @@ export const getEmprendedor = (rut_emprendedor) => api.get(`/${rut_emprendedor}`
 // Crear emprendedor
 export const crearEmprendedor = (emprendedor) => {
     const formData = new FormData();
+
+    // Agregar los campos de texto
     for (const key in emprendedor) {
-        formData.append(key, emprendedor[key]);
+        // Solo agregar los campos de texto, omitiendo los campos de archivos
+        if (key !== 'comprobante' && key !== 'imagen_productos' && key !== 'imagen_local') {
+            formData.append(key, emprendedor[key]);
+        }
     }
+
+    // Agregar los archivos a FormData
+    if (emprendedor.comprobante && emprendedor.comprobante.length > 0) {
+        Array.from(emprendedor.comprobante).forEach(file => {
+            formData.append('comprobante', file);
+        });
+    }
+
+    if (emprendedor.imagen_productos && emprendedor.imagen_productos.length > 0) {
+        Array.from(emprendedor.imagen_productos).forEach(file => {
+            formData.append('imagen_productos', file);
+        });
+    }
+
+    if (emprendedor.imagen_local && emprendedor.imagen_local.length > 0) {
+        Array.from(emprendedor.imagen_local).forEach(file => {
+            formData.append('imagen_local', file);
+        });
+    }
+
+    // Enviar la solicitud POST con los datos y archivos
     return api.post('/new', formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
         }
-    })
-}
+    });
+};
+
 
 // Actualizar emprendedor
 export const updateEmprendedor = (rut_emprendedor, emprendedor) => api.put(`/${rut_emprendedor}`, emprendedor);

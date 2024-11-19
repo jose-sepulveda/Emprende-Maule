@@ -68,16 +68,25 @@ export const crearEmprendedor : RequestHandler = async (req: MulterRequest, res:
             return;
         }
 
-        const comprobantePath = path.join(__dirname, '../uploads', files['comprobante'][0].filename);
-        const imagenLocalPath = path.join(__dirname, '../uploads', files['imagen_local'][0].filename);
-        const imagenProductosPath = path.join(__dirname, '../uploads', files['imagen_productos'][0].filename);
+        const subirArchivos = async (archivos: Express.Multer.File[], tipoMime: string): Promise<string[]> => {
+            const fileIds: string[] = [];
+            for (const archivo of archivos) {
+                const filePath = path.join(__dirname, '../uploads', archivo.filename ?? 'archivo_default');
+                const fileName = archivo.originalname ?? 'archivo_default';
+                const fileId = await uploadFileToDrive(filePath, fileName, tipoMime);
+                fs.unlinkSync(filePath); 
+                
+                if (!fileId) {
+                    throw new Error(`Error al subir el archivo: ${fileName}`)
+                }
+                fileIds.push(fileId);
+            }
+            return fileIds;
+        };
 
-        const comprobanteFileId = await uploadFileToDrive(comprobantePath, files['comprobante'][0].originalname, 'aplication/pdf');
-        fs.unlinkSync(comprobantePath);
-        const imagenLocalFileId = await uploadFileToDrive(imagenLocalPath, files['imagen_local'][0].originalname, 'image/png');
-        fs.unlinkSync(imagenLocalPath);
-        const imagenProductosFileId = await uploadFileToDrive(imagenProductosPath, files['imagen_productos'][0].originalname, 'image/png');
-        fs.unlinkSync(imagenProductosPath);
+        const comprobanteFileIds = await subirArchivos(files['comprobante'], 'aplication/pdf');
+        const imagenLocalFileIds = await subirArchivos(files['imagen_local'], 'image/png');
+        const imagenProductosFileIds = await subirArchivos(files['imagen_productos'], 'image/png');
 
         const nuevoEmprendedor = await Emprendedor.create({
             "rut_emprendedor": rut_emprendedor,
@@ -88,9 +97,9 @@ export const crearEmprendedor : RequestHandler = async (req: MulterRequest, res:
             "direccion": direccion,
             "telefono": telefono,
             "correo_electronico": correo_electronico,
-            "imagen_productos": imagenProductosFileId,
-            "imagen_local": imagenLocalFileId,
-            "comprobante": comprobanteFileId,
+            "imagen_productos": imagenProductosFileIds.join(','),
+            "imagen_local": imagenLocalFileIds.join(','),
+            "comprobante": comprobanteFileIds.join(','),
             "tipo_de_cuenta": tipo_de_cuenta,
             "numero_de_cuenta": numero_de_cuenta,
             "estado_emprendedor": 'Pendiente',
@@ -134,18 +143,32 @@ export const getEmprendedor: RequestHandler = async(req, res) => {
             return res.status(404).json({msg: 'El rut de este emprendedor no existe'})
         }
 
-        const imagenProductosUrl = emprendedor.getDataValue('imagen_productos') 
-            ? await setPublicAccessToFile(emprendedor.getDataValue('imagen_productos')) 
-            : null;
-        const imagenLocalUrl = emprendedor.getDataValue('imagen_local') 
-            ? await setPublicAccessToFile(emprendedor.getDataValue('imagen_local')) 
-            : null;
+        const obtenerIdPublicas = async (fileIds: string | null): Promise<string[] | null> => {
+            if (!fileIds) return null;
+            const ids = fileIds.split(',');
+            const urls = await Promise.all(
+                ids.map(async (id) => {
+                    try {
+                        return await setPublicAccessToFile(id);
+                    } catch (error) {
+                        console.error(`Error al obtener URL pública para el archivo ${id}:`, error)
+                        return null;
+                    }
+                })
+            );
+            return urls.filter((url) => url !== null);
+        }
+
+        const comprobanteFileIds = await obtenerIdPublicas(emprendedor.getDataValue('comprobante'));
+        const imagenProductosIds = await obtenerIdPublicas(emprendedor.getDataValue('imagen_productos'));
+        const imagenLocalIds = await obtenerIdPublicas(emprendedor.getDataValue('imagen_local'));
 
         // Responder con los datos del emprendedor y los enlaces públicos
         res.json({
             ...emprendedor.toJSON(),
-                imagen_productos: imagenProductosUrl,
-                imagen_local: imagenLocalUrl,
+                comprobante: comprobanteFileIds,
+                imagen_productos: imagenProductosIds,
+                imagen_local: imagenLocalIds,
         });
     
     } catch (error) {
@@ -327,18 +350,24 @@ export const deleteEmprendedor = async(req: Request, res: Response) => {
             return res.status(404).json({msg: 'Emprendedor no encontrado'});
         }
 
-        const comprobanteId = emprendedor.getDataValue('comprobante');
-        const imagenLocalId = emprendedor.getDataValue('imagen_local');
-        const imagenProductosId = emprendedor.getDataValue('imagen_productos');
+        const archivos = [
+            emprendedor.getDataValue('comprobante'),
+            emprendedor.getDataValue('imagen_local'),
+            emprendedor.getDataValue('imagen_productos'),
+        ]
 
-        if (comprobanteId) {
-            await deleteFileFromDrive(comprobanteId);
-        }
-        if (imagenLocalId) {
-            await deleteFileFromDrive(imagenLocalId);
-        }
-        if (imagenProductosId) {
-            await deleteFileFromDrive(imagenProductosId);
+        for (let fileId of archivos) {
+            if (fileId) {
+                const ids = fileId.split(',');
+                for (let id of ids) {
+                    try {
+                        await deleteFileFromDrive(id.trim()); 
+                        console.log(`Archivo con ID ${id} eliminado`);
+                    } catch (error) {
+                        console.error(`Error al eliminar archivo con ID ${id}: `, error);
+                    }
+                }
+            }
         }
 
         await emprendedor.destroy();
@@ -387,12 +416,25 @@ export const updateEstadoEmprendedor = async (req: Request, res: Response) => {
         }
 
         if (nuevoEstado == 'Rechazado') {
-            await deleteFileFromDrive(emprendedor.getDataValue('comprobante'));
-            console.log(`Archivo con ID ${emprendedor.getDataValue('comprobante')} eliminado`);
-            await deleteFileFromDrive(emprendedor.getDataValue('imagen_local'));
-            console.log(`Archivo con ID ${emprendedor.getDataValue('imagen_local')} eliminado`);
-            await deleteFileFromDrive(emprendedor.getDataValue('imagen_productos'));
-            console.log(`Archivo con ID ${emprendedor.getDataValue('imagen_productos')} eliminado`);
+            const archivos = [
+                emprendedor.getDataValue('comprobante'),
+                emprendedor.getDataValue('imagen_local'),
+                emprendedor.getDataValue('imagen_productos'),
+            ];
+
+            for (let fileId of archivos) {
+                if (fileId) {
+                    const ids = fileId.split(',');
+                    for (let id of ids) {
+                        try {
+                            await deleteFileFromDrive(id.trim()); 
+                            console.log(`Archivo con ID ${id} eliminado`);
+                        } catch (error) {
+                            console.error(`Error al eliminar archivo con ID ${id}: `, error);
+                        }
+                    }
+                }
+            }
 
             await sendEmail(
                 emprendedor.getDataValue('correo_electronico'),

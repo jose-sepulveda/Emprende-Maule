@@ -1,17 +1,17 @@
 /* Contenedor principal */
-.detalle-emprendedor {
+.detalle-solicitud {
     background-color: white;
     border: 2px solid black;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    max-width: 900px;
+    max-width: 80%;
     margin: 0 auto;
     font-family: Arial, sans-serif;
 }
 
 /* Título principal */
-.detalle-emprendedor h2 {
+.detalle-solicitud h2 {
     font-size: 2rem;
     color: #333;
     margin-bottom: 20px;
@@ -19,7 +19,7 @@
 }
 
 /* Estilos para las secciones de información */
-.detalle-emprendedor p {
+.detalle-solicitud p {
     font-size: 1.1rem;
     line-height: 1.6;
     margin-bottom: 10px;
@@ -27,39 +27,24 @@
 }
 
 /* Estilo para las etiquetas */
-.detalle-emprendedor strong {
+.detalle-solicitud strong {
     color: #333;
 }
 
 /* Estilo para los títulos de las secciones */
-.detalle-emprendedor h3 {
+.detalle-solicitud h3 {
     font-size: 1.5rem;
     color: #333;
     margin-top: 20px;
     margin-bottom: 10px;
 }
 
-/* Contenedor de imágenes */
-.detalle-emprendedor .imagenes {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-/* Estilo para las imágenes */
-.detalle-emprendedor img {
-    max-width: 100%;
-    width: 100%;
-    height: auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
 /* Estilo para los botones de archivos */
-.detalle-emprendedor .archivos {
+.detalle-solicitud .archivos {
     margin-top: 10px;
 }
 
-.detalle-emprendedor .archivos a {
+.detalle-solicitud .archivos a {
     display: inline-block;
     padding: 8px 16px;
     margin-right: 10px;
@@ -70,7 +55,7 @@
     font-weight: bold;
 }
 
-.detalle-emprendedor .archivos a:hover {
+.detalle-solicitud .archivos a:hover {
     background-color: #45a049;
 }
 
@@ -79,14 +64,14 @@
 }
 
 /* Estilos para los botones de Aprobar y Rechazar */
-.detalle-emprendedor .actions {
+.detalle-solicitud .actions {
     margin-top: 20px;
     display: flex;
     justify-content: center;
     gap: 20px;
 }
 
-.detalle-emprendedor .actions button {
+.detalle-solicitud .actions button {
     padding: 10px 20px;
     font-size: 1rem;
     font-weight: bold;
@@ -98,38 +83,42 @@
 }
 
 /* Botón de Aprobar */
-.detalle-emprendedor .actions button.aprobar {
+.detalle-solicitud .actions button.aprobar {
     background-color: #4CAF50; /* Verde */
 }
 
-.detalle-emprendedor .actions button.aprobar:hover {
+.detalle-solicitud .actions button.aprobar:hover {
     background-color: #45a049;
 }
 
 /* Botón de Rechazar */
-.detalle-emprendedor .actions button.rechazar {
+.detalle-solicitud .actions button.rechazar {
     background-color: #f44336; /* Rojo */
 }
 
-.detalle-emprendedor .actions button.rechazar:hover {
+.detalle-solicitud .actions button.rechazar:hover {
     background-color: #e53935;
 }
 
 /* Estilos de carga para los botones */
-.detalle-emprendedor .actions button:disabled {
+.detalle-solicitud .actions button:disabled {
     background-color: #b0b0b0;
     cursor: not-allowed;
 }
 
-.contenedor-imagen-producto {
-    width: 500px;
+.contenedor-imagen-productos-solicitud {
+    display: flex;
 }
 
-.contenedor-imagen-local {
-    width: 500px;
+.contenedor-imagen-local-solicitud {
+    display: flex;
 }
 
-.imagen-producto {
+.imagen-productos-solicitud {
+    width: 500px;
+    height: auto;
+    max-height: fit-content;
+    max-width: fit-content;
     object-fit: cover; 
     border-radius: 8px; 
     border: 1px solid black;
@@ -137,9 +126,11 @@
     margin: 10px; 
 }
 
-.imagen-local {
-    width: 200px; 
-    height: 150px; 
+.imagen-local-solicitud {
+    width: 500px; 
+    height: auto;
+    max-height: fit-content;
+    max-width: fit-content;
     object-fit: cover;
     border: 1px solid black;
     border-radius: 8px; 
