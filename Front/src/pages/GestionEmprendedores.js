@@ -34,8 +34,8 @@ const GestionEmprendedores = () => {
             setLoading(prevLoading => ({...prevLoading, [rut_emprendedor]: true}))
             try {
                 await deleteEmprendedor(rut_emprendedor);
-                toast.success('Emprendedor eliminado correctamente')
                 cargarEmprendedores();
+                toast.success('Emprendedor eliminado correctamente');
             } catch (error) {
                 console.error('Error al eliminar emprendedor');
                 toast.error('Error al eliminar emprendedor');

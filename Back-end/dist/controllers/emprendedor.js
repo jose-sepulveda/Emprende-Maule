@@ -18,6 +18,7 @@ const fs_1 = __importDefault(require("fs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const path_1 = __importDefault(require("path"));
 const emprendedor_1 = require("../models/emprendedor");
+const producto_1 = require("../models/producto");
 const googleDrive_1 = require("../services/googleDrive");
 const mail_1 = require("../services/mail");
 const getEmprendedores = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -306,15 +307,35 @@ const deleteEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, functi
         if (!emprendedor) {
             return res.status(404).json({ msg: 'Emprendedor no encontrado' });
         }
+        const productos = yield producto_1.Productos.findAll({ where: { id_emprendedor: emprendedor.dataValues.id_emprendedor } });
+        for (const producto of productos) {
+            const imagenProductosId = producto.getDataValue('imagen');
+            if (imagenProductosId) {
+                try {
+                    yield (0, googleDrive_1.deleteFileFromDrive)(imagenProductosId);
+                    console.log(`Ìmagen de producto con ID ${imagenProductosId} eliminada correctamente`);
+                }
+                catch (error) {
+                    console.error(`Error al eliminar la imagen del producto con ID ${imagenProductosId}`, error);
+                }
+            }
+            try {
+                yield producto.destroy();
+                console.log(`Producto con ID ${producto.dataValues.cod_producto} eliminado correctamente`);
+            }
+            catch (error) {
+                console.error(`Error al eliminar el producto con ID ${producto.dataValues.cod_producto}:`, error);
+            }
+        }
         const archivos = [
             emprendedor.getDataValue('comprobante'),
             emprendedor.getDataValue('imagen_local'),
             emprendedor.getDataValue('imagen_productos'),
         ];
-        for (let fileId of archivos) {
+        for (const fileId of archivos) {
             if (fileId) {
                 const ids = fileId.split(',');
-                for (let id of ids) {
+                for (const id of ids) {
                     try {
                         yield (0, googleDrive_1.deleteFileFromDrive)(id.trim());
                         console.log(`Archivo con ID ${id} eliminado`);
@@ -326,7 +347,7 @@ const deleteEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, functi
             }
         }
         yield emprendedor.destroy();
-        return res.json({ msg: 'Emprendedor y sus archivos eliminados correctamente' });
+        return res.json({ msg: 'Emprendedor, sus productos y sus archivos eliminados correctamente' });
     }
     catch (error) {
         console.error(error);

@@ -66,6 +66,7 @@ const PerfilEmprendedor = () => {
                 <p><strong>Nombre:</strong> {emprendedor.nombre_emprendedor}</p>
                 <p><strong>Apellido Paterno:</strong> {emprendedor.apellido1_emprendedor}</p>
                 <p><strong>Apellido Materno:</strong> {emprendedor.apellido2_emprendedor}</p>
+                <p><strong>Rut:</strong> {emprendedor.rut_emprendedor}</p>
                 <p><strong>Dirección:</strong> {emprendedor.direccion}</p>
                 <p><strong>Telefono:</strong> {emprendedor.telefono}</p>
                 <p><strong>Correo Electrónico:</strong> {emprendedor.correo_electronico}</p>

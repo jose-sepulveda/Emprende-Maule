@@ -4,6 +4,7 @@ import fs from 'fs';
 import jwt from 'jsonwebtoken';
 import path from 'path';
 import { Emprendedor } from "../models/emprendedor";
+import { Productos } from '../models/producto';
 import { deleteFileFromDrive, setPublicAccessToFile, uploadFileToDrive } from '../services/googleDrive';
 import { sendEmail } from '../services/mail';
 import { MulterRequest } from '../services/types';
@@ -350,16 +351,37 @@ export const deleteEmprendedor = async(req: Request, res: Response) => {
             return res.status(404).json({msg: 'Emprendedor no encontrado'});
         }
 
+        const productos = await Productos.findAll({ where: { id_emprendedor: emprendedor.dataValues.id_emprendedor}});
+
+        for (const producto of productos) {
+            const imagenProductosId = producto.getDataValue('imagen');
+            if (imagenProductosId) {
+                try {
+                    await deleteFileFromDrive(imagenProductosId);
+                    console.log(`Ìmagen de producto con ID ${imagenProductosId} eliminada correctamente`);
+                } catch (error) {
+                    console.error(`Error al eliminar la imagen del producto con ID ${imagenProductosId}`, error);
+                }
+            }
+
+            try {
+                await producto.destroy();
+                console.log(`Producto con ID ${producto.dataValues.cod_producto} eliminado correctamente`);
+            } catch (error) {
+                console.error(`Error al eliminar el producto con ID ${producto.dataValues.cod_producto}:`, error);
+            }
+        }
+
         const archivos = [
             emprendedor.getDataValue('comprobante'),
             emprendedor.getDataValue('imagen_local'),
             emprendedor.getDataValue('imagen_productos'),
         ]
 
-        for (let fileId of archivos) {
+        for (const fileId of archivos) {
             if (fileId) {
                 const ids = fileId.split(',');
-                for (let id of ids) {
+                for (const id of ids) {
                     try {
                         await deleteFileFromDrive(id.trim()); 
                         console.log(`Archivo con ID ${id} eliminado`);
@@ -372,7 +394,7 @@ export const deleteEmprendedor = async(req: Request, res: Response) => {
 
         await emprendedor.destroy();
 
-        return res.json({ msg: 'Emprendedor y sus archivos eliminados correctamente'});
+        return res.json({ msg: 'Emprendedor, sus productos y sus archivos eliminados correctamente'});
     } catch (error) {
         console.error(error);
         return res.status(500).json({ msg: 'Error eliminando al emprendedor'});
