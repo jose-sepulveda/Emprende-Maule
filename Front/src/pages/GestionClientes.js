@@ -38,6 +38,7 @@ const GestionClientes = () => {
       <table className='gestion-clientes-table'>
         <thead>
           <tr>
+            <th>ID</th>
             <th>Nombre</th>
             <th>Apellidos</th>
             <th>Acciones</th>
@@ -46,6 +47,7 @@ const GestionClientes = () => {
         <tbody>
           {clientes.map((cliente) => (
             <tr key={cliente.id_cliente}>
+              <td>{cliente.id_cliente}</td>
               <td>{cliente.nombre_cliente} {cliente.apellido1_cliente} {cliente.apellido2_cliente}</td>
               <td>{cliente.correo}</td>
               <td>

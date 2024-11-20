@@ -62,10 +62,6 @@ export const updateCarroProductos = async(req: Request, res: Response) => {
     const { id_carro_productos } = req.params;
     const { id_carro, cod_producto, cantidad, subtotal } = req.body;
 
-    if (!id_carro || !cod_producto || !cantidad || !subtotal) {
-        return res.status(400).json({ msg: "Faltan datos requeridos"})
-    }
-
     try {
         const carroProductos = await Carro_productos.findByPk(id_carro_productos);
 

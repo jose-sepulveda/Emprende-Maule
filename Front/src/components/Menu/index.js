@@ -12,6 +12,8 @@ function Menu(){
     const navigate = useNavigate();
     const routes = [{ to: "/", text: "Inicio" }];
 
+    let showCarrito = false;
+
     
     if (auth.token) {
         const decodedToken = jwtDecode(auth.token);
@@ -19,11 +21,6 @@ function Menu(){
         // Admin
         if (decodedToken.role === "administrador") {
             routes.push(
-                //{ to: "/gestionCategorias", text: "Gestion Categorias" },
-                //{ to: "/gestionClientes", text: "Gestion Clientes" },
-                //{ to: "/gestionEmprendedores", text: "Gestion Emprendedores" },
-                //{to:"/gestionAdmin", text:"Gestion Admin"},
-                //{to:"/solicitudes-registro", text:"Solicitudes de Registro"},
                 {to:"/adminPage", text:"Administrador"}
             );
         }
@@ -40,7 +37,7 @@ function Menu(){
 
         //Cliente
         if (decodedToken.role === "cliente") {
-
+            showCarrito = true;
         }
 
     } else {
@@ -48,9 +45,8 @@ function Menu(){
         routes.push(
             { to: "/crearCuenta", text: "Crear cuenta" },
             { to: "/login", text: "Iniciar sesión" },
-
-
-        );    
+        );   
+        showCarrito = true; 
     }
 
     const cerrarSesion = () => {
@@ -61,43 +57,52 @@ function Menu(){
         routes.push({to:"/crearCuenta", text:"Crear cuenta"})
         routes.push({to:"/login", text:"Iniciar sesión"})
 
+
+
         navigate("/");
     }
 
-    return <>
-        <div className="container-barra">
-            <div className="logo-container">
-                <img src={Logo} alt="" className="logo" />
+    return (
+        <>
+            <div className="container-barra">
+                <div className="logo-container">
+                    <img src={Logo} alt="" className="logo" />
+                </div>
+                <ul className="menu">
+                    {
+                    routes.map( (item, index)=>(
+                        <li key={index}>
+                            <NavLink 
+                                style={({isActive}) => ({color:isActive? '#f98000':"Black"})}
+                                to={item.to}>
+                                {item.text}
+                            </NavLink>
+                        </li>
+                    ) )
+                    }
+                    {
+                        showCarrito && (
+                            <li>
+                                <NavLink 
+                                    style={({ isActive }) => ({ color: isActive ? "Orange" : "Black" })}
+                                    to="/carrito">
+                                    <FaShoppingCart size={24} /> 
+                                </NavLink>
+                            </li>
+                        )
+                    }
+                    
+                    {
+                        auth.token?
+                        <button className="btn-logout" onClick={cerrarSesion}>
+                            <FaSignOutAlt size={24} />
+                        </button>:
+                        ""
+                    }
+                </ul>
             </div>
-            <ul className="menu">
-                {
-                routes.map( (item, index)=>(
-                    <li key={index}>
-                        <NavLink 
-                            style={({isActive}) => ({color:isActive? '#f98000':"Black"})}
-                            to={item.to}>
-                            {item.text}
-                        </NavLink>
-                    </li>
-                ) )
-                }
-                <li>
-                        <NavLink 
-                            style={({ isActive }) => ({ color: isActive ? "Orange" : "Black" })}
-                            to="/carrito">
-                            <FaShoppingCart size={24} /> 
-                        </NavLink>
-                </li>
-                {
-                    auth.token?
-                    <button className="btn-logout" onClick={cerrarSesion}>
-                        <FaSignOutAlt size={24} />
-                    </button>:
-                    ""
-                }
-            </ul>
-        </div>
-    </>
+        </>
+    );
 }
 
 

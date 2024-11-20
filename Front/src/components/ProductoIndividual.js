@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { newCarro } from '../services/carrito';
 import { getProductos } from '../services/producto';
 import '../Styles/productoIndividual.css';
 
@@ -8,6 +10,8 @@ const ProductoIndividual = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { id } = useParams(); 
+    const [cantidad, setCantidad] = useState(1); 
+    const [stockDisponible, setStockDisponible] = useState(0);
 
     useEffect(() => {
         cargarProducto(id);
@@ -31,6 +35,64 @@ const ProductoIndividual = () => {
                 setLoading(false);
             });
     };
+
+    const addToCart = async () => {
+        try {
+          const idUsuario = localStorage.getItem('idUser');
+    
+          if (cantidad <= 0 || cantidad > stockDisponible) {
+            throw new Error('Cantidad inválida. Por favor, selecciona una cantidad válida.');
+          }
+    
+          if (idUsuario) {
+            const carro = {
+              id_usuario: idUsuario,
+              cantidad: cantidad,
+              cod_producto: producto.cod_producto,
+            };
+    
+            await newCarro(carro);
+    
+            setStockDisponible(stockDisponible - cantidad);
+    
+            toast.success(`Producto ${producto.nombre_producto} agregado al carrito`);
+            
+            setCantidad(1);
+          } else {
+            let carritoLocal = JSON.parse(localStorage.getItem('carritoLocal')) || [];
+            const productoEnCarrito = carritoLocal.find(item => item.cod_producto === producto.cod_producto);
+    
+            if (productoEnCarrito) {
+              productoEnCarrito.cantidad += cantidad;
+              productoEnCarrito.subtotal += producto.precio_producto * cantidad;
+            } else {
+              carritoLocal.push({
+                id_carro_productos: new Date().getTime(), // ID temporal
+                producto: {
+                  nombre_producto: producto.nombre_producto,
+                  precio_producto: producto.precio_producto
+                },
+                cantidad: cantidad,
+                subtotal: producto.precio_producto * cantidad,
+                cod_producto: producto.cod_producto
+              });
+            }
+    
+            localStorage.setItem('carritoLocal', JSON.stringify(carritoLocal));
+            setStockDisponible(stockDisponible - cantidad);
+    
+            toast.success(`Producto ${producto.nombre_producto} agregado al carrito`);
+    
+            setCantidad(1);
+          }
+    
+        } catch (error) {
+          console.error('Error al agregar el producto al carrito:', error);
+          toast.error(error.message || 'Error al agregar el producto al carrito', {
+            closeButton: false,
+          });
+        }
+      };
 
     if (loading) {
         return <p>Cargando detalles del producto...</p>;
@@ -67,7 +129,7 @@ const ProductoIndividual = () => {
                             <strong>Precio:</strong>
                             <p>${producto.precio_producto}</p>
                         </div>
-                        <button className="btn-agregar-carrito">
+                        <button className="btn-agregar-carrito" onClick={addToCart}>
                             Añadir al carrito
                         </button>
 
