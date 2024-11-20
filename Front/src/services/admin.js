@@ -2,20 +2,15 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:3000/api/administrador'; 
 
-// Obtener todos los administradores
-export const getAdministradores = () => axios.get(`${API_URL}/list`);
+const api = axios.create({
+    baseURL: API_URL,
+});
 
 // Obtener un administrador por su ID
 export const getAdminById = (id_administrador) => axios.get(`${API_URL}/${id_administrador}`);
 
 // Crear un nuevo administrador
 export const createAdmin = (administrador) => axios.post(API_URL, administrador);
-
-// Actualizar un administrador existente
-export const updateAdmin = (id_administrador, administrador) => axios.put(`${API_URL}/${id_administrador}`, administrador);
-
-// Eliminar un administrador
-export const deleteAdmin = (id_administrador) => axios.delete(`${API_URL}/${id_administrador}`);
 
 // Iniciar sesión para administrador
 export const loginAdmin = (credentials) => axios.post(`${API_URL}/login`, credentials);
@@ -54,4 +49,37 @@ export const resetPasswordAdmin = async (token, contrasenaActual, nuevaContrasen
         console.error('Error al restablecer la contraseña:', error);
         throw error;
     }
+};
+
+
+// Obtener todos los administradores
+export const getAdministradores = async (token) => {
+    try {
+        const response = await api.get('/list', {
+            headers: {
+                'Authorization': `Bearer ${token}` 
+            }
+        });
+        return response.data; 
+    } catch (error) {
+        console.error('Error al obtener los administradores:', error);
+        throw error;
+    }
+};
+
+
+export const updateAdmin = (id_administrador, administrador, token) => {
+    return axios.put(`${API_URL}/${id_administrador}`, administrador, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        }
+    });
+};
+
+export const deleteAdmin = (id_administrador, token) => {
+    return axios.delete(`${API_URL}/${id_administrador}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        }
+    });
 };

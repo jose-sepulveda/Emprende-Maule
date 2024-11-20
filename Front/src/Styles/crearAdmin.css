@@ -1,34 +1,34 @@
 .contenedor-crear-adminxadmin {
     padding: 20px;
-    max-width: 600px;
+    max-width: 1200px;
     background-color: rgba(168, 164, 164, 0.125);
-    backdrop-filter: blur(1px);
+    backdrop-filter: blur(5px);
     border-radius: 10px;
     margin: 0 auto;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; 
+    gap: 30px; 
     justify-content: center;
     align-items: center;
 }
 
 .contenedor-crear-adminxadmin h2 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 20px;
     color: #333;
-    text-align: center;
+    margin-bottom: 1px;
 }
 
 .contenedor-form-crear-adminxadmin {
-    background-color: rgba(255, 255, 255, 0.749);
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    width: 500px;
-    height: 400px;
+    grid-template-columns: repeat(4, 1fr); 
+    grid-template-rows: repeat(2, auto); 
+    gap: 15px;
+    width: 100%;
+    max-width: 1000px;
+    align-items: center;
 }
 
 .contenedor-form-crear-adminxadmin div {
@@ -39,35 +39,43 @@
 .contenedor-form-crear-adminxadmin label {
     font-size: 16px;
     margin-bottom: 5px;
-    color: #555;
+    color: #444;
 }
 
 .contenedor-form-crear-adminxadmin input {
     padding: 10px;
     font-size: 14px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 6px;
     outline: none;
-    transition: border-color 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .contenedor-form-crear-adminxadmin input:focus {
     border-color: #F97316;
+    box-shadow: 0 0 5px rgba(249, 115, 22, 0.5); 
 }
 
 .contenedor-form-crear-adminxadmin button {
-    padding: 12px;
     font-size: 16px;
     background-color: #F97316;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    width: 200px;
+    height: 40px;
+    margin-top: auto;
 }
 
 .contenedor-form-crear-adminxadmin button:hover {
-    background-color: #e56712; /* Cambio sutil al hacer hover */
+    background-color: #e56712;
+}
+
+.contenedor-form-crear-adminxadmin button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
 }
 
 .contenedor-crear-adminxadmin p {
@@ -78,8 +86,47 @@
     font-weight: bold;
 }
 
-@media (max-width: 600px) {
-    .contenedor-form-crear-adminxadmin {
-        grid-template-columns: 1fr; /* Cambia a una columna en pantallas pequeñas */
-    }
+.tabla-admins {
+    width: 800px;
+    border-collapse: collapse;
+    margin-top: 30px;
+}
+
+.tabla-admins th, .tabla-admins td {
+    padding: 10px 15px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.tabla-admins th {
+    background-color: #f98511;
+    color: white;
+}
+
+.tabla-admins tr:hover {
+    background-color: #f9f9f9;
+}
+
+.tabla-admins td button {
+    margin-right: 10px;
+    padding: 6px 10px;
+    font-size: 14px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.tabla-admins td button:hover {
+    background-color: #0056b3;
+}
+
+.tabla-admins td button:last-child {
+    background-color: #dc3545;
+}
+
+.tabla-admins td button:last-child:hover {
+    background-color: #c82333;
 }

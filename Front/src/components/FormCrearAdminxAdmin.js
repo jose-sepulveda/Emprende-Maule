@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { createAdmin } from '../services/admin'; 
+import React, { useState, useEffect, useContext } from 'react';
+import { createAdmin, getAdministradores, updateAdmin, deleteAdmin } from '../services/admin'; 
+import { AuthContext } from '../Auth/AuthContext';
 import '../Styles/crearAdmin.css'; 
 
 const FormCrearAdminxAdmin = () => {
+    const { auth } = useContext(AuthContext); 
     const [rut, setRut] = useState('');
     const [nombre, setNombre] = useState('');
     const [apellido1, setApellido1] = useState('');
@@ -10,31 +12,123 @@ const FormCrearAdminxAdmin = () => {
     const [correo, setCorreo] = useState('');
     const [contrasena, setContrasena] = useState('');
     const [mensaje, setMensaje] = useState('');
+    const [administradores, setAdministradores] = useState([]);
+    const [editAdmin, setEditAdmin] = useState(null); 
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const fetchAdministradores = async () => {
+        if (!auth.token) {
+            setMensaje('No hay token de autenticación');
+            return;
+        }
 
-        const nuevoAdmin = {
+        try {
+            const admins = await getAdministradores(auth.token);
+            setAdministradores(admins);
+        } catch (error) {
+            setMensaje('Error al obtener lista de administradores creados');
+            console.error('Error al obtener lista de administradores:', error);
+        }
+    };
+
+    useEffect(() => {
+        if (auth.token) {
+            fetchAdministradores();
+        } else {
+            setMensaje('No hay token de autenticación');
+        }
+    }, [auth.token]);
+
+    const handleEdit = (admin) => {
+        setEditAdmin(admin);
+        setRut(admin.rut_administrador);
+        setNombre(admin.nombre_administrador);
+        setApellido1(admin.apellido1_administrador);
+        setApellido2(admin.apellido2_administrador);
+        setCorreo(admin.correo);
+    };
+
+    const handleCreate = async (e) => {
+        e.preventDefault(); 
+        const newAdmin = {
             rut_administrador: rut,
-            contrasena,
             nombre_administrador: nombre,
             apellido1_administrador: apellido1,
             apellido2_administrador: apellido2,
-            correo
+            correo,
+            contrasena
         };
 
         try {
-            const response = await createAdmin(nuevoAdmin);  
-            setMensaje(`Administrador creado con éxito: ${response.data.message}`);  
+            await createAdmin(newAdmin); 
+            alert('Administrador creado con éxito');
+            fetchAdministradores();  
+            setRut('');
+            setNombre('');
+            setApellido1('');
+            setApellido2('');
+            setCorreo('');
+            setContrasena('');
         } catch (error) {
-            setMensaje('Error al crear el administrador');
+            alert('Error al crear el administrador');
+            console.error('Error al crear el administrador:', error);
+        }
+    };
+
+        const handleSave = async () => {
+            if (editAdmin) {
+                const updatedAdmin = {
+                    rut_administrador: rut,
+                    nombre_administrador: nombre,
+                    apellido1_administrador: apellido1,
+                    apellido2_administrador: apellido2,
+                    correo
+                };
+
+        try {
+            await updateAdmin(editAdmin.id_administrador, updatedAdmin, auth.token);
+            alert('Administrador actualizado con éxito');
+            fetchAdministradores();
+            setRut('');
+            setNombre('');
+            setApellido1('');
+            setApellido2('');
+            setCorreo('');
+            setContrasena('');
+            setEditAdmin(null);
+        } catch (error) {
+            alert('Error al actualizar el administrador');
+        }
+    }
+};
+
+const handleCancel = () => {
+    setRut('');
+    setNombre('');
+    setApellido1('');
+    setApellido2('');
+    setCorreo('');
+    setContrasena('');
+    setEditAdmin(null);
+};
+
+
+
+    const handleDelete = async (id_administrador) => {
+        if (window.confirm('¿Estás seguro de eliminar este Administrador?')) {
+            try {
+                await deleteAdmin(id_administrador, auth.token);
+                alert('Administrador eliminado con éxito');
+                fetchAdministradores();
+            } catch (error) {
+                alert('Error al eliminar el administrador');
+            }
         }
     };
 
     return (
         <div className='contenedor-crear-adminxadmin'>
-            <h2>Crear Administrador</h2>
-            <form className='contenedor-form-crear-adminxadmin' onSubmit={handleSubmit}>
+            <h2>{editAdmin ? 'Editar Administrador' : 'Crear Administrador'}</h2>
+            <form className='contenedor-form-crear-adminxadmin' onSubmit={handleCreate}>
                 <div>
                     <label>Nombre</label>
                     <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} required />
@@ -59,9 +153,48 @@ const FormCrearAdminxAdmin = () => {
                     <label>Contraseña</label>
                     <input type="password" value={contrasena} onChange={(e) => setContrasena(e.target.value)} required />
                 </div>
-                <button type="submit">Crear Administrador</button>
+                {editAdmin ? (
+                    <>
+                    <button  type="button" onClick={handleSave}>Guardar Cambios</button>
+                    <button  type="button" onClick={handleCancel}>Cancelar</button>
+                    </>
+                ) : (
+                    <button  type="submit">Crear Administrador</button>
+                )}
             </form>
+
             {mensaje && <p>{mensaje}</p>}
+
+            <div>
+                <h2>Administradores Registrados:</h2>
+                {administradores.length > 0 ? (
+                    <table className="tabla-admins">
+                        <thead>
+                            <tr>
+                                <th>Nombre Admin</th>
+                                <th>RUT</th>
+                                <th>Correo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {administradores.map((admin) => (
+                                <tr key={admin.id_administrador}>
+                                    <td>{`${admin.nombre_administrador} ${admin.apellido1_administrador} ${admin.apellido2_administrador}`}</td>
+                                    <td>{admin.rut_administrador}</td>
+                                    <td>{admin.correo}</td>
+                                    <td>
+                                        <button  onClick={() => handleEdit(admin)}>Editar</button>
+                                        <button  onClick={() => handleDelete(admin.id_administrador)}>Eliminar</button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                ) : (
+                    <p>No hay administradores registrados.</p>
+                )}
+            </div>
         </div>
     );
 };
