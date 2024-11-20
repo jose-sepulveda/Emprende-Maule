@@ -73,7 +73,7 @@ const PerfilEmprendedor = () => {
                 <p><strong>Tipo de Cuenta Bancaria:</strong> {emprendedor.tipo_de_cuenta}</p>
                 <p><strong>Número de Cuenta Bancaria:</strong> {emprendedor.numero_de_cuenta}</p>
                 <p><strong>Estado:</strong> {emprendedor.estado_emprendedor}</p>
-                <div className='actions'>
+                <div className='opciones'>
                 <button
                     className='actualizar'
                     onClick={() => actualizarEmprendedor(emprendedor.rut_emprendedor)}

@@ -38,8 +38,11 @@
     margin-bottom: 10px;
 }
 
+.detalle-emprendedor .opciones {
+    text-align: center;
+}
 
-.detalle-emprendedor .actions button {
+.detalle-emprendedor .opciones button {
     padding: 10px 20px;
     font-size: 1rem;
     font-weight: bold;
@@ -48,28 +51,29 @@
     cursor: pointer;
     color: white;
     transition: background-color 0.3s ease;
+    margin: 10px;
 }
 
 /* Botón de Aprobar */
-.detalle-emprendedor .actions button.actualizar {
+.detalle-emprendedor .opciones button.actualizar {
     background-color: #4CAF50; /* Verde */
 }
 
-.detalle-emprendedor .actions button.actualizar:hover {
+.detalle-emprendedor .opciones button.actualizar:hover {
     background-color: #45a049;
 }
 
 /* Botón de Rechazar */
-.detalle-emprendedor .actions button.eliminar {
+.detalle-emprendedor .opciones button.eliminar {
     background-color: #f44336; /* Rojo */
 }
 
-.detalle-emprendedor .actions button.eliminar:hover {
+.detalle-emprendedor .opciones button.eliminar:hover {
     background-color: #e53935;
 }
 
 /* Estilos de carga para los botones */
-.detalle-emprendedor .actions button:disabled {
+.detalle-emprendedor .opciones button:disabled {
     background-color: #b0b0b0;
     cursor: not-allowed;
 }
