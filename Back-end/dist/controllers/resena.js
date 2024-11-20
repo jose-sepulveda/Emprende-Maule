@@ -21,14 +21,28 @@ const crearResena = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         });
     }
     try {
-        yield resena_1.Resena.create({
+        const cliente = yield cliente_1.Cliente.findByPk(id_cliente, {
+            attributes: ['nombre_cliente', 'apellido1_cliente', 'apellido2_cliente']
+        });
+        if (!cliente) {
+            return res.status(404).json({
+                message: 'Cliente no encontrado'
+            });
+        }
+        const nuevaResena = yield resena_1.Resena.create({
             "calificación": calificación,
             "resena": resena,
             "id_cliente": id_cliente,
             "cod_producto": cod_producto
         });
         return res.status(201).json({
-            message: 'Reseña creada con éxito'
+            message: 'Reseña creada con éxito',
+            resena: nuevaResena,
+            cliente: {
+                nombre: cliente.getDataValue("nombre_cliente"),
+                apellido1: cliente.getDataValue("apellido1_cliente"),
+                apellido2: cliente.getDataValue("apellido2_cliente")
+            }
         });
     }
     catch (error) {
