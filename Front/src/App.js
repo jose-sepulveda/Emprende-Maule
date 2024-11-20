@@ -34,6 +34,7 @@ import { useContext, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { AuthContext, AuthProvider } from './Auth/AuthContext';
 import { PrivateRoute } from './Auth/PrivateRoute';
+import Carrito from './components/Carrito.js';
 import DetalleEmprendedor from './components/DetalleEmprendedor.js';
 import DetalleSolicitud from './components/DetalleSolicitud.js';
 import FormActualizarEmprendedor from './components/FormActualizarEmprendedor.js';
@@ -109,6 +110,7 @@ function App() {
             <Route path="/tablaP" element={<TablaP/>}/>
             <Route path='/formCrearP' element={<CrearProducto/>}/>
             <Route path='/perfil-emprendedor' element={<PerfilEmprendedor/>}/>
+            <Route path='/carrito' element={<Carrito/>}/>
 
             {/*Recuperacion de contraseña*/}
 
