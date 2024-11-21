@@ -1,12 +1,12 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { FaRegStar, FaStar } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
-import { AuthContext } from '../Auth/AuthContext'; 
 import { toast } from 'react-toastify';
+import { AuthContext } from '../Auth/AuthContext';
 import { newCarro } from '../services/carrito';
 import { getProductos } from '../services/producto';
-import { crearResena, consultarResenaProducto, actualizarResena, eliminarResena } from '../services/resena';
+import { actualizarResena, consultarResenaProducto, crearResena, eliminarResena } from '../services/resena';
 import '../Styles/productoIndividual.css';
-import { FaStar, FaRegStar } from 'react-icons/fa';
 
 const ProductoIndividual = () => {
     const [producto, setProducto] = useState(null);
@@ -124,26 +124,28 @@ const ProductoIndividual = () => {
 
     const addToCart = async () => {
         try {
-          const idUsuario = localStorage.getItem('idUser');
+          const id_cliente = localStorage.getItem('id');
     
           if (cantidad <= 0 || cantidad > stockDisponible) {
             throw new Error('Cantidad inválida. Por favor, selecciona una cantidad válida.');
           }
     
-          if (idUsuario) {
+          if (id_cliente) {
             const carro = {
-              id_usuario: idUsuario,
+              id_cliente: id_cliente,
               cantidad: cantidad,
               cod_producto: producto.cod_producto,
             };
+
+            console.log(carro)
     
             await newCarro(carro);
     
             setStockDisponible(stockDisponible - cantidad);
-    
-            toast.success(`Producto ${producto.nombre_producto} agregado al carrito`);
             
             setCantidad(1);
+
+            toast.success(`Producto ${producto.nombre_producto} agregado al carrito`);
           } else {
             let carritoLocal = JSON.parse(localStorage.getItem('carritoLocal')) || [];
             const productoEnCarrito = carritoLocal.find(item => item.cod_producto === producto.cod_producto);
