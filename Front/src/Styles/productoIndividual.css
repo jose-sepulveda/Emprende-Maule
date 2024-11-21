@@ -3,84 +3,220 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    flex-direction:column;
 }
 
-/* Detalle del producto*/
+/* Detalle del producto */
 .producto-individual .producto-detalle {
     display: flex;
-    align-items: center;
+    flex-direction: row;
+    align-items: flex-start;
     background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
     width: 90%;
-    max-width: 600px;
+    max-width: 900px;
     padding: 20px;
     text-align: left;
-    margin-top: 40px; 
+    margin-top: 40px;
 }
 
 /* Estilos para la imagen del producto */
 .producto-individual .producto-detalle .producto-imageen {
     flex-shrink: 0;
     margin-right: 20px;
+    margin-top: 10px;
 }
 
 .producto-individual .producto-detalle .imagen-producto {
-    width: 200px;
+    width: 300px;
     height: auto;
     border-radius: 5px;
-    margin-right: 50px;
-    border:none;
+    border: none;
 }
 
 /* Detalle de la descripción del producto */
 .producto-individual .producto-detalle .detalle {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
+    align-items: flex-start;
 }
 
 /* nombre del producto */
 .producto-individual .producto-detalle h2 {
-    font-size: 1.8em;
+    font-size: 2em;
     margin-bottom: 15px;
+    font-weight: bold;
+    margin-left: 140px;
 }
 
 /* descripción del producto */
 .producto-individual .producto-detalle p {
-    font-size: 1em;
+    font-size: 14px; 
     margin: 10px 0;
-    color: #555;
+    color: #333;
 }
-
 
 /* Estilo para los campos de descripción y precio */
 .producto-individual .producto-detalle .campo {
     display: flex;
-    align-items: center;
-    margin-bottom: 10px;
+    flex-direction: row; 
+    align-items: center;  
+    margin-bottom: 15px;
 }
 
 .producto-individual .producto-detalle .campo strong {
-    font-size: 17px;
+    font-size: 14px;  
+    color: #000;
+    margin-right: 10px; 
+    white-space: nowrap;
+}
+
+.producto-individual .producto-detalle .campo p {
+    font-size: 14px;  
+    color: #555;
+    margin: 0;
+    word-wrap: break-word; 
+}
+
+.producto-individual .producto-detalle .btn-agregar-carrito {
+    background-color: #FF8C00;
+    color: white;
+    border: none;
+    width: 220px;
+    height: 40px;
+    border-radius: 5px;
+    font-size: 14px;  
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-left: 140px;
+}
+
+.producto-individual .producto-detalle .btn-agregar-carrito:hover {
+    background-color: #e07b00;
+}
+
+/* Estilos para las estrellas de calificación */
+.calificacion-estrellas {
+    display: flex;
+    gap: 5px;
+    margin-left: 10px;
+}
+
+.estrella {
+    font-size: 30px;
+    cursor: pointer;
+    color: #d3d3d3;
+}
+
+.estrella.seleccionada {
+    color: #ffcc00; 
+}
+
+/* Estilos para el textarea */
+textarea {
+    width: 260px;
+    height: 30px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    resize: none;
+    margin-top: 10px;
+    font-size: 14px;  
+}
+
+textarea:focus {
+    border-color: #F97316;
+    outline: none;
+}
+
+.formulario-resena .campo label {
+    font-size: 14px;  
     color: #000000;
     margin-right: 10px;
 }
 
-.producto-individual .producto-detalle .campo p {
-    font-size: 1em;
-    color: #555; 
-    margin: 5px 0;
+/* Estilo para el formulario de reseña */
+.formulario-resena {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    margin-top: 10px;
+    align-items: center;
 }
 
-.producto-individual .producto-detalle .btn-agregar-carrito {
-    background-color: orange;
+/* Botón para enviar reseña */
+.formulario-resena .btn-crear-resena {
+    background-color: #FF8C00;
     color: white;
     border: none;
-    width: 200px;
-    height: 30px;
+    width: 120px;
+    padding: 8px;
     border-radius: 10px;
+    font-size: 14px;  
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+    margin-left: 10px;
+    margin-bottom: 8px;
+}
+
+.formulario-resena .btn-crear-resena:hover {
+    background-color: #e07b00;
+}
+
+/* Estilo para la linea separadora */
+.linea-separadora {
+    height: 1px;
+    background-color: #c35151;
+    width: 550px;  
+    margin: 20px 0;
+}
+
+/* Mensaje de éxito o error */
+.mensaje-resena {
+    font-size: 14px;  
+    color: green;
+    margin-top: 15px;
+}
+
+/* Estilos para la tabla de reseñas */
+.tabla-reseñas {
+    width: 900px;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.tabla-reseñas th, .tabla-reseñas td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.tabla-reseñas th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.tabla-reseñas td {
+    background-color: #fff;
+}
+
+.tabla-reseñas td span {
+    font-size: 20px;
+    color: #d3d3d3;
+}
+
+.tabla-reseñas td span.seleccionada {
+    color: #ffcc00;
+}
+
+
+/* Estilo para la linea separadora */
+.linea-separadora-tabla {
+    height: 1px;
+    background-color: #c35151;
+    width: 900px;  
+    margin: 20px 0;
 }
