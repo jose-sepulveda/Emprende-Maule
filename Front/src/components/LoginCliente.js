@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/ReactToastify.css';
 import { AuthContext } from '../Auth/AuthContext';
+import { carroLocal } from '../services/carrito_producto';
 import { loginCliente, recuperarContrasenaCliente } from '../services/crearCliente';
 import '../Styles/login-cliente.css';
 
@@ -29,7 +30,28 @@ const LoginCliente = () => {
             const response = await loginCliente({ correo, contrasena });
             if (response && response.data.token) {
                 setToken(response.data.token);
-                navigate("/");
+                if (response.data.id_cliente) {
+                    const id = response.data.id_cliente;
+                    
+
+                    const carritoLocal = JSON.parse(localStorage.getItem('carritoLocal')) || [];
+
+                    if (carritoLocal.length > 0) {
+                        try {
+                            await carroLocal(id, carritoLocal);
+                            localStorage.removeItem('carritoLocal')
+                            toast.success('Productos de carrito agregados correctamente')
+                        } catch (error) {
+                            console.error('Error al enviar carritoLocal: ', error)
+                        }
+
+                    } else {
+                        console.log('No se recibio en Id')
+                    }
+                }
+                navigate("/productoos");
+
+                
             } else {
                 toast.error("Cliente no existe. Por favor registrarse");
                 console.error("Cliente no existe. Por favor registrarse");
