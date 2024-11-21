@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';  // Importamos Link de react-router-dom
-import { getProductos } from '../services/producto';  
-import '../Styles/inicioComponente.css';  
+import { Link } from 'react-router-dom';
+import { getProductos } from '../services/producto';
+import '../Styles/inicioComponente.css';
 
 const Inicio = () => {
     const [productos, setProductos] = useState([]);
@@ -14,7 +14,7 @@ const Inicio = () => {
 
     const cargarProductos = () => {
         setLoading(true);
-        getProductos()  
+        getProductos()
             .then((data) => {
                 setProductos(data);
                 setLoading(false);
@@ -78,6 +78,9 @@ const Inicio = () => {
                                         <div className="producto-info">
                                             <p>{producto.nombre_producto}</p>
                                             <p><strong>${producto.precio_producto}</strong></p>
+                                            {producto.precio_descuento && (
+                                                <p><strong>Precio descuento ${producto.precio_descuento}</strong></p>
+                                            )}
                                         </div>
                                     </Link>
                                 ))}
