@@ -2,22 +2,25 @@
 .tabla-productos-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  height: 50vh;
+  height: auto;
   margin: 0;
+  padding: 20px;
+  max-width: 1200px; /* Limita el tamaño máximo del contenedor */
+  margin: 0 auto; /* Centra el contenedor en pantallas grandes */
 }
 
 /* Estilo general para la tabla */
 .tabla-productos {
-  width: 80%; 
-  height: auto;
+  width: 100%; 
   border-collapse: collapse;
   font-size: 16px;
   font-family: Arial, sans-serif;
   text-align: center;
   background-color: #f9f9f9;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px; /* Espacio superior */
 }
 
 /* Estilo para las celdas */
@@ -34,7 +37,6 @@
   background-color: #f98511;
   color: white;
   font-weight: bold;
-  text-align: center;
 }
 
 /* Estilo para las imágenes dentro de las celdas */
@@ -45,7 +47,12 @@
   border-radius: 5px;
   border: none;
   display: inline-block;
-  vertical-align: middle; 
+  vertical-align: middle;
+  transition: transform 0.2s ease-in-out;
+}
+
+.tabla-productos td img.imagen-producto:hover {
+  transform: scale(1.1); /* Efecto hover en imagen */
 }
 
 /* Estilo para las filas */
@@ -54,7 +61,7 @@
 }
 
 .tabla-productos tr:hover {
-  background-color: #dddddd20;
+  background-color: #f1f1f1; /* Cambia el color de fondo al pasar el ratón */
 }
 
 /* Estilo para los botones */
@@ -67,10 +74,11 @@
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
-  width: 100px;
-  height: 30px;
+  width: 150px;
+  height: 35px;
   display: inline-block;
-  vertical-align: middle; 
+  vertical-align: middle;
+  transition: background-color 0.3s ease;
 }
 
 .tabla-productos button:hover {
@@ -86,7 +94,9 @@
 }
 
 /* Estilo para el input en edición */
-.tabla-productos input[type="text"] {
+.tabla-productos input[type="text"], 
+.tabla-productos input[type="number"], 
+.tabla-productos textarea {
   width: 90%;
   padding: 6px;
   font-size: 14px;
@@ -94,4 +104,52 @@
   border-radius: 4px;
   display: inline-block;
   vertical-align: middle;
+}
+
+/* Estilo para la sección de descuento e imagen */
+.formulario-descuento-imagen {
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background-color: #f7f7f7;
+  width: 400px;
+  margin-top: 20px;
+  
+}
+
+.formulario-descuento-imagen h3 {
+  color: #f98511;
+  font-size: 20px;
+}
+
+.formulario-descuento-imagen label {
+  font-size: 16px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.formulario-descuento-imagen input[type="number"],
+.formulario-descuento-imagen input[type="file"] {
+  width: 50px;
+  padding: 8px;
+  font-size: 14px;
+  margin: 10px 0;
+}
+
+.formulario-descuento-imagen button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: 80px;
+
+}
+
+.formulario-descuento-imagen button:hover {
+  background-color: #45a049;
 }

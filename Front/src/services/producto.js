@@ -88,3 +88,20 @@ export const actualizarProducto = async (cod_producto, producto) => {
         throw error;
     }
 };
+
+
+// Actualizar Imagen y Descuento
+export const updateImagenYDescuento = (cod_producto, data) => {
+    const formData = new FormData();
+    if (data.imagen) {
+        formData.append('imagen', data.imagen);
+    }
+    formData.append('precio_producto', data.precio_producto || '');
+    formData.append('descuento', data.descuento || '');
+
+    return api.put(`/${cod_producto}/actualizar`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+};
