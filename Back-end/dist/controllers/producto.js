@@ -108,6 +108,7 @@ const getProductos = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 'cantidad_disponible',
                 'imagen',
                 'precio_descuento',
+                'descuento',
                 [sequelize_1.default.col('categoria.nombre_categoria'), 'nombre_categoria'],
                 [sequelize_1.default.col('emprendedor.nombre_emprendedor'), 'nombre_emprendedor'],
                 [sequelize_1.default.col('emprendedor.apellido1_emprendedor'), 'apellido1_emprendedor'],

@@ -103,6 +103,7 @@ export const getProductos = async(req: Request, res: Response) =>{
                 'cantidad_disponible',
                 'imagen',
                 'precio_descuento',
+                'descuento',
                 [sequelize.col('categoria.nombre_categoria'), 'nombre_categoria'],
                 [sequelize.col('emprendedor.nombre_emprendedor'), 'nombre_emprendedor'],
                 [sequelize.col('emprendedor.apellido1_emprendedor'), 'apellido1_emprendedor'],
