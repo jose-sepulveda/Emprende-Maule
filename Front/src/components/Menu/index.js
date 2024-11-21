@@ -31,8 +31,8 @@ function Menu(){
         if (decodedToken.role === "emprendedor") {
             routes.push(
 
-                {to:"/gestionProducto", text:"Gestion Productos"},
-                {to:"/tablaP", text:"Productos"},
+                {to:"/gestionProducto", text:"Crear producto"},
+                {to:"/tablaP", text:"Gestión Productos"},
                 {to:"/perfil-emprendedor", text:"Mis Datos"}
         );   
         }

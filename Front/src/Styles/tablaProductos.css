@@ -11,6 +11,7 @@
 /* Estilo general para la tabla */
 .tabla-productos {
   width: 80%; 
+  height: auto;
   border-collapse: collapse;
   font-size: 16px;
   font-family: Arial, sans-serif;
