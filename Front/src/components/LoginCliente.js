@@ -99,7 +99,7 @@ const LoginCliente = () => {
                 <h2>Iniciar Sesión Cliente</h2>
                 <input
                     className='login-cliente-input'
-                    type='text'
+                    type='email'
                     placeholder='Correo'
                     value={correo}
                     onChange={(e) => setCorreo(e.target.value)}
