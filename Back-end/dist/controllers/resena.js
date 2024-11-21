@@ -114,8 +114,9 @@ const consultarResenaCliente = (req, res) => __awaiter(void 0, void 0, void 0, f
             include: [{ model: cliente_1.Cliente, attributes: ['nombre_cliente', 'apellido1_cliente', 'apellido2_cliente'] }]
         });
         if (resenas.length === 0) {
-            return res.status(404).json({
-                message: 'Reseñas no encontradas'
+            return res.json({
+                message: 'No hay reseñas para este cliente',
+                resenas: []
             });
         }
         return res.json(resenas);
@@ -136,8 +137,9 @@ const consultarResenaProducto = (req, res) => __awaiter(void 0, void 0, void 0, 
             include: [{ model: producto_1.Productos, attributes: ['nombre_producto'] }]
         });
         if (resenas.length === 0) {
-            return res.status(404).json({
-                message: 'Reseñas no encontradas'
+            return res.json({
+                message: 'No hay reseñas para este producto',
+                resenas: []
             });
         }
         return res.json(resenas);

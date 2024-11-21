@@ -77,6 +77,7 @@ const LoginEmprendedor = () => {
                 <input
                     className='login-emprendedor-input'
                     type='text'
+                    name='correo'
                     placeholder='Correo'
                     value={correo_electronico}
                     onChange={(e) => setCorreo_electronico(e.target.value)}
@@ -85,6 +86,7 @@ const LoginEmprendedor = () => {
                     <input
                         className='login-emprendedor-input'
                         type={showPassword ? 'text' : 'password'}
+                        name='contrasena'
                         placeholder='Contraseña'
                         value={contrasena}
                         onChange={(e) => setContrasena(e.target.value)}

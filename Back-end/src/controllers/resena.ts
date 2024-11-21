@@ -116,8 +116,9 @@ export const consultarResenaCliente = async(req: Request, res: Response) => {
         });
 
         if (resenas.length === 0) {
-            return res.status(404).json({
-                message: 'Reseñas no encontradas'
+            return res.json({
+                message: 'No hay reseñas para este cliente',
+                resenas: []
             });
         }
 
@@ -141,8 +142,9 @@ export const consultarResenaProducto = async(req: Request, res: Response) => {
         });
 
         if (resenas.length === 0) {
-            return res.status(404).json({
-                message: 'Reseñas no encontradas'
+            return res.json({
+                message: 'No hay reseñas para este producto',
+                resenas: []
             });
         }
 
