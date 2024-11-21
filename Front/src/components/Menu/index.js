@@ -3,14 +3,16 @@ import React from "react";
 import { FaShoppingCart, FaSignOutAlt } from 'react-icons/fa';
 import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Auth/AuthContext";
-import Logo from '../../Image/logoEM.png';
+import Logo from '../../Image/Logo.jpeg';
 import '../../Styles/menu.css';
 
 function Menu(){
 
     const { auth, logout } = React.useContext(AuthContext);
     const navigate = useNavigate();
-    const routes = [{ to: "/", text: "Inicio" }];
+    const routes = [{ to: "/", text: "Inicio" },
+        { to: "/productoos", text: "Todos los productos" }
+    ];
 
     let showCarrito = false;
 
@@ -119,6 +121,7 @@ routes.push({to:"/gestionAdmin", text:"Gestion Admin"})
 routes.push({to:"/tablaP", text:"Productos"})
 routes.push({to:"/solicitudes-registro", text:"Solicitudes de Registro"})
 routes.push({to:"/adminPage", text:"Administrador"})
+routes.push({to:"/productoos", text:"Todos los productos"})
 
 export { Menu };
 

@@ -10,6 +10,7 @@ import { CrearCuentaPage } from './pages/CrearCuentaPage';
 
 import Inicio from './components/Inicio';
 import ProductoIndividual from './components/ProductoIndividual';
+import Productoos from './components/Productoos.js';
 
 //Admin
 import LoginAministrador from './components/LoginAministrador.js';
@@ -82,6 +83,9 @@ function App() {
             <Route path="/login" element={<LoginPage />}/> 
             <Route path="/" element={<Inicio />} />
             <Route path="/producto/:id" element={<ProductoIndividual />} /> 
+            <Route path="/productoos" element={<Productoos />}/> 
+            
+            
             
             {/*crear cuentas cliente y emprendedor*/}
             <Route path="/crearCuenta" element={<CrearCuentaPage />}/> 
