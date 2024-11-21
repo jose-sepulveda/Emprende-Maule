@@ -214,8 +214,39 @@ const ProductoIndividual = () => {
                             <p>{producto.descripcion_producto}</p>
                         </div>
                         <div className="campo">
-                            <strong>Precio:</strong>
-                            <p>${producto.precio_producto}</p>
+                                    <strong>Precio:</strong>
+                                    {producto.precio_descuento ? (
+                                        <p>
+                                            <del>${producto.precio_producto}</del> 
+                                            <span className="precio-descuento"></span>
+                                        </p>
+                                    ) : (
+                                        <p>${producto.precio_producto}</p>
+                                    )}
+                                </div>
+                        {producto.precio_descuento && (
+                           <div className="campo">
+                                <strong>Precio con descuento:</strong>
+                                <p>${producto.precio_descuento}</p>
+                            </div>
+                        )}
+                        <div className="campo">
+                            <strong>Cantidad:</strong>
+                            <input type="number" min="1"
+                                max={producto.cantidad_disponible}
+                                value={cantidad}
+                                onChange={(e) => {
+                                    const valor = parseInt(e.target.value, 10);
+                                    if (valor > 0 && valor <= producto.cantidad_disponible) {
+                                        setCantidad(valor);
+                                    } else if (valor > producto.cantidad_disponible) {
+                                        toast.warn('No puedes seleccionar más productos que el stock disponible.');
+                                    } else {
+                                        setCantidad(1);
+                                    }
+                                }}
+                            />
+                            <p>Stock disponible: {producto.cantidad_disponible}</p>
                         </div>
                         <button className="btn-agregar-carrito" onClick={addToCart}>
                             Añadir al carrito

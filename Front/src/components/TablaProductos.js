@@ -16,6 +16,7 @@ const TablaProductos = () => {
         precio_producto: '',
         descripcion_producto: '',
         id_categoria: '',
+        cantidad_disponible:'',
     });
     const [descuentoData, setDescuentoData] = useState({
         descuento: '',
@@ -70,6 +71,7 @@ const TablaProductos = () => {
             precio_producto: producto.precio_producto,
             descripcion_producto: producto.descripcion_producto,
             id_categoria: producto.id_categoria,
+            cantidad_disponible:producto.cantidad_disponible
         });
         setDescuentoData({
             descuento: producto.descuento || '',
@@ -199,7 +201,19 @@ const TablaProductos = () => {
                                         producto.descripcion_producto
                                     )}
                                 </td>
-                                <td>{producto.cantidad_disponible}</td>
+                                
+                                <td>
+                                    {productoEditando === producto.cod_producto ? (
+                                        <textarea
+                                            name="cantidad_disponible"
+                                            value={formData.cantidad_disponible}
+                                            onChange={handleChange}
+                                        />
+                                    ) : (
+                                        producto.cantidad_disponible
+                                    )}
+                                </td>
+
                                 <td>
                                     {productoEditando === producto.cod_producto ? (
                                         <input

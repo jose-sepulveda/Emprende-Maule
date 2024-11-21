@@ -81,6 +81,8 @@ export const actualizarProducto = async (cod_producto, producto) => {
             precio_producto: producto.precio_producto,
             descripcion_producto: producto.descripcion_producto,
             id_categoria: producto.id_categoria,
+            cantidad_disponible:producto.cantidad_disponible
+            
         });
         return response.data; 
     } catch (error) {

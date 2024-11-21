@@ -63,26 +63,37 @@ const Inicio = () => {
                             <h2>Productos de {productosAgrupados[emprendedorId].nombre}</h2>
                             <div className="productos-fila">
                                 {productosAgrupados[emprendedorId].productos.map((producto) => (
-                                    <Link to={`/producto/${producto.cod_producto}`} key={producto.cod_producto} className="producto-card" style={{ textDecoration: 'none' }}>
-                                        <div className="producto-image">
-                                            {producto.imagen ? (
-                                                <img
-                                                    src={generarUrlImagen(producto.imagen)}
-                                                    alt={producto.nombre_producto}
-                                                    className="imagen-producto"
-                                                />
-                                            ) : (
-                                                <span>Sin imagen</span>
-                                            )}
-                                        </div>
-                                        <div className="producto-info">
-                                            <p>{producto.nombre_producto}</p>
-                                            <p><strong>${producto.precio_producto}</strong></p>
-                                            {producto.precio_descuento && (
-                                                <p><strong>Precio descuento ${producto.precio_descuento}</strong></p>
-                                            )}
-                                        </div>
-                                    </Link>
+                                    <Link
+                                    to={`/producto/${producto.cod_producto}`}
+                                    key={producto.cod_producto}
+                                    className="producto-card"
+                                    style={{ textDecoration: 'none' }}
+                                >
+                                    <div className="producto-image">
+                                        {producto.imagen ? (
+                                            <img
+                                                src={generarUrlImagen(producto.imagen)}
+                                                alt={producto.nombre_producto}
+                                                className="imagen-producto"
+                                            />
+                                        ) : (
+                                            <span>Sin imagen</span>
+                                        )}
+                                        {producto.precio_descuento && (
+                                            <div className="descuento-circulo">
+                                                -{producto.descuento}%
+                                            </div>
+                                        )}
+                                    </div>
+                                    <div className="producto-info">
+                                        <p>{producto.nombre_producto}</p>
+                                        <p><strong>${producto.precio_producto}</strong></p>
+                                        {producto.precio_descuento && (
+                                            <p><strong>Precio descuento ${producto.precio_descuento}</strong></p>
+                                        )}
+                                    </div>
+                                </Link>
+                                
                                 ))}
                             </div>
                         </div>
