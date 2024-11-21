@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {obtenerProductosPorEmprendedor, eliminarProducto, actualizarProducto} from '../services/producto';
+import { obtenerProductosPorEmprendedor, eliminarProducto, actualizarProducto, updateImagenYDescuento } from '../services/producto';
 import { AuthContext } from '../Auth/AuthContext';
 import { getCategorias } from '../services/categoria';
 import '../Styles/tablaProductos.css';
@@ -10,12 +10,17 @@ const TablaProductos = () => {
     const [categorias, setCategorias] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [productoEditando, setProductoEditando] = useState(null); 
+    const [productoEditando, setProductoEditando] = useState(null);
     const [formData, setFormData] = useState({
         nombre_producto: '',
         precio_producto: '',
         descripcion_producto: '',
         id_categoria: '',
+        cantidad_disponible:'',
+    });
+    const [descuentoData, setDescuentoData] = useState({
+        descuento: '',
+        imagen: null,
     });
 
     useEffect(() => {
@@ -32,7 +37,7 @@ const TablaProductos = () => {
                 });
         }
 
-        // aqui se obtieneen las categorías al cargar el componente
+        // Obtiene categorías
         getCategorias()
             .then((response) => {
                 setCategorias(response.data);
@@ -66,6 +71,11 @@ const TablaProductos = () => {
             precio_producto: producto.precio_producto,
             descripcion_producto: producto.descripcion_producto,
             id_categoria: producto.id_categoria,
+            cantidad_disponible:producto.cantidad_disponible
+        });
+        setDescuentoData({
+            descuento: producto.descuento || '',
+            imagen: producto.imagen || null,
         });
     };
 
@@ -78,6 +88,26 @@ const TablaProductos = () => {
             setProductoEditando(null); // Cerrar edición
         } catch (error) {
             alert('Error al actualizar el producto.');
+        }
+    };
+
+    const handleDescuentoChange = (e) => {
+        const { name, value } = e.target;
+        setDescuentoData({ ...descuentoData, [name]: value });
+    };
+
+    const handleActualizarDescuento = async () => {
+        try {
+            const { descuento, imagen } = descuentoData;
+            // Actualiza el producto con el descuento y la nueva imagen
+            await updateImagenYDescuento(productoEditando, { descuento, imagen });
+            const data = await obtenerProductosPorEmprendedor(auth.id);
+            setProductos(data);
+            alert('Descuento e imagen actualizados.');
+        
+        setProductoEditando(null); // Cerrar edición
+        } catch (error) {
+            alert('Error al actualizar descuento o imagen.');
         }
     };
 
@@ -97,6 +127,38 @@ const TablaProductos = () => {
     return (
         <div className='tabla-productos-container'>
             <h2>Mis Productos</h2>
+
+            {/* Formulario para editar descuento e imagen */}
+            {productoEditando && (
+                <div className="formulario-descuento-imagen">
+                    <h3>Aplicar Descuento y actualizar Imagen</h3>
+                    <label>
+                        Descuento (%):
+                        <input
+                            type="number"
+                            name="descuento"
+                            value={descuentoData.descuento}
+                            onChange={handleDescuentoChange}
+                            min="0"
+                            max="100"
+                        />
+                    </label>
+                    <label>
+                        Imagen:
+                        <input
+                            type="file"
+                            name="imagen"
+                            onChange={(e) => setDescuentoData({ ...descuentoData, imagen: e.target.files[0] })}
+                        />
+                        
+                    </label>
+
+                    
+                    <button onClick={handleActualizarDescuento}>Guardar Descuento e Imagen</button>
+                </div>
+            )}
+
+            {/* Tabla de productos */}
             {productos.length === 0 ? (
                 <p>No tienes productos creados.</p>
             ) : (
@@ -109,6 +171,7 @@ const TablaProductos = () => {
                             <th>Precio</th>
                             <th>Categoría</th>
                             <th>Imagen</th>
+                            <th>Precio Descuento</th> {/* Nueva columna */}
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -138,7 +201,19 @@ const TablaProductos = () => {
                                         producto.descripcion_producto
                                     )}
                                 </td>
-                                <td>{producto.cantidad_disponible}</td>
+                                
+                                <td>
+                                    {productoEditando === producto.cod_producto ? (
+                                        <textarea
+                                            name="cantidad_disponible"
+                                            value={formData.cantidad_disponible}
+                                            onChange={handleChange}
+                                        />
+                                    ) : (
+                                        producto.cantidad_disponible
+                                    )}
+                                </td>
+
                                 <td>
                                     {productoEditando === producto.cod_producto ? (
                                         <input
@@ -184,8 +259,14 @@ const TablaProductos = () => {
                                     )}
                                 </td>
                                 <td>
+                                    {producto.precio_descuento && !isNaN(Number(producto.precio_descuento))
+                                        ? `$${Number(producto.precio_descuento)}`
+                                        : 'No aplica descuento'}
+                                </td>
+
+                                <td>
                                     {productoEditando === producto.cod_producto ? (
-                                        <button onClick={handleActualizar}>Guardar</button>
+                                        <button onClick={handleActualizar}>Guardar Producto</button>
                                     ) : (
                                         <>
                                             <button onClick={() => handleEditar(producto)}>Editar</button>

@@ -103,6 +103,7 @@ export const getProductos = async(req: Request, res: Response) =>{
                 'cantidad_disponible',
                 'imagen',
                 'precio_descuento',
+                'descuento',
                 [sequelize.col('categoria.nombre_categoria'), 'nombre_categoria'],
                 [sequelize.col('emprendedor.nombre_emprendedor'), 'nombre_emprendedor'],
                 [sequelize.col('emprendedor.apellido1_emprendedor'), 'apellido1_emprendedor'],
@@ -162,7 +163,7 @@ export const deleteProducto = async(req: Request, res: Response) =>{
 
 export const updateProducto = async(req: Request, res: Response) =>{
     const {cod_producto} = req.params;
-    const {nombre_producto, precio_producto, descripcion_producto, id_categoria} = req.body;
+    const {nombre_producto, precio_producto, descripcion_producto, id_categoria, cantidad_disponible} = req.body;
     const imagen = req.file ? req.file.path : null;
 
     const idProducto = await Productos.findOne({where: {cod_producto: cod_producto}});
@@ -178,6 +179,7 @@ export const updateProducto = async(req: Request, res: Response) =>{
                 precio_producto: precio_producto,
                 descripcion_producto: descripcion_producto,
                 id_categoria: id_categoria,
+                cantidad_disponible: cantidad_disponible,
                 },
                 {where: {cod_producto: cod_producto}}
             );
@@ -189,7 +191,8 @@ export const updateProducto = async(req: Request, res: Response) =>{
                 nombre_producto: nombre_producto,
                 precio_producto:precio_producto,
                 descripcion_producto: descripcion_producto,
-                id_categoria: id_categoria
+                id_categoria: id_categoria,
+                cantidad_disponible: cantidad_disponible,
                 },
                 {where: {cod_producto: cod_producto}}
             );
