@@ -73,3 +73,18 @@ export const eliminarProducto = async (cod_producto) => {
     }
 };
 
+// Actualizar producto 
+export const actualizarProducto = async (cod_producto, producto) => {
+    try {
+        const response = await api.put(`/${cod_producto}`, {
+            nombre_producto: producto.nombre_producto,
+            precio_producto: producto.precio_producto,
+            descripcion_producto: producto.descripcion_producto,
+            id_categoria: producto.id_categoria,
+        });
+        return response.data; 
+    } catch (error) {
+        console.error("Error al actualizar el producto:", error);
+        throw error;
+    }
+};
