@@ -107,6 +107,7 @@ const getProductos = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 'id_emprendedor',
                 'cantidad_disponible',
                 'imagen',
+                'precio_descuento',
                 [sequelize_1.default.col('categoria.nombre_categoria'), 'nombre_categoria'],
                 [sequelize_1.default.col('emprendedor.nombre_emprendedor'), 'nombre_emprendedor'],
                 [sequelize_1.default.col('emprendedor.apellido1_emprendedor'), 'apellido1_emprendedor'],
@@ -233,7 +234,7 @@ const getProductosByEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0
     try {
         const productos = yield producto_1.Productos.findAll({
             where: { id_emprendedor },
-            attributes: ['cod_producto', 'nombre_producto', 'precio_producto', 'descripcion_producto', 'cantidad_disponible', 'imagen'],
+            attributes: ['cod_producto', 'nombre_producto', 'precio_producto', 'descripcion_producto', 'cantidad_disponible', 'imagen', 'precio_descuento'],
             include: [
                 {
                     model: categoria_1.Categorias,

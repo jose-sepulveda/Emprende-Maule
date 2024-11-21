@@ -1,5 +1,3 @@
-import { type } from "os";
-
 describe('Inicio sesión Emprendedor', () => {
   it('SS-001: Iniciar sesión correctamente', () => {
     

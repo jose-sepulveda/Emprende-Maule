@@ -102,6 +102,7 @@ export const getProductos = async(req: Request, res: Response) =>{
                 'id_emprendedor',
                 'cantidad_disponible',
                 'imagen',
+                'precio_descuento',
                 [sequelize.col('categoria.nombre_categoria'), 'nombre_categoria'],
                 [sequelize.col('emprendedor.nombre_emprendedor'), 'nombre_emprendedor'],
                 [sequelize.col('emprendedor.apellido1_emprendedor'), 'apellido1_emprendedor'],
@@ -237,7 +238,7 @@ export const getProductosByEmprendedor = async (req: Request, res: Response) => 
     try{
         const productos = await Productos.findAll({
             where: {id_emprendedor},
-            attributes: ['cod_producto','nombre_producto','precio_producto','descripcion_producto','cantidad_disponible', 'imagen'],
+            attributes: ['cod_producto','nombre_producto','precio_producto','descripcion_producto','cantidad_disponible', 'imagen', 'precio_descuento'],
             include: [
                 {
                     model: Categorias,
