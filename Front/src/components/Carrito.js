@@ -22,8 +22,10 @@ const Carrito = () => {
                 setCarros_productos(response.data)
                 toast.success('Productos del carrito obtenidos correctamente');
             } else {
-                const carroLocal = JSON.parse(localStorage.getItem('carroLocal')) || [];
+                const carroLocal = JSON.parse(localStorage.getItem('carritoLocal')) || [];
+                console.log(carroLocal)
                 setCarros_productos(carroLocal)
+                toast.success('Carro cargado correctamente')
             }
         } catch (error) {
             console.error('Error obteniendo los productos del carro: ', error);

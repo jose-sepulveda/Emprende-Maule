@@ -163,7 +163,7 @@ const deleteProducto = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.deleteProducto = deleteProducto;
 const updateProducto = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { cod_producto } = req.params;
-    const { nombre_producto, precio_producto, descripcion_producto, id_categoria } = req.body;
+    const { nombre_producto, precio_producto, descripcion_producto, id_categoria, cantidad_disponible } = req.body;
     const imagen = req.file ? req.file.path : null;
     const idProducto = yield producto_1.Productos.findOne({ where: { cod_producto: cod_producto } });
     if (!idProducto) {
@@ -178,6 +178,7 @@ const updateProducto = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 precio_producto: precio_producto,
                 descripcion_producto: descripcion_producto,
                 id_categoria: id_categoria,
+                cantidad_disponible: cantidad_disponible,
             }, { where: { cod_producto: cod_producto } });
             return res.json({
                 message: 'Producto actualizado correctamente'
@@ -188,7 +189,8 @@ const updateProducto = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 nombre_producto: nombre_producto,
                 precio_producto: precio_producto,
                 descripcion_producto: descripcion_producto,
-                id_categoria: id_categoria
+                id_categoria: id_categoria,
+                cantidad_disponible: cantidad_disponible,
             }, { where: { cod_producto: cod_producto } });
             return res.json({
                 message: 'Producto actualizado correctamente'
