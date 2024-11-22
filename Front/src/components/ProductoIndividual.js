@@ -199,6 +199,11 @@ const ProductoIndividual = () => {
                                 className="imagen-producto"
                             />
                         )}
+                        {producto.precio_descuento && (
+                                        <div className="descuento-circulo-p">
+                                            -{producto.descuento}%
+                                        </div>
+                                    )}
                     </div>
                     <div className="detalle">
                         <h2>{producto.nombre_producto}</h2>

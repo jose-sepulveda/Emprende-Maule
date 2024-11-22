@@ -26,6 +26,7 @@
     flex-shrink: 0;
     margin-right: 20px;
     margin-top: 10px;
+    position: relative;
 }
 
 .producto-individual .producto-detalle .imagen-producto {
@@ -33,6 +34,7 @@
     height: auto;
     border-radius: 5px;
     border: none;
+    
 }
 
 /* Detalle de la descripción del producto */
@@ -219,4 +221,23 @@ textarea:focus {
     background-color: #c35151;
     width: 900px;  
     margin: 20px 0;
+}
+
+
+
+.descuento-circulo-p {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #ed1414;
+    color: #fff;
+    font-weight: bold;
+    font-size: 12px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
