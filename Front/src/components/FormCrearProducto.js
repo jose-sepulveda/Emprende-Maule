@@ -7,9 +7,10 @@ import { AuthContext } from '../Auth/AuthContext'; // Contexto de autenticación
 import '../Styles/gestionProductos.css';
 
 const FormCrearProducto = () => {
-    const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+    const { register, handleSubmit, reset, formState: { errors }} = useForm();
     const [categorias, setCategorias] = useState([]);
     const { auth } = useContext(AuthContext); // Obtener id_emprendedor desde el contexto
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         getCategorias()
@@ -18,12 +19,12 @@ const FormCrearProducto = () => {
             })
             .catch(error => {
                 console.error("Error al obtener las categorías:", error);
-                toast.error("Error al cargar las categorías");
+                toast.error("Error al cargar las categorías"); // Mostrar error si no se pueden cargar categorías
             });
     }, []);
 
     const enviar = async (data) => {
-        // Preparar el objeto producto
+        setLoading(true);
         const producto = {
             nombre_producto: data.nombre_producto,
             precio_producto: data.precio_producto,
@@ -40,10 +41,15 @@ const FormCrearProducto = () => {
         try {
             const response = await crearProducto(producto);
             console.log("Producto registrado:", response.data);
-            toast.success("Producto registrado correctamente");
+            toast.success("Producto registrado correctamente"); // Mostrar mensaje de éxito
+
+            // Limpiar el formulario después de registrar el producto
+            reset();
         } catch (error) {
             console.error("Error al registrar Producto:", error);
-            toast.error("Error al registrar Producto");
+            toast.error("Error al registrar Producto"); // Mostrar mensaje de error
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -106,11 +112,11 @@ const FormCrearProducto = () => {
                     />
                     {errors.cantidad_disponible && <span>{errors.cantidad_disponible.message}</span>}
                 </div>
-                <div className='file-uploads-p'>
+                <div className="file-uploads-p">
                     <label htmlFor="imagen">Imagen</label>
                     <input id="imagen" type="file" required {...register("imagen")} />
                 </div>
-                <button type="submit">Añadir producto</button>
+                <button type="submit" disabled={loading}>{loading ? "Registrando..." : "Añadir producto"}</button>
             </form>
         </div>
     );

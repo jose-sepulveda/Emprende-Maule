@@ -6,6 +6,7 @@
     align-items: flex-start;
     gap: 20px;
     padding: 20px;
+    margin-bottom: 20px;
 }
 
 /* Estilo para cada fila de productos */
@@ -52,6 +53,7 @@
     align-items: center;
     border-radius: 8px;
     margin-bottom: 15px;
+    position: relative;
 }
 
 .productoos-imagen-producto {
@@ -85,5 +87,122 @@
 
 /* Estilo para los textos dentro de las tarjetas */
 .productoos-info p strong {
+    color: #333;
+}
+
+.precio-original {
+    text-decoration: line-through;
+    color: #999;
+    margin-right: 8px;
+}
+
+
+.descuento-circulo-p {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #ed1414;
+    color: #fff;
+    font-weight: bold;
+    font-size: 12px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo para el contenedor de filtros */
+.filtroos-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para los filtros individuales (buscador, categoría, emprendedor) */
+.filtroos-container div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Contenedor del buscador y el ícono */
+.buscador-input-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+/* Estilo para el input del buscador */
+.buscador-producto input {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    font-size: 14px;
+    width: 500px;
+    box-sizing: border-box;
+    padding-right: 40px;
+    text-align: center;
+}
+
+/* Estilo para el ícono de búsqueda */
+.buscador-icon {
+    position: absolute;
+    right: 40px;
+    font-size: 18px;
+    color: #777;
+    margin-top: 15px;
+}
+
+/* Estilo para los filtros de categoría y emprendedor */
+.filtro-categoria select, .filtro-emprendedor select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s, box-shadow 0.3s;  /* Agregar transición suave */
+}
+
+/* Efecto hover para el select de categoría y emprendedor */
+.filtro-categoria select:hover, .filtro-emprendedor select:hover {
+    border-color: #f98511;  /* Cambio de color de borde al pasar el ratón */
+    box-shadow: 0 0 5px rgba(249, 133, 17, 0.5);  /* Agregar sombra suave */
+}
+
+/* Estilo para las opciones dentro del select */
+.filtro-categoria select option, .filtro-emprendedor select option {
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 10px;
+}
+
+/* Efecto hover para las opciones dentro del select */
+.filtro-categoria select option:hover, .filtro-emprendedor select option:hover {
+    background-color: #f98511;  /* Fondo al pasar el ratón */
+    color: white;  /* Color de texto al pasar el ratón */
+}
+
+/* Estilo para el borde del select cuando se enfoca */
+.filtro-categoria select:focus, .filtro-emprendedor select:focus {
+    outline: none;
+    border-color: #f98511;
+    box-shadow: 0 0 5px rgba(249, 133, 17, 0.5);  /* Sombra suave al enfocar */
+}
+
+/* Estilo para las etiquetas de los filtros */
+.filtroos-container label {
+    font-weight: bold;
+    font-size: 14px;
     color: #333;
 }

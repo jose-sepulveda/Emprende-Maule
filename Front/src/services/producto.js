@@ -38,19 +38,6 @@ export const crearProducto = (producto) => {
 };
 
 
-export const obtenerProductosPorEmprendedor = async (id_emprendedor) => {
-    try {
-        const response = await api.get(`/emprendedor/${id_emprendedor}`);
-        return response.data;
-    } catch (error) {
-        console.error("Error al obtener productos por emprendedor:", error);
-        throw error;
-    }
-};
-
-
-
-
 // Obtener todos los productos
 export const getProductos = async () => {
     try {
@@ -107,3 +94,26 @@ export const updateImagenYDescuento = (cod_producto, data) => {
         },
     });
 };
+
+//Filtro de productos por categoria 
+export const getProductosByCategoria = async (id_categoria) => {
+    try {
+        const response = await api.get(`/categoria/${id_categoria}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error al obtener productos por categoría:", error);
+        throw error;
+    }
+};
+
+
+export const obtenerProductosPorEmprendedor = async (id_emprendedor) => {
+    try {
+        const response = await api.get(`/emprendedor/${id_emprendedor}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error al obtener productos por emprendedor:", error);
+        throw error;
+    }
+};
+

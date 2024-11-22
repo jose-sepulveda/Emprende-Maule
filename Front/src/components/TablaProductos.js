@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { obtenerProductosPorEmprendedor, eliminarProducto, actualizarProducto, updateImagenYDescuento } from '../services/producto';
 import { AuthContext } from '../Auth/AuthContext';
 import { getCategorias } from '../services/categoria';
+import { toast } from 'react-toastify'; 
 import '../Styles/tablaProductos.css';
 
 const TablaProductos = () => {
@@ -57,9 +58,9 @@ const TablaProductos = () => {
                 await eliminarProducto(cod_producto);
                 const data = await obtenerProductosPorEmprendedor(auth.id);
                 setProductos(data);
-                alert('Producto eliminado exitosamente.');
+                toast.success('Producto eliminado exitosamente.'); 
             } catch (error) {
-                alert('Error al eliminar el producto.');
+                toast.error('Error al eliminar el producto.');
             }
         }
     };
@@ -84,10 +85,10 @@ const TablaProductos = () => {
             await actualizarProducto(productoEditando, formData);
             const data = await obtenerProductosPorEmprendedor(auth.id);
             setProductos(data);
-            alert('Producto actualizado exitosamente.');
+            toast.success('Producto actualizado exitosamente.'); 
             setProductoEditando(null); // Cerrar edición
         } catch (error) {
-            alert('Error al actualizar el producto.');
+            toast.error('Error al actualizar el producto.');
         }
     };
 
@@ -99,15 +100,13 @@ const TablaProductos = () => {
     const handleActualizarDescuento = async () => {
         try {
             const { descuento, imagen } = descuentoData;
-            // Actualiza el producto con el descuento y la nueva imagen
             await updateImagenYDescuento(productoEditando, { descuento, imagen });
             const data = await obtenerProductosPorEmprendedor(auth.id);
             setProductos(data);
-            alert('Descuento e imagen actualizados.');
-        
-        setProductoEditando(null); // Cerrar edición
+            toast.success('Descuento e imagen actualizados.'); 
+            setProductoEditando(null); // Cerrar edición
         } catch (error) {
-            alert('Error al actualizar descuento o imagen.');
+            toast.error('Error al actualizar descuento o imagen.'); 
         }
     };
 
@@ -150,10 +149,8 @@ const TablaProductos = () => {
                             name="imagen"
                             onChange={(e) => setDescuentoData({ ...descuentoData, imagen: e.target.files[0] })}
                         />
-                        
                     </label>
 
-                    
                     <button onClick={handleActualizarDescuento}>Guardar Descuento e Imagen</button>
                 </div>
             )}
@@ -171,7 +168,7 @@ const TablaProductos = () => {
                             <th>Precio</th>
                             <th>Categoría</th>
                             <th>Imagen</th>
-                            <th>Precio Descuento</th> {/* Nueva columna */}
+                            <th>Precio Descuento</th> 
                             <th>Acciones</th>
                         </tr>
                     </thead>

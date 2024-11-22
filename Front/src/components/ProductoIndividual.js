@@ -108,7 +108,6 @@ const ProductoIndividual = () => {
     const manejarEliminarResena = (idResena) => {
         eliminarResena(idResena)
             .then(() => {
-                setMensaje('Reseña eliminada con éxito.');
                 cargarReseñas(id);
             })
             .catch((error) => {

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { createCliente } from '../services/crearCliente';
+import { toast } from 'react-toastify'; 
 import '../Styles/formCliente.css';
 
 const FormCrearCliente = () => {
@@ -14,8 +15,6 @@ const FormCrearCliente = () => {
     correo: ''
   });
 
-  const [mensaje, setMensaje] = useState('');
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -28,7 +27,7 @@ const FormCrearCliente = () => {
     e.preventDefault();
     try {
       await createCliente(formData);
-      setMensaje('Cliente creado exitosamente');
+      toast.success('Cliente creado exitosamente'); 
       setFormData({
         rut_cliente: '',
         contrasena: '',
@@ -40,7 +39,7 @@ const FormCrearCliente = () => {
         correo: ''
       });
     } catch (error) {
-      setMensaje('Error al crear el cliente');
+      toast.error('Error al crear el cliente'); 
       console.error(error);
     }
   };
@@ -48,7 +47,6 @@ const FormCrearCliente = () => {
   return (
     <div className='form-container-cliente'>
       <h2>Crear Cuenta Cliente</h2>
-      {mensaje && <p>{mensaje}</p>}
       <form className='form-cliente' onSubmit={handleSubmit}>
           <div>
             <label className='fc-label'>Nombre</label>
