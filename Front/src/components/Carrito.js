@@ -23,7 +23,6 @@ const Carrito = () => {
                 toast.success('Productos del carrito obtenidos correctamente');
             } else {
                 const carroLocal = JSON.parse(localStorage.getItem('carritoLocal')) || [];
-                console.log(carroLocal)
                 setCarros_productos(carroLocal)
                 toast.success('Carro cargado correctamente')
             }
@@ -33,8 +32,37 @@ const Carrito = () => {
         }
     }
 
+    const calcularPrecioConDescuento = (precio, descuento) => {
+        if (!precio || typeof descuento === 'undefined') return precio || 0;
+        return descuento > 0 ? precio - (precio * descuento) / 100 : precio;
+    };
+
+    const setSubtotal = () => {
+        return carrosProductos.reduce((subtotal, item) => {
+            const precio = item.producto.precio_producto;
+            const cantidad = item.cantidad
+            return subtotal + precio * cantidad;
+        }, 0);
+    };
+
     const setTotal = () => {
-        return carrosProductos.reduce((total, item) => total + item.subtotal, 0);
+        return carrosProductos.reduce((total, item) => {
+            const producto = item.producto; 
+            const precio = producto?.precio_producto || 0;
+            const descuento = producto?.descuento || 0;
+    
+            const precioConDescuento = calcularPrecioConDescuento(precio, descuento);
+            return total + precioConDescuento * (item.cantidad || 1);
+        }, 0);
+    };
+
+    const setDescuento = () => {
+        const subtotalSinDescuento = carrosProductos.reduce(
+            (subtotal, item) => subtotal + item.producto.precio_producto * item.cantidad,
+            0
+        );
+        const totalConDescuento = setTotal();
+        return subtotalSinDescuento - totalConDescuento;
     };
 
     const handleContinueShoping = () => {
@@ -46,16 +74,18 @@ const Carrito = () => {
             const idCliente = localStorage.getItem('id');
             if (idCliente) {
                 await deleteCarroProductos(idCarroProducto);
-                cargarCarroProductos();
-                toast.success('Producto eliminado del carrito correctamente')
+                await cargarCarroProductos();
+                toast.success('Producto eliminado del carrito correctamente');
             } else {
-                const carroLocal = carrosProductos.filter(item => item.id_carro_productos !== idCarroProducto);
+                const carroLocal = carrosProductos.filter(
+                    (item) => item.id_carro_productos !== idCarroProducto
+                );
                 localStorage.setItem('carroLocal', JSON.stringify(carroLocal));
                 setCarros_productos(carroLocal);
             }
         } catch (error) {
-            console.error('Error al eliminar el producto del carrito', error);
-            toast.success('Error al eliminar el producto del carrito')
+            console.error('Error al eliminar el producto del carrito:', error);
+            toast.error('Error al eliminar el producto del carrito');
         }
     }
 
@@ -146,7 +176,7 @@ const Carrito = () => {
                     carroProductos.cantidad
                     )}
                 </td>
-                <td>${carroProductos.producto.precio_producto}</td>
+                <td>${carroProductos.producto.precio_producto.toFixed(2)}</td>
                 <td>
                     {editIndex === index ? (
                     <button onClick={() => handleUpdateProducto(carroProductos)}>Guardar</button>
@@ -159,8 +189,11 @@ const Carrito = () => {
             ))}
             </tbody>
         </table>
+        
         <div className="total">
-            <span>Total a Pagar: ${setTotal()}</span>
+            <p>Subtotal: ${setSubtotal().toFixed(2)}</p>
+            <p>Descuento: ${setDescuento().toFixed(2)}</p>
+            <p><strong>Total a Pagar: ${setTotal().toFixed(2)}</strong></p>
         </div>
         <div className="buttons">
             <button className="continue-shopping" onClick={handleContinueShoping}>Continuar Comprando</button>

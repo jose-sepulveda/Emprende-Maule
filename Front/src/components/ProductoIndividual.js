@@ -136,8 +136,6 @@ const ProductoIndividual = () => {
               cantidad: cantidad,
               cod_producto: producto.cod_producto,
             };
-
-            console.log(carro)
     
             await newCarro(carro);
     
@@ -155,7 +153,7 @@ const ProductoIndividual = () => {
               productoEnCarrito.subtotal += producto.precio_producto * cantidad;
             } else {
               carritoLocal.push({
-                id_carro_productos: new Date().getTime(), // ID temporal
+                id_carro_productos: new Date().getTime(),
                 producto: {
                   nombre_producto: producto.nombre_producto,
                   precio_producto: producto.precio_producto

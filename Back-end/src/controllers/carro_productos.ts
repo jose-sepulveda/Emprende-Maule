@@ -23,7 +23,7 @@ export const getCarrosProductos = async(req: Request, res: Response) => {
         const carroProductos = await Carro_productos.findAll({
             include: [
                 { model: Carro, attributes: ['id_carro'] },
-                { model: Productos, attributes: ['nombre_producto', 'precio_producto'] }
+                { model: Productos, attributes: ['nombre_producto', 'precio_producto','descuento'] }
             ],
             attributes: ['id_carro_productos', 'cantidad', 'subtotal'],
             where: { id_carro: carro.dataValues.id_carro }

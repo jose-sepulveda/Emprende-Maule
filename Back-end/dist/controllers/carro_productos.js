@@ -32,7 +32,7 @@ const getCarrosProductos = (req, res) => __awaiter(void 0, void 0, void 0, funct
         const carroProductos = yield carro_productos_1.Carro_productos.findAll({
             include: [
                 { model: carro_1.Carro, attributes: ['id_carro'] },
-                { model: producto_1.Productos, attributes: ['nombre_producto', 'precio_producto'] }
+                { model: producto_1.Productos, attributes: ['nombre_producto', 'precio_producto', 'descuento'] }
             ],
             attributes: ['id_carro_productos', 'cantidad', 'subtotal'],
             where: { id_carro: carro.dataValues.id_carro }
