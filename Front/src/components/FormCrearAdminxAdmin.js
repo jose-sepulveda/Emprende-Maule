@@ -136,11 +136,11 @@ const FormCrearAdminxAdmin = () => {
                     <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} required />
                 </div>
                 <div>
-                    <label>Apellido 1</label>
+                    <label>Apellido Paterno</label>
                     <input type="text" value={apellido1} onChange={(e) => setApellido1(e.target.value)} required />
                 </div>
                 <div>
-                    <label>Apellido 2</label>
+                    <label>Apellido Materno</label>
                     <input type="text" value={apellido2} onChange={(e) => setApellido2(e.target.value)} required />
                 </div>
                 <div>
