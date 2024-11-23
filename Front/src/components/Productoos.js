@@ -182,7 +182,6 @@ const Productoos = () => {
                                     )}
                                 </div>
                                 <div className="productoos-info">
-                                    <p><strong>Descripción:</strong> {producto.descripcion_producto}</p>
                                     <p><strong>Categoría:</strong> {producto.nombre_categoria}</p>
                                     <p><strong>Precio:</strong> ${producto.precio_producto}</p>
                                         {producto.precio_descuento && (
