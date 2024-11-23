@@ -186,7 +186,9 @@ const Productoos = () => {
                                     <p><strong>Descripción:</strong> {producto.descripcion_producto}</p>
                                     <p><strong>Categoría:</strong> {producto.nombre_categoria}</p>
                                     <p><strong>Precio:</strong> ${producto.precio_producto}</p>
-                                    <p><strong>Precio descuento:</strong> ${producto.precio_descuento}</p>
+                                        {producto.precio_descuento && (
+                                            <p><strong>Precio descuento:</strong> ${producto.precio_descuento}</p>
+                                        )}
                                 </div>
                             </Link>
                         ))}
