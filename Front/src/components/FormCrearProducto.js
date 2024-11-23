@@ -3,23 +3,23 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { crearProducto } from '../services/producto';
 import { getCategorias } from '../services/categoria';
-import { AuthContext } from '../Auth/AuthContext'; // Contexto de autenticación
+import { AuthContext } from '../Auth/AuthContext'; 
 import '../Styles/gestionProductos.css';
 
 const FormCrearProducto = () => {
     const { register, handleSubmit, reset, formState: { errors }} = useForm();
     const [categorias, setCategorias] = useState([]);
-    const { auth } = useContext(AuthContext); // Obtener id_emprendedor desde el contexto
+    const { auth } = useContext(AuthContext);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         getCategorias()
             .then(response => {
-                setCategorias(response.data); // Obtener categorías
+                setCategorias(response.data); 
             })
             .catch(error => {
                 console.error("Error al obtener las categorías:", error);
-                toast.error("Error al cargar las categorías"); // Mostrar error si no se pueden cargar categorías
+                toast.error("Error al cargar las categorías"); 
             });
     }, []);
 
@@ -31,23 +31,20 @@ const FormCrearProducto = () => {
             descripcion_producto: data.descripcion_producto,
             id_categoria: data.id_categoria, 
             cantidad_disponible: data.cantidad_disponible,
-            imagen: data.imagen[0], // La imagen se maneja como un archivo
-            id_emprendedor: auth.id, // Aquí se agrega el id_emprendedor desde el contexto
+            imagen: data.imagen[0], 
+            id_emprendedor: auth.id, 
         };
-
-        // Verificar que los datos estén siendo enviados correctamente
         console.log('Datos enviados:', producto);
 
         try {
             const response = await crearProducto(producto);
             console.log("Producto registrado:", response.data);
-            toast.success("Producto registrado correctamente"); // Mostrar mensaje de éxito
+            toast.success("Producto registrado correctamente"); 
 
-            // Limpiar el formulario después de registrar el producto
             reset();
         } catch (error) {
             console.error("Error al registrar Producto:", error);
-            toast.error("Error al registrar Producto"); // Mostrar mensaje de error
+            toast.error("Error al registrar Producto"); 
         } finally {
             setLoading(false);
         }

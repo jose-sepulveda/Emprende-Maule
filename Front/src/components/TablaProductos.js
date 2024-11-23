@@ -38,7 +38,6 @@ const TablaProductos = () => {
                 });
         }
 
-        // Obtiene categorías
         getCategorias()
             .then((response) => {
                 setCategorias(response.data);
@@ -52,7 +51,7 @@ const TablaProductos = () => {
         return `https://drive.google.com/thumbnail?id=${fileId}&sz=w200`;
     };
 
-    const handleEliminar = async (cod_producto) => {
+    const eliminarUnProducto = async (cod_producto) => {
         if (window.confirm('¿Estás seguro de eliminar este producto?')) {
             try {
                 await eliminarProducto(cod_producto);
@@ -65,7 +64,7 @@ const TablaProductos = () => {
         }
     };
 
-    const handleEditar = (producto) => {
+    const editarUnProducto = (producto) => {
         setProductoEditando(producto.cod_producto);
         setFormData({
             nombre_producto: producto.nombre_producto,
@@ -80,7 +79,7 @@ const TablaProductos = () => {
         });
     };
 
-    const handleActualizar = async () => {
+    const actualizarUnProducto = async () => {
         try {
             await actualizarProducto(productoEditando, formData);
             const data = await obtenerProductosPorEmprendedor(auth.id);
@@ -92,12 +91,12 @@ const TablaProductos = () => {
         }
     };
 
-    const handleDescuentoChange = (e) => {
+    const inputDescuento = (e) => {
         const { name, value } = e.target;
         setDescuentoData({ ...descuentoData, [name]: value });
     };
 
-    const handleActualizarDescuento = async () => {
+    const actualizarDescImg = async () => {
         try {
             const { descuento, imagen } = descuentoData;
             await updateImagenYDescuento(productoEditando, { descuento, imagen });
@@ -110,7 +109,7 @@ const TablaProductos = () => {
         }
     };
 
-    const handleChange = (e) => {
+    const inputFormEdit = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
@@ -137,7 +136,7 @@ const TablaProductos = () => {
                             type="number"
                             name="descuento"
                             value={descuentoData.descuento}
-                            onChange={handleDescuentoChange}
+                            onChange={inputDescuento}
                             min="0"
                             max="100"
                         />
@@ -151,7 +150,7 @@ const TablaProductos = () => {
                         />
                     </label>
 
-                    <button onClick={handleActualizarDescuento}>Guardar Descuento e Imagen</button>
+                    <button onClick={actualizarDescImg}>Guardar Descuento e Imagen</button>
                 </div>
             )}
 
@@ -181,7 +180,7 @@ const TablaProductos = () => {
                                             type="text"
                                             name="nombre_producto"
                                             value={formData.nombre_producto}
-                                            onChange={handleChange}
+                                            onChange={inputFormEdit}
                                         />
                                     ) : (
                                         producto.nombre_producto
@@ -192,7 +191,7 @@ const TablaProductos = () => {
                                         <textarea
                                             name="descripcion_producto"
                                             value={formData.descripcion_producto}
-                                            onChange={handleChange}
+                                            onChange={inputFormEdit}
                                         />
                                     ) : (
                                         producto.descripcion_producto
@@ -204,7 +203,7 @@ const TablaProductos = () => {
                                         <textarea
                                             name="cantidad_disponible"
                                             value={formData.cantidad_disponible}
-                                            onChange={handleChange}
+                                            onChange={inputFormEdit}
                                         />
                                     ) : (
                                         producto.cantidad_disponible
@@ -217,7 +216,7 @@ const TablaProductos = () => {
                                             type="number"
                                             name="precio_producto"
                                             value={formData.precio_producto}
-                                            onChange={handleChange}
+                                            onChange={inputFormEdit}
                                         />
                                     ) : (
                                         `$${producto.precio_producto}`
@@ -228,7 +227,7 @@ const TablaProductos = () => {
                                         <select
                                             name="id_categoria"
                                             value={formData.id_categoria}
-                                            onChange={handleChange}
+                                            onChange={inputFormEdit}
                                         >
                                             <option value="">Seleccionar Categoría</option>
                                             {categorias.map((categoria) => (
@@ -263,11 +262,11 @@ const TablaProductos = () => {
 
                                 <td>
                                     {productoEditando === producto.cod_producto ? (
-                                        <button onClick={handleActualizar}>Guardar Producto</button>
+                                        <button onClick={actualizarUnProducto}>Guardar Producto</button>
                                     ) : (
                                         <>
-                                            <button onClick={() => handleEditar(producto)}>Editar</button>
-                                            <button onClick={() => handleEliminar(producto.cod_producto)}>Eliminar</button>
+                                            <button onClick={() => editarUnProducto(producto)}>Editar</button>
+                                            <button onClick={() => eliminarUnProducto(producto.cod_producto)}>Eliminar</button>
                                         </>
                                     )}
                                 </td>

@@ -26,7 +26,7 @@ const GestionCategorias = () => {
     }
   };
 
-  const handleDelete = async (id_categoria) => {
+  const eliminarCategoriaCreada = async (id_categoria) => {
     try {
       await deleteCategoria(id_categoria);
       cargarCategorias();
@@ -36,21 +36,12 @@ const GestionCategorias = () => {
     }
   };
 
-  const handleEdit = (categoria) => {
+  const editarCategoriaCreada = (categoria) => {
     setEditMode(true);
     setEditedCategoria(categoria);
   };
 
-  const handleCreate = () => {
-    setEditMode(false);
-    setEditedCategoria({
-      id_categoria: '',
-      nombre_categoria: '',
-      estado_categoria: true,
-    });
-  };
-
-  const handleSubmit = async (event) => {
+  const formularioCrearActualizar = async (event) => {
     event.preventDefault();
     try {
       if (editedCategoria.id_categoria) {
@@ -67,7 +58,7 @@ const GestionCategorias = () => {
     }
   };
 
-  const handleChange = (event) => {
+  const inputCategoria = (event) => {
     const { name, value, type, checked } = event.target;
     const newValue = type === 'checkbox' ? checked : value;
     setEditedCategoria({
@@ -76,7 +67,7 @@ const GestionCategorias = () => {
     });
   };
 
-  const handleToggleState = async (categoria) => {
+  const estadoDeCategoria = async (categoria) => {
     const updatedCategoria = {
       ...categoria,
       estado_categoria: !categoria.estado_categoria,
@@ -95,13 +86,13 @@ const GestionCategorias = () => {
     <div className="gestion-categorias-container">
       <h1>Gestión de Categorías</h1>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={formularioCrearActualizar}>
         <input
           className='gestion-categorias-input'
           type="text"
           name="nombre_categoria"
           value={editedCategoria.nombre_categoria}
-          onChange={handleChange}
+          onChange={inputCategoria}
           placeholder="Nombre de la Categoría"
           required
         />
@@ -114,7 +105,6 @@ const GestionCategorias = () => {
       <table className="gestion-categorias-table">
         <thead>
           <tr>
-            <th>ID</th>
             <th>Nombre</th>
             <th>Estado</th>
             <th>Acciones</th>
@@ -123,7 +113,6 @@ const GestionCategorias = () => {
         <tbody>
           {categorias.map((categoria) => (
             <tr key={categoria.id_categoria}>
-              <td>{categoria.id_categoria}</td>
               <td>{categoria.nombre_categoria}</td>
               <td>
                 <label className="gestion-categorias-switch">
@@ -131,14 +120,14 @@ const GestionCategorias = () => {
                     type="checkbox"
                     name="estado_categoria"
                     checked={categoria.estado_categoria}
-                    onChange={() => handleToggleState(categoria)} 
+                    onChange={() => estadoDeCategoria(categoria)} 
                   />
                   <span className="gestion-categorias-slider round"></span>
                 </label>
               </td>
               <td>
-                <button id="editar" className="gestion-categorias-btn gestion-categorias-btn-editar" onClick={() => handleEdit(categoria)}>Editar</button>
-                <button id="eliminar" className="gestion-categorias-btn gestion-categorias-btn-eliminar" onClick={() => handleDelete(categoria.id_categoria)}>Eliminar</button>
+                <button id="editar" className="gestion-categorias-btn gestion-categorias-btn-editar" onClick={() => editarCategoriaCreada(categoria)}>Editar</button>
+                <button id="eliminar" className="gestion-categorias-btn gestion-categorias-btn-eliminar" onClick={() => eliminarCategoriaCreada(categoria.id_categoria)}>Eliminar</button>
               </td>
             </tr>
           ))}

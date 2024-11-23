@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { createAdmin, getAdministradores, updateAdmin, deleteAdmin } from '../services/admin'; 
 import { AuthContext } from '../Auth/AuthContext';
 import '../Styles/crearAdmin.css'; 
 
 const FormCrearAdminxAdmin = () => {
-    const { auth } = useContext(AuthContext); 
+    const { auth } = useContext(AuthContext);
     const [rut, setRut] = useState('');
     const [nombre, setNombre] = useState('');
     const [apellido1, setApellido1] = useState('');
@@ -13,9 +13,9 @@ const FormCrearAdminxAdmin = () => {
     const [contrasena, setContrasena] = useState('');
     const [mensaje, setMensaje] = useState('');
     const [administradores, setAdministradores] = useState([]);
-    const [editAdmin, setEditAdmin] = useState(null); 
+    const [editAdmin, setEditAdmin] = useState(null);
 
-    const fetchAdministradores = async () => {
+    const fetchAdministradores = useCallback(async () => {
         if (!auth.token) {
             setMensaje('No hay token de autenticación');
             return;
@@ -28,7 +28,7 @@ const FormCrearAdminxAdmin = () => {
             setMensaje('Error al obtener lista de administradores creados');
             console.error('Error al obtener lista de administradores:', error);
         }
-    };
+    }, [auth.token]); 
 
     useEffect(() => {
         if (auth.token) {
@@ -36,9 +36,9 @@ const FormCrearAdminxAdmin = () => {
         } else {
             setMensaje('No hay token de autenticación');
         }
-    }, [auth.token]);
+    }, [auth.token, fetchAdministradores]); 
 
-    const handleEdit = (admin) => {
+    const editarAdmin = (admin) => {
         setEditAdmin(admin);
         setRut(admin.rut_administrador);
         setNombre(admin.nombre_administrador);
@@ -47,7 +47,7 @@ const FormCrearAdminxAdmin = () => {
         setCorreo(admin.correo);
     };
 
-    const handleCreate = async (e) => {
+    const crearAdministradoor = async (e) => {
         e.preventDefault(); 
         const newAdmin = {
             rut_administrador: rut,
@@ -74,7 +74,7 @@ const FormCrearAdminxAdmin = () => {
         }
     };
 
-        const handleSave = async () => {
+        const guardarCambios = async () => {
             if (editAdmin) {
                 const updatedAdmin = {
                     rut_administrador: rut,
@@ -101,7 +101,7 @@ const FormCrearAdminxAdmin = () => {
     }
 };
 
-    const handleCancel = () => {
+    const opcionCancelar = () => {
         setRut('');
         setNombre('');
         setApellido1('');
@@ -113,7 +113,7 @@ const FormCrearAdminxAdmin = () => {
 
 
 
-    const handleDelete = async (id_administrador) => {
+    const eliminarAdministrador = async (id_administrador) => {
         if (window.confirm('¿Estás seguro de eliminar este Administrador?')) {
             try {
                 await deleteAdmin(id_administrador, auth.token);
@@ -130,7 +130,7 @@ const FormCrearAdminxAdmin = () => {
     return (
         <div className='contenedor-crear-adminxadmin'>
             <h2>{editAdmin ? 'Editar Administrador' : 'Crear Administrador'}</h2>
-            <form className='contenedor-form-crear-adminxadmin' onSubmit={handleCreate}>
+            <form className='contenedor-form-crear-adminxadmin' onSubmit={crearAdministradoor}>
                 <div>
                     <label>Nombre</label>
                     <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} required />
@@ -157,8 +157,8 @@ const FormCrearAdminxAdmin = () => {
                 </div>
                 {editAdmin ? (
                     <>
-                    <button  type="button" onClick={handleSave}>Guardar Cambios</button>
-                    <button  type="button" onClick={handleCancel}>Cancelar</button>
+                    <button  type="button" onClick={guardarCambios}>Guardar Cambios</button>
+                    <button  type="button" onClick={opcionCancelar}>Cancelar</button>
                     </>
                 ) : (
                     <button  type="submit">Crear Administrador</button>
@@ -186,8 +186,8 @@ const FormCrearAdminxAdmin = () => {
                                     <td>{admin.rut_administrador}</td>
                                     <td>{admin.correo}</td>
                                     <td>
-                                        <button  onClick={() => handleEdit(admin)}>Editar</button>
-                                        <button  onClick={() => handleDelete(admin.id_administrador)}>Eliminar</button>
+                                        <button  onClick={() => editarAdmin(admin)}>Editar</button>
+                                        <button  onClick={() => eliminarAdministrador(admin.id_administrador)}>Eliminar</button>
                                     </td>
                                 </tr>
                             ))}
