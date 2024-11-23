@@ -68,8 +68,9 @@ describe('Inicio sesión Emprendedor', () => {
     cy.visit('http://localhost:3001/login-emprendedor')
 
     cy.get('button.login-emprendedor-recuperar-button').click();
+    cy.wait(1000);
 
-    //cy.get('.login-emprendedor-modal', { timeout: 5000 }).should('be.visible');
+    cy.get('.login-emprendedor-modal').should('be.visible');
 
     cy.get('input[type="email"]')
       .type('matiasnmv20@gmail.com')
@@ -80,10 +81,9 @@ describe('Inicio sesión Emprendedor', () => {
     cy.get('button.login-emprendedor-enviar-button')
       .click();
 
-    cy.wait(3000);
+    cy.wait(8000);
 
-    //cy.get('button.login-emprendedor-cancelar-button').click();
+    cy.visit('http://localhost:3001/login-emprendedor')
 
-    //cy.get('.login-emprendedor-modal').should('not.be.visible');
   });
 });
