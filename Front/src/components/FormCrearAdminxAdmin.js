@@ -101,15 +101,15 @@ const FormCrearAdminxAdmin = () => {
     }
 };
 
-const handleCancel = () => {
-    setRut('');
-    setNombre('');
-    setApellido1('');
-    setApellido2('');
-    setCorreo('');
-    setContrasena('');
-    setEditAdmin(null);
-};
+    const handleCancel = () => {
+        setRut('');
+        setNombre('');
+        setApellido1('');
+        setApellido2('');
+        setCorreo('');
+        setContrasena('');
+        setEditAdmin(null);
+    };
 
 
 
@@ -118,12 +118,14 @@ const handleCancel = () => {
             try {
                 await deleteAdmin(id_administrador, auth.token);
                 alert('Administrador eliminado con éxito');
-                fetchAdministradores();
+                setAdministradores(administradores.filter(admin => admin.id_administrador !== id_administrador));
             } catch (error) {
+                console.error('Error al eliminar el administrador:', error);
                 alert('Error al eliminar el administrador');
             }
         }
     };
+
 
     return (
         <div className='contenedor-crear-adminxadmin'>
