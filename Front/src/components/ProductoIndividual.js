@@ -57,7 +57,7 @@ const ProductoIndividual = () => {
             });
     };
 
-    const manejarSubmitResena = async (e) => {
+    const CondicionIngresoResena = async (e) => {
         e.preventDefault();
 
         if (!auth?.id || auth?.role !== 'cliente') {
@@ -83,11 +83,11 @@ const ProductoIndividual = () => {
         }
     };
 
-    const handleStarClick = (rating) => {
+    const calificacionEstrellita = (rating) => {
         setCalificacion(rating);
     };
 
-    const manejarActualizarResena = async () => {
+    const ActualizarResenaExistente = async () => {
         if (editandoResena) {
             const nuevaResena = {
                 calificación: calificacion,
@@ -105,7 +105,7 @@ const ProductoIndividual = () => {
         }
     };
 
-    const manejarEliminarResena = (idResena) => {
+    const EliminarResenaExistente = (idResena) => {
         eliminarResena(idResena)
             .then(() => {
                 cargarReseñas(id);
@@ -257,14 +257,14 @@ const ProductoIndividual = () => {
                         <div className="linea-separadora"></div>
 
                         <div className="formulario-resena">
-                            <form onSubmit={manejarSubmitResena}>
+                            <form onSubmit={CondicionIngresoResena}>
                                 <div className="campo">
                                     <label>Calificación:</label>
                                     <div className="calificacion-estrellas">
                                         {[1, 2, 3, 4, 5].map(star => (
                                             <span 
                                                 key={star}
-                                                onClick={() => handleStarClick(star)} 
+                                                onClick={() => calificacionEstrellita(star)} 
                                                 className={calificacion >= star ? 'estrella seleccionada' : 'estrella'}
                                             >
                                                 {calificacion >= star ? <FaStar /> : <FaRegStar />}
@@ -343,13 +343,13 @@ const ProductoIndividual = () => {
                                         <td>
                                             {editandoResena?.id_resena === resena.id_resena ? (
                                                 <>
-                                                    <button onClick={manejarActualizarResena}>Guardar</button>
+                                                    <button onClick={ActualizarResenaExistente}>Guardar</button>
                                                     <button onClick={() => setEditandoResena(null)}>Cancelar</button>
                                                 </>
                                             ) : (
                                                 <>
                                                     <button onClick={() => activarEdicion(resena)}>Editar</button>
-                                                    <button onClick={() => manejarEliminarResena(resena.id_resena)}>Eliminar</button>
+                                                    <button onClick={() => EliminarResenaExistente(resena.id_resena)}>Eliminar</button>
                                                 </>
                                             )}
                                         </td>

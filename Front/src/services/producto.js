@@ -20,7 +20,6 @@ api.interceptors.request.use((config) => {
 export const crearProducto = (producto) => {
     const formData = new FormData();
 
-    // Agregar los campos de producto a FormData
     for (const key in producto) {
         if (key === 'imagen') {
             formData.append('imagen', producto.imagen);
@@ -29,7 +28,6 @@ export const crearProducto = (producto) => {
         }
     }
 
-    // Enviar la solicitud POST con el FormData
     return api.post('/', formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
@@ -41,8 +39,8 @@ export const crearProducto = (producto) => {
 // Obtener todos los productos
 export const getProductos = async () => {
     try {
-        const response = await api.get('/list'); // Llamar a la ruta '/list'
-        return response.data; // Devolver la lista de productos
+        const response = await api.get('/list'); 
+        return response.data; 
     } catch (error) {
         console.error("Error al obtener los productos:", error);
         throw error;

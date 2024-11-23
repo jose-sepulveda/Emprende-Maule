@@ -1,13 +1,11 @@
 import axios from 'axios';
 
-// Configuración base para el API de reseñas
 const API_URL = 'http://localhost:3000/api/resena';
 
 const api = axios.create({
     baseURL: API_URL,
 });
 
-// Interceptor para incluir el token de autorización
 api.interceptors.request.use((config) => {
     const token = localStorage.getItem("token");
     if (token) {

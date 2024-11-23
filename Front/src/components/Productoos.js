@@ -46,7 +46,7 @@ const Productoos = () => {
             .catch((error) => console.error("Error al cargar las categorías:", error));
     };
 
-    const manejarCambioCategoria = (e) => {
+    const FiltroCategoria = (e) => {
         const id_categoria = e.target.value;
         setCategoriaSeleccionada(id_categoria);
 
@@ -66,7 +66,7 @@ const Productoos = () => {
         }
     };
 
-    const manejarCambioEmprendedor = (e) => {
+    const FiltroEmprendedor = (e) => {
         const nombre_emprendedor = e.target.value;
         setEmprendedorSeleccionado(nombre_emprendedor);
 
@@ -79,11 +79,10 @@ const Productoos = () => {
         }
     };
 
-    const manejarBusqueda = (e) => {
+    const FiltroBusqueda = (e) => {
         const valorBusqueda = e.target.value;
         setNombreBusqueda(valorBusqueda);
 
-        // filtrar  productos por nombre
         const productosFiltradosPorNombre = productos.filter((producto) =>
             producto.nombre_producto.toLowerCase().includes(valorBusqueda.toLowerCase())
         );
@@ -112,7 +111,7 @@ const Productoos = () => {
                 <select
                     id="categoria"
                     value={categoriaSeleccionada}
-                    onChange={manejarCambioCategoria}
+                    onChange={FiltroCategoria}
                 >
                     <option value="">Todas las categorías</option>
                     {categorias.map((categoria) => (
@@ -129,7 +128,7 @@ const Productoos = () => {
                 <select
                     id="emprendedor"
                     value={emprendedorSeleccionado}
-                    onChange={manejarCambioEmprendedor}
+                    onChange={FiltroEmprendedor}
                 >
                     <option value="">Todos los emprendedores</option>
                     {emprendedores.map((emprendedor, index) => (
@@ -148,7 +147,7 @@ const Productoos = () => {
                         type="text"
                         id="buscador"
                         value={nombreBusqueda}
-                        onChange={manejarBusqueda}
+                        onChange={FiltroBusqueda}
                         placeholder="Escribe el nombre del producto"
                     />
                     <FontAwesomeIcon icon={faSearch} className="buscador-icon" />
