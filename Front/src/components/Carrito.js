@@ -5,7 +5,7 @@ import { deleteCarroProductos, getCarrosProductos, updateCarroProductos } from '
 import "../Styles/carrito.css";
 
 const Carrito = () => {
-    const [ carrosProductos, setCarros_productos ] = useState([]);
+    const [ carrosProductos, setCarrosProductos ] = useState([]);
     const [ editIndex, setEditIndex] = useState(null);
     const [ editCantidad, setEditCantidad ] = useState(1);
     const navigate = useNavigate();
@@ -19,11 +19,11 @@ const Carrito = () => {
             const id_cliente = localStorage.getItem('id');
             if (id_cliente) {
                 const response = await getCarrosProductos(id_cliente);
-                setCarros_productos(response.data)
+                setCarrosProductos(response.data)
                 toast.success('Productos del carrito obtenidos correctamente');
             } else {
                 const carroLocal = JSON.parse(localStorage.getItem('carritoLocal')) || [];
-                setCarros_productos(carroLocal)
+                setCarrosProductos(carroLocal)
                 toast.success('Carro cargado correctamente')
             }
         } catch (error) {
@@ -81,7 +81,7 @@ const Carrito = () => {
                     (item) => item.id_carro_productos !== idCarroProducto
                 );
                 localStorage.setItem('carroLocal', JSON.stringify(carroLocal));
-                setCarros_productos(carroLocal);
+                setCarrosProductos(carroLocal);
             }
         } catch (error) {
             console.error('Error al eliminar el producto del carrito:', error);
@@ -120,7 +120,7 @@ const Carrito = () => {
                 );
     
                 localStorage.setItem("carritoLocal", JSON.stringify(carritoLocal));
-                setCarros_productos(carritoLocal); 
+                setCarrosProductos(carritoLocal); 
                 setEditIndex(null);
             }
         } catch (error) {

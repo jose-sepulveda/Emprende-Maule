@@ -27,15 +27,12 @@ export const getEmprendedor = (rut_emprendedor) => api.get(`/${rut_emprendedor}`
 export const crearEmprendedor = (emprendedor) => {
     const formData = new FormData();
 
-    // Agregar los campos de texto
     for (const key in emprendedor) {
-        // Solo agregar los campos de texto, omitiendo los campos de archivos
         if (key !== 'comprobante' && key !== 'imagen_productos' && key !== 'imagen_local') {
             formData.append(key, emprendedor[key]);
         }
     }
 
-    // Agregar los archivos a FormData
     if (emprendedor.comprobante && emprendedor.comprobante.length > 0) {
         Array.from(emprendedor.comprobante).forEach(file => {
             formData.append('comprobante', file);
@@ -54,7 +51,6 @@ export const crearEmprendedor = (emprendedor) => {
         });
     }
 
-    // Enviar la solicitud POST con los datos y archivos
     return api.post('/new', formData, {
         headers: {
             'Content-Type': 'multipart/form-data',

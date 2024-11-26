@@ -36,6 +36,7 @@ import { ToastContainer } from 'react-toastify';
 import { AuthContext, AuthProvider } from './Auth/AuthContext';
 import { PrivateRoute } from './Auth/PrivateRoute';
 import Carrito from './components/Carrito.js';
+import Contacto from './components/Contacto.js';
 import DetalleEmprendedor from './components/DetalleEmprendedor.js';
 import DetalleSolicitud from './components/DetalleSolicitud.js';
 import FormActualizarEmprendedor from './components/FormActualizarEmprendedor.js';
@@ -84,6 +85,7 @@ function App() {
             <Route path="/" element={<Inicio />} />
             <Route path="/producto/:id" element={<ProductoIndividual />} /> 
             <Route path="/productoos" element={<Productoos />}/> 
+            <Route path="/contacto" element= {<Contacto />}/>
             
             
             

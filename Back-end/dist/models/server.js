@@ -20,6 +20,7 @@ const carro_1 = __importDefault(require("../routes/carro"));
 const carro_productos_1 = __importDefault(require("../routes/carro_productos"));
 const categoria_1 = __importDefault(require("../routes/categoria"));
 const cliente_1 = __importDefault(require("../routes/cliente"));
+const contacto_1 = __importDefault(require("../routes/contacto"));
 const emprendedor_1 = __importDefault(require("../routes/emprendedor"));
 const producto_1 = __importDefault(require("../routes/producto"));
 const resena_1 = __importDefault(require("../routes/resena"));
@@ -30,6 +31,7 @@ const carro_2 = require("./carro");
 const carro_productos_2 = require("./carro_productos");
 const categoria_2 = require("./categoria");
 const cliente_2 = require("./cliente");
+const contacto_2 = require("./contacto");
 const emprendedor_2 = require("./emprendedor");
 const producto_2 = require("./producto");
 const resena_2 = require("./resena");
@@ -61,6 +63,7 @@ class Server {
         this.app.use('/api/administrador', administrador_1.default);
         this.app.use('/api/ventas', ventas_1.default);
         this.app.use('/api/venta_productos', venta_productos_1.default);
+        this.app.use('/api/contacto', contacto_1.default);
     }
     midlewares() {
         this.app.use('/public', express_1.default.static(path_1.default.join(__dirname, '..', '..', 'public')));
@@ -86,6 +89,7 @@ class Server {
                 yield administrador_2.Administrador.sync({ alter: true });
                 yield ventas_2.Ventas.sync({ alter: true });
                 yield venta_productos_2.Venta_productos.sync({ alter: true });
+                yield contacto_2.Contacto.sync({ alter: true });
             }
             catch (error) {
                 console.error('No se ha podido conectar a la base de datos');

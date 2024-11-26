@@ -31,9 +31,11 @@ const sendEmail = (destinatario, asunto, mensaje) => __awaiter(void 0, void 0, v
     try {
         yield transporter.sendMail(mailOptions);
         console.log('Correo enviado con exito');
+        return true;
     }
     catch (error) {
         console.error('Error al enviar el correo:', error);
+        return false;
     }
 });
 exports.sendEmail = sendEmail;

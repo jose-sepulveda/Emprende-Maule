@@ -7,6 +7,7 @@ import routerCarro from '../routes/carro';
 import routerCarroProductos from '../routes/carro_productos';
 import routerCategoria from '../routes/categoria';
 import routerCliente from '../routes/cliente';
+import routerContacto from '../routes/contacto';
 import routerEmprendedor from '../routes/emprendedor';
 import routerProducto from '../routes/producto';
 import routerResena from '../routes/resena';
@@ -17,6 +18,7 @@ import { Carro } from './carro';
 import { Carro_productos } from './carro_productos';
 import { Categorias } from './categoria';
 import { Cliente } from './cliente';
+import { Contacto } from './contacto';
 import { Emprendedor } from './emprendedor';
 import { Productos } from './producto';
 import { Resena } from './resena';
@@ -54,6 +56,7 @@ class Server {
         this.app.use('/api/administrador', routerAdministrador);
         this.app.use('/api/ventas', routerVentas);
         this.app.use('/api/venta_productos', routerVentaProductos);
+        this.app.use('/api/contacto', routerContacto);
     }
 
     midlewares() {
@@ -80,6 +83,7 @@ class Server {
             await Administrador.sync({ alter: true});
             await Ventas.sync({ alter: true });
             await Venta_productos.sync({ alter: true});
+            await Contacto.sync({ alter: true});
         } catch (error) {
             console.error('No se ha podido conectar a la base de datos');
         }

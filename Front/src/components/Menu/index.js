@@ -47,6 +47,7 @@ function Menu(){
         routes.push(
             { to: "/crearCuenta", text: "Crear cuenta" },
             { to: "/login", text: "Iniciar sesión" },
+            { to:"/contacto", text: "Contactanos" },
         );   
         showCarrito = true; 
     }
@@ -58,7 +59,6 @@ function Menu(){
         routes.push({to:"/", text:"Inicio"})
         routes.push({to:"/crearCuenta", text:"Crear cuenta"})
         routes.push({to:"/login", text:"Iniciar sesión"})
-
 
 
         navigate("/");
@@ -122,6 +122,7 @@ routes.push({to:"/tablaP", text:"Productos"})
 routes.push({to:"/solicitudes-registro", text:"Solicitudes de Registro"})
 routes.push({to:"/adminPage", text:"Administrador"})
 routes.push({to:"/productoos", text:"Todos los productos"})
+routes.push({to:"/contacto", text: "Contactanos"})
 
 export { Menu };
 
