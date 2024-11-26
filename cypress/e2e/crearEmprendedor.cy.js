@@ -14,12 +14,12 @@ describe('Crear Emprendedor', () => {
        cy.get('#nombre_emprendedor').type('Sofia');
        cy.get('#apellido1_emprendedor').type('Silva');
        cy.get('#apellido2_emprendedor').type('Muñoz');
-       cy.get('#rut_emprendedor').type('12.345.678-9');
-       cy.get('#telefono').type('981247900');
+       cy.get('#rut_emprendedor').type('12345678-9');
+       cy.get('#telefono').type('981247909');
        cy.get('#contrasena').type('popi09');
        cy.get('#correo_electronico').type('mayote219@gmail.com');
-       cy.get('#direccion').type('Avenida SiempreViva');
-       cy.get('#tipo_de_cuenta').type('Cuenta Corriente');
+       cy.get('#direccion').type('San Rafael');
+       cy.get('#tipo_de_cuenta').type('Corriente');
        cy.get('#numero_de_cuenta').type('1234567890');
 
        cy.get('#comprobante').attachFile('comprobante.pdf');

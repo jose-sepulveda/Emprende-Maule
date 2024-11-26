@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const cors_1 = __importDefault(require("cors"));
 const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
+const webpayRoutes_1 = __importDefault(require("../routes/webpayRoutes"));
 const administrador_1 = __importDefault(require("../routes/administrador"));
 const carro_1 = __importDefault(require("../routes/carro"));
 const carro_productos_1 = __importDefault(require("../routes/carro_productos"));
@@ -63,7 +64,6 @@ class Server {
         this.app.use('/api/administrador', administrador_1.default);
         this.app.use('/api/ventas', ventas_1.default);
         this.app.use('/api/venta_productos', venta_productos_1.default);
-        this.app.use('/api/contacto', contacto_1.default);
     }
     midlewares() {
         this.app.use('/public', express_1.default.static(path_1.default.join(__dirname, '..', '..', 'public')));

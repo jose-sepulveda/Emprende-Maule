@@ -1,4 +1,3 @@
-
 import cors from 'cors';
 import express, { Application } from 'express';
 import path from 'path';
@@ -7,7 +6,6 @@ import routerCarro from '../routes/carro';
 import routerCarroProductos from '../routes/carro_productos';
 import routerCategoria from '../routes/categoria';
 import routerCliente from '../routes/cliente';
-import routerContacto from '../routes/contacto';
 import routerEmprendedor from '../routes/emprendedor';
 import routerProducto from '../routes/producto';
 import routerResena from '../routes/resena';
@@ -56,7 +54,6 @@ class Server {
         this.app.use('/api/administrador', routerAdministrador);
         this.app.use('/api/ventas', routerVentas);
         this.app.use('/api/venta_productos', routerVentaProductos);
-        this.app.use('/api/contacto', routerContacto);
     }
 
     midlewares() {

@@ -4,12 +4,12 @@ describe('Inicio sesión Emprendedor', () => {
     cy.visit('http://localhost:3001/login-emprendedor')
 
     cy.get('input[name="correo"]')
-      .type('matiasnmv20@gmail.com')
-      .should('have.value', 'matiasnmv20@gmail.com');
+      .type('todopaldrive@gmail.com')
+      .should('have.value', 'todopaldrive@gmail.com');
 
     cy.get('input[name="contrasena"]')
-      .type('alergico2024')
-      .should('have.value', 'alergico2024');
+      .type('pantera')
+      .should('have.value', 'pantera');
 
     cy.get('button.login-emprendedor-button')
       .click();
@@ -43,12 +43,12 @@ describe('Inicio sesión Emprendedor', () => {
     cy.visit('http://localhost:3001/login-emprendedor')
 
     cy.get('input[name="correo"]')
-      .type('matiasnmv20@gmail.com')
-      .should('have.value', 'matiasnmv20@gmail.com');
+      .type('todopaldrive@gmail.com')
+      .should('have.value', 'todopaldrive@gmail.com');
 
     cy.get('input[name="contrasena"]')
-      .type('alergico2024')
-      .should('have.value', 'alergico2024');
+      .type('pantera')
+      .should('have.value', 'pantera');
       
 
     cy.get('button.login-emprendedor-button')
@@ -73,8 +73,8 @@ describe('Inicio sesión Emprendedor', () => {
     cy.get('.login-emprendedor-modal').should('be.visible');
 
     cy.get('input[type="email"]')
-      .type('matiasnmv20@gmail.com')
-      .should('have.value', 'matiasnmv20@gmail.com');
+      .type('todopaldrive@gmail.com')
+      .should('have.value', 'todopaldrive@gmail.com');
 
     cy.wait(3000);
 
