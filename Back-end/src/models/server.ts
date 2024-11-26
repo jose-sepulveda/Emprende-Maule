@@ -1,7 +1,7 @@
-
 import cors from 'cors';
 import express, { Application } from 'express';
 import path from 'path';
+import webpayRoutes from '../routes/webpayRoutes'
 import routerAdministrador from '../routes/administrador';
 import routerCarro from '../routes/carro';
 import routerCarroProductos from '../routes/carro_productos';
@@ -54,6 +54,7 @@ class Server {
         this.app.use('/api/administrador', routerAdministrador);
         this.app.use('/api/ventas', routerVentas);
         this.app.use('/api/venta_productos', routerVentaProductos);
+        this.app.use('/api/webpay', webpayRoutes);
     }
 
     midlewares() {
