@@ -16,6 +16,7 @@ const carro_productos_1 = require("../models/carro_productos");
 const carro_1 = require("../models/carro");
 const venta_productos_1 = require("../models/venta_productos");
 const cliente_1 = require("../models/cliente");
+const pedidos_1 = require("../models/pedidos");
 const getVentas = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const listVentas = yield ventas_1.Ventas.findAll();
@@ -98,6 +99,18 @@ const createVenta = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         for (const carroProductos of listCarroProductos) {
             const { cod_producto, cantidad, subtotal } = carroProductos.dataValues;
             const idVenta = venta.dataValues.id_venta;
+            const producto = yield producto_1.Productos.findOne({ where: { cod_producto } });
+            if (!producto) {
+                continue;
+            }
+            const idEmprendendor = producto.dataValues.id_emprendedor;
+            yield pedidos_1.Pedidos.create({
+                cod_producto,
+                id_venta: idVenta,
+                id_cliente: id_cliente,
+                id_emprendedor: idEmprendendor,
+                estado_pedido: "Pendiente"
+            });
             yield venta_productos_1.Venta_productos.create({
                 id_venta: idVenta,
                 cod_producto,
@@ -105,11 +118,8 @@ const createVenta = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 subtotal
             });
             subtotalVenta += subtotal;
-            const producto = yield producto_1.Productos.findOne({ where: { cod_producto } });
-            if (producto) {
-                const cantidadActual = producto.dataValues.cantidad_disponible - cantidad;
-                yield producto.update({ cantidad_disponible: cantidadActual });
-            }
+            const cantidadActual = producto.dataValues.cantidad_disponible - cantidad;
+            yield producto.update({ cantidad_disponible: cantidadActual });
             yield carroProductos.destroy();
         }
         yield carro_1.Carro.update({ total: 0 }, { where: { id_cliente } });
@@ -128,7 +138,7 @@ const createVenta = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             total: total
         });
         return res.status(201).json({
-            msg: "Venta realizada correctamente",
+            msg: "Venta y pedidos creados correctamente",
             venta: {
                 id_venta: venta.dataValues.id_venta,
                 total: total,
@@ -140,7 +150,7 @@ const createVenta = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
     catch (error) {
         return res.status(400).json({
-            msg: "Error al realizar la venta",
+            msg: "Error al realizar la venta y crear pedidos",
             error
         });
     }

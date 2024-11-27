@@ -13,6 +13,7 @@ import routerResena from '../routes/resena';
 import routerVentaProductos from '../routes/venta_productos';
 import routerVentas from '../routes/ventas';
 import webpayRoutes from '../routes/webpayRoutes';
+import routerPedidos from '../routes/pedidos';
 import { Administrador } from './administrador';
 import { Carro } from './carro';
 import { Carro_productos } from './carro_productos';
@@ -24,6 +25,7 @@ import { Productos } from './producto';
 import { Resena } from './resena';
 import { Venta_productos } from './venta_productos';
 import { Ventas } from './ventas';
+import { Pedidos } from './pedidos';
 
 class Server {
     private app: Application;
@@ -58,6 +60,7 @@ class Server {
         this.app.use('/api/venta_productos', routerVentaProductos);
         this.app.use('/api/contacto', routerContacto);
         this.app.use('/api/webpay', webpayRoutes);
+        this.app.use('/api/pedidos', routerPedidos);
     }
 
     midlewares() {
@@ -83,6 +86,7 @@ class Server {
             await Resena.sync({ alter: true });
             await Administrador.sync({ alter: true});
             await Ventas.sync({ alter: true });
+            await Pedidos.sync({ alter: true });
             await Venta_productos.sync({ alter: true});
             await Contacto.sync({ alter: true});
         } catch (error) {

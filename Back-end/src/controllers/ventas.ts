@@ -5,6 +5,8 @@ import { Carro_productos } from "../models/carro_productos";
 import { Carro } from "../models/carro";
 import { Venta_productos } from "../models/venta_productos";
 import { Cliente } from "../models/cliente";
+import { Emprendedor } from "../models/emprendedor";
+import { Pedidos } from "../models/pedidos";
 
 
 export const getVentas = async(req: Request, res: Response) => {
@@ -95,6 +97,21 @@ export const createVenta = async (req: Request, res: Response) => {
             const { cod_producto, cantidad, subtotal } = carroProductos.dataValues;
             const idVenta = venta.dataValues.id_venta;
 
+            const producto = await Productos.findOne({ where: {cod_producto} });
+            if(!producto) {
+                continue;
+            }
+
+            const idEmprendendor = producto.dataValues.id_emprendedor;
+
+            await Pedidos.create({
+                cod_producto,
+                id_venta: idVenta,
+                id_cliente: id_cliente,
+                id_emprendedor: idEmprendendor,
+                estado_pedido: "Pendiente"
+            });
+
             await Venta_productos.create({
                 id_venta: idVenta,
                 cod_producto,
@@ -104,11 +121,10 @@ export const createVenta = async (req: Request, res: Response) => {
 
             subtotalVenta += subtotal;
 
-            const producto = await Productos.findOne({ where: {cod_producto} });
-            if(producto) {
-                const cantidadActual = producto.dataValues.cantidad_disponible - cantidad;
-                await producto.update({ cantidad_disponible: cantidadActual});
-            }
+            
+            
+            const cantidadActual = producto.dataValues.cantidad_disponible - cantidad;
+            await producto.update({ cantidad_disponible: cantidadActual});
             await carroProductos.destroy();
         }
 
@@ -133,7 +149,7 @@ export const createVenta = async (req: Request, res: Response) => {
         });
 
         return res.status(201).json({ 
-            msg: "Venta realizada correctamente",
+            msg: "Venta y pedidos creados correctamente",
             venta: {
                 id_venta: venta.dataValues.id_venta,
                 total: total,
@@ -144,11 +160,11 @@ export const createVenta = async (req: Request, res: Response) => {
         });
     } catch (error) {
         return res.status(400).json({
-            msg: "Error al realizar la venta",
+            msg: "Error al realizar la venta y crear pedidos",
             error
         });
     }
-};
+}
 
 export const deleteVenta = async (req: Request, res: Response) => {
     const { id_venta } = req.params;

@@ -27,6 +27,7 @@ const resena_1 = __importDefault(require("../routes/resena"));
 const venta_productos_1 = __importDefault(require("../routes/venta_productos"));
 const ventas_1 = __importDefault(require("../routes/ventas"));
 const webpayRoutes_1 = __importDefault(require("../routes/webpayRoutes"));
+const pedidos_1 = __importDefault(require("../routes/pedidos"));
 const administrador_2 = require("./administrador");
 const carro_2 = require("./carro");
 const carro_productos_2 = require("./carro_productos");
@@ -38,6 +39,7 @@ const producto_2 = require("./producto");
 const resena_2 = require("./resena");
 const venta_productos_2 = require("./venta_productos");
 const ventas_2 = require("./ventas");
+const pedidos_2 = require("./pedidos");
 class Server {
     constructor() {
         var _a;
@@ -66,6 +68,7 @@ class Server {
         this.app.use('/api/venta_productos', venta_productos_1.default);
         this.app.use('/api/contacto', contacto_1.default);
         this.app.use('/api/webpay', webpayRoutes_1.default);
+        this.app.use('/api/pedidos', pedidos_1.default);
     }
     midlewares() {
         this.app.use('/public', express_1.default.static(path_1.default.join(__dirname, '..', '..', 'public')));
@@ -90,6 +93,7 @@ class Server {
                 yield resena_2.Resena.sync({ alter: true });
                 yield administrador_2.Administrador.sync({ alter: true });
                 yield ventas_2.Ventas.sync({ alter: true });
+                yield pedidos_2.Pedidos.sync({ alter: true });
                 yield venta_productos_2.Venta_productos.sync({ alter: true });
                 yield contacto_2.Contacto.sync({ alter: true });
             }
