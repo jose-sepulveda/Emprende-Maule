@@ -66,8 +66,8 @@ label {
 }
 
 /* Inputs */
-input,
-select {
+.form-container-prod input,
+.form-container-prod select {
     padding: 8px 12px;
     border: 1px solid #D1D5DB;
     border-radius: 6px;
@@ -76,8 +76,8 @@ select {
     transition: border-color 0.2s;
 }
 
-input:focus,
-select:focus {
+.form-container-prod input:focus,
+.form-container-prod select:focus {
     border-color: #F97316;
 }
 

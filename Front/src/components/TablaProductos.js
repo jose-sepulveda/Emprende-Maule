@@ -12,12 +12,13 @@ const TablaProductos = () => {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
     const [productoEditando, setProductoEditando] = useState(null);
+    const [editandoDescImg, setEditandoDescImg] = useState(false);
     const [formData, setFormData] = useState({
         nombre_producto: '',
         precio_producto: '',
         descripcion_producto: '',
         id_categoria: '',
-        cantidad_disponible:'',
+        cantidad_disponible: '',
     });
     const [descuentoData, setDescuentoData] = useState({
         descuento: '',
@@ -66,16 +67,13 @@ const TablaProductos = () => {
 
     const editarUnProducto = (producto) => {
         setProductoEditando(producto.cod_producto);
+        setEditandoDescImg(false); 
         setFormData({
             nombre_producto: producto.nombre_producto,
             precio_producto: producto.precio_producto,
             descripcion_producto: producto.descripcion_producto,
             id_categoria: producto.id_categoria,
-            cantidad_disponible:producto.cantidad_disponible
-        });
-        setDescuentoData({
-            descuento: producto.descuento || '',
-            imagen: producto.imagen || null,
+            cantidad_disponible: producto.cantidad_disponible
         });
     };
 
@@ -85,15 +83,30 @@ const TablaProductos = () => {
             const data = await obtenerProductosPorEmprendedor(auth.id);
             setProductos(data);
             toast.success('Producto actualizado exitosamente.'); 
-            setProductoEditando(null); // Cerrar edición
+            setProductoEditando(null);
         } catch (error) {
             toast.error('Error al actualizar el producto.');
         }
     };
 
-    const inputDescuento = (e) => {
-        const { name, value } = e.target;
-        setDescuentoData({ ...descuentoData, [name]: value });
+    const cancelarEdicionProducto = () => {
+        setProductoEditando(null); 
+        setFormData({
+            nombre_producto: '',
+            precio_producto: '',
+            descripcion_producto: '',
+            id_categoria: '',
+            cantidad_disponible: '',
+        });
+    };
+
+    const editarDescuentoImagen = (producto) => {
+        setProductoEditando(producto.cod_producto);
+        setEditandoDescImg(true);
+        setDescuentoData({
+            descuento: producto.descuento || '',
+            imagen: producto.imagen || null,
+        });
     };
 
     const actualizarDescImg = async () => {
@@ -103,10 +116,21 @@ const TablaProductos = () => {
             const data = await obtenerProductosPorEmprendedor(auth.id);
             setProductos(data);
             toast.success('Descuento e imagen actualizados.'); 
-            setProductoEditando(null); // Cerrar edición
+            setProductoEditando(null);
+            setEditandoDescImg(false);
         } catch (error) {
             toast.error('Error al actualizar descuento o imagen.'); 
         }
+    };
+
+    const cancelarEdicion = () => {
+        setProductoEditando(null);
+        setEditandoDescImg(false);
+    };
+
+    const inputDescuento = (e) => {
+        const { name, value } = e.target;
+        setDescuentoData({ ...descuentoData, [name]: value });
     };
 
     const inputFormEdit = (e) => {
@@ -126,8 +150,7 @@ const TablaProductos = () => {
         <div className='tabla-productos-container'>
             <h2>Mis Productos</h2>
 
-            {/* Formulario para editar descuento e imagen */}
-            {productoEditando && (
+            {editandoDescImg && productoEditando && (
                 <div className="formulario-descuento-imagen">
                     <h3>Aplicar Descuento y actualizar Imagen</h3>
                     <label>
@@ -149,12 +172,11 @@ const TablaProductos = () => {
                             onChange={(e) => setDescuentoData({ ...descuentoData, imagen: e.target.files[0] })}
                         />
                     </label>
-
-                    <button onClick={actualizarDescImg}>Guardar Descuento e Imagen</button>
+                    <button onClick={actualizarDescImg}>Guardar cambios</button>
+                    <button onClick={cancelarEdicion}>Cancelar</button>
                 </div>
             )}
 
-            {/* Tabla de productos */}
             {productos.length === 0 ? (
                 <p>No tienes productos creados.</p>
             ) : (
@@ -175,7 +197,7 @@ const TablaProductos = () => {
                         {productos.map((producto) => (
                             <tr key={producto.cod_producto}>
                                 <td>
-                                    {productoEditando === producto.cod_producto ? (
+                                    {productoEditando === producto.cod_producto && !editandoDescImg ? (
                                         <input
                                             type="text"
                                             name="nombre_producto"
@@ -187,7 +209,7 @@ const TablaProductos = () => {
                                     )}
                                 </td>
                                 <td>
-                                    {productoEditando === producto.cod_producto ? (
+                                    {productoEditando === producto.cod_producto && !editandoDescImg ? (
                                         <textarea
                                             name="descripcion_producto"
                                             value={formData.descripcion_producto}
@@ -197,10 +219,10 @@ const TablaProductos = () => {
                                         producto.descripcion_producto
                                     )}
                                 </td>
-                                
                                 <td>
-                                    {productoEditando === producto.cod_producto ? (
-                                        <textarea
+                                    {productoEditando === producto.cod_producto && !editandoDescImg ? (
+                                        <input
+                                            type="number"
                                             name="cantidad_disponible"
                                             value={formData.cantidad_disponible}
                                             onChange={inputFormEdit}
@@ -209,9 +231,8 @@ const TablaProductos = () => {
                                         producto.cantidad_disponible
                                     )}
                                 </td>
-
                                 <td>
-                                    {productoEditando === producto.cod_producto ? (
+                                    {productoEditando === producto.cod_producto && !editandoDescImg ? (
                                         <input
                                             type="number"
                                             name="precio_producto"
@@ -223,7 +244,7 @@ const TablaProductos = () => {
                                     )}
                                 </td>
                                 <td>
-                                    {productoEditando === producto.cod_producto ? (
+                                    {productoEditando === producto.cod_producto && !editandoDescImg ? (
                                         <select
                                             name="id_categoria"
                                             value={formData.id_categoria}
@@ -261,14 +282,18 @@ const TablaProductos = () => {
                                 </td>
 
                                 <td>
-                                    {productoEditando === producto.cod_producto ? (
-                                        <button onClick={actualizarUnProducto}>Guardar Producto</button>
-                                    ) : (
-                                        <>
-                                            <button onClick={() => editarUnProducto(producto)}>Editar</button>
-                                            <button onClick={() => eliminarUnProducto(producto.cod_producto)}>Eliminar</button>
-                                        </>
-                                    )}
+                                {productoEditando === producto.cod_producto && !editandoDescImg ? (
+                                    <>
+                                    <button className="guardar-p" onClick={actualizarUnProducto}>Guardar Producto</button> 
+                                    <button className="cancelar-p" onClick={cancelarEdicionProducto}>Cancelar</button>
+                                    </>
+                                ) : (
+                                    <>
+                                    <button className="editar-p" onClick={() => editarUnProducto(producto)}>Editar</button> 
+                                    <button className="eliminar-p" onClick={() => eliminarUnProducto(producto.cod_producto)}>Eliminar</button> 
+                                    <button className="descuento-p" onClick={() => editarDescuentoImagen(producto)}>Descuento e Img</button> 
+                                    </>
+                                )}
                                 </td>
                             </tr>
                         ))}
