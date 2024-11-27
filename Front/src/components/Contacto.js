@@ -71,7 +71,7 @@ const ContactForm = () => {
             />
           </div>
   
-          <button type="submit" disabled={loading}>
+          <button className='enviar' type="submit" disabled={loading}>
             {loading ? 'Enviando...' : 'Enviar'}
           </button>
         </form>
