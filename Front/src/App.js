@@ -21,7 +21,7 @@ import { GestionClientes } from './pages/GestionClientes.js';
 import { GestionEmprendedores } from './pages/GestionEmprendedores.js';
 //cliente
 import LoginCliente from './components/LoginCliente.js';
-import {DetalleVentaCliente} from './pages/DetalleVentaCliente.js';
+import { DetalleVentaCliente } from './pages/DetalleVentaCliente.js';
 
 
 //emprendedor
@@ -48,6 +48,8 @@ import ResetPasswordEmprendedor from './components/ResetPasswordEmprendedor.js';
 import { SolicitudesRegistro } from './pages/SolicitudesRegistro.js';
 
 import DetalleVentaC from './components/DetalleVentaC.js';
+import PedidosCliente from './components/PedidosCliente.js';
+import GestionPedidos from './pages/GestionPedidos.js';
 
 function AuthProviderWithRouter({children}) {
   const { auth, logout } = useContext(AuthContext);
@@ -108,12 +110,13 @@ function App() {
             <Route path= "/solicitudes-registro" element= {<PrivateRoute><SolicitudesRegistro/></PrivateRoute>}/>
             <Route path= "/detalle-solicitud/:rut_emprendedor" element= {<PrivateRoute><DetalleSolicitud/></PrivateRoute>}/>
             <Route path= "/adminPage" element= {<PrivateRoute><AdminPage/></PrivateRoute>}/>
+            <Route path='/pedidos' element= {<PrivateRoute><GestionPedidos/></PrivateRoute>}/>
 
             {/*Cliente*/}
             <Route path='/login-cliente' element={<LoginCliente/>}/>
             <Route path="/detalle-venta/:id_cliente" element={<DetalleVentaC />} />
             <Route path='/detalle-venta-cliente' element={<DetalleVentaCliente/>}/> 
-
+            <Route path='/pedidos-cliente' element= {<PedidosCliente/>}/>
 
             {/*Emprendedor*/}
             <Route path='/login-emprendedor' element={<LoginEmprendedor/>}/>

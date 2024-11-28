@@ -22,7 +22,6 @@ const PerfilEmprendedor = () => {
                 const response = await getEmprendedorById(auth.id); 
                 setEmprendedor(response.data.emprendedor);
                 toast.success("Emprendedor obtenido correctamente")
-                console.log(auth.id)
             } catch (error) {
                 console.error("Error al obtener los detalles del emprendedor:", error);
                 toast.error("Error al obtener los detalles del emprendedor")
