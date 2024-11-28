@@ -26,7 +26,7 @@ const PedidosCliente = () => {
 
     return (
         <div className='gestion-pedidos'>
-            <h1 className='titulo'>Lista de Pedidos</h1>
+            <h1 className='titulo'>Mis Pedidos</h1>
             {pedidos && pedidos.length > 0 ? (
                 pedidos.map((pedido) => (
                     <div key={pedido.id_pedido} className='pedido-container'> 
