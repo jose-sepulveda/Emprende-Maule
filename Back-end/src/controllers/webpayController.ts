@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { WebpayPlus, Options, Environment, IntegrationCommerceCodes, IntegrationApiKeys } from 'transbank-sdk';
-import { Ventas } from "../models/ventas";
 
 const options = new Options(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY, Environment.Integration);
 
@@ -39,16 +38,11 @@ export const commitTransaction = async (req: Request, res: Response) => {
 
         if (commitResponse.vci === 'TSY' && commitResponse.status === 'AUTHORIZED') {
 
-            const venta = await Ventas.findOne({ where: { id_venta: commitResponse.buyOrder } });
-            if (venta) {
-                await venta.update({ estado_de_venta: true, metodo_de_pago: 'Webpay Plus' });
                 res.redirect(`http://localhost:3001/#/exito`);
         } else {
                 res.redirect(`http://localhost:3001/#/error`);
         }
-    } else {
-        res.redirect(`http://localhost:3001/#/error`);
-    }
+
     } catch (error) {
         if (error instanceof Error) {
             res.status(500).json({ error: error.message });

@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.commitTransaction = exports.createTransaction = void 0;
 const transbank_sdk_1 = require("transbank-sdk");
-const ventas_1 = require("../models/ventas");
 const options = new transbank_sdk_1.Options(transbank_sdk_1.IntegrationCommerceCodes.WEBPAY_PLUS, transbank_sdk_1.IntegrationApiKeys.WEBPAY, transbank_sdk_1.Environment.Integration);
 const createTransaction = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { amount, sessionId, buyOrder, returnUrl } = req.body;
@@ -46,14 +45,7 @@ const commitTransaction = (req, res) => __awaiter(void 0, void 0, void 0, functi
         const transaction = new transbank_sdk_1.WebpayPlus.Transaction(options);
         const commitResponse = yield transaction.commit(token_ws.toString());
         if (commitResponse.vci === 'TSY' && commitResponse.status === 'AUTHORIZED') {
-            const venta = yield ventas_1.Ventas.findOne({ where: { id_venta: commitResponse.buyOrder } });
-            if (venta) {
-                yield venta.update({ estado_de_venta: true, metodo_de_pago: 'Webpay Plus' });
-                res.redirect(`http://localhost:3001/#/exito`);
-            }
-            else {
-                res.redirect(`http://localhost:3001/#/error`);
-            }
+            res.redirect(`http://localhost:3001/#/exito`);
         }
         else {
             res.redirect(`http://localhost:3001/#/error`);
