@@ -33,7 +33,8 @@ function Menu(){
 
                 {to:"/gestionProducto", text:"Crear producto"},
                 {to:"/tablaP", text:"Gestión Productos"},
-                {to:"/perfil-emprendedor", text:"Mis Datos"}
+                {to:"/perfil-emprendedor", text:"Mis Datos"},
+                {to:"/pedidos-emprendedor", text: "Pedidos"}
         );   
         }
 
@@ -130,6 +131,7 @@ routes.push({to:"/productoos", text:"Todos los productos"})
 routes.push({to:"/contacto", text: "Contactanos"})
 routes.push({to:"/detalle-venta-cliente", text: "Ventas"})
 routes.push({to:"/pedidos-cliente", text: "Pedidos"})
+routes.push({to:"/pedidos-emprendedor", text: "Pedidos"})
 
 export { Menu };
 

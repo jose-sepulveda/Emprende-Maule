@@ -49,6 +49,7 @@ import { SolicitudesRegistro } from './pages/SolicitudesRegistro.js';
 
 import DetalleVentaC from './components/DetalleVentaC.js';
 import PedidosCliente from './components/PedidosCliente.js';
+import PedidosEmprendedor from './components/PedidosEmprendedor.js';
 import GestionPedidos from './pages/GestionPedidos.js';
 
 function AuthProviderWithRouter({children}) {
@@ -125,6 +126,8 @@ function App() {
             <Route path='/formCrearP' element={<CrearProducto/>}/>
             <Route path='/perfil-emprendedor' element={<PerfilEmprendedor/>}/>
             <Route path='/carrito' element={<Carrito/>}/>
+            <Route path='/pedidos-emprendedor' element= {<PedidosEmprendedor/>}/>
+
 
             {/*Recuperacion de contraseña*/}
 
