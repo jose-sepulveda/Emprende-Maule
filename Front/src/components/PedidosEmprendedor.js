@@ -1,34 +1,67 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { AuthContext } from '../Auth/AuthContext';
-import { getPedidoByEmprendedor } from '../services/pedidos';
+import { getPedidoByEmprendedor, updateEstadoPedido } from '../services/pedidos';
 import "../Styles/pedidos-emprendedor.css";
 
 const PedidosEmprendedor = () => {
     const [pedidos, setPedidos] = useState([]);
+    const [ loading, setLoading ] = useState(false)
+    const [showModal, setShowModal] = useState(false);
+    const [estadoPedido, setEstadoPedido] = useState("");
+    const [pedidoId, setPedidoId] = useState(null);
     const { auth } = useContext(AuthContext) 
 
-    useEffect(() => {
-        const cargarPedidos = async () => {
-            if (!auth?.id) {
-                return;
-            }
-            try {
-                const response = await getPedidoByEmprendedor(auth.id);
-                setPedidos(response.data);   
-            } catch (error) {
-                console.error('Error al cargar los pedidos', error);
-                toast.error('Error al cargar los pedidos')
-            }
+    const cargarPedidos = useCallback(async () => {
+        if (!auth?.id) {
+            return;
         }
-
-        cargarPedidos();
+        try {
+            const response = await getPedidoByEmprendedor(auth.id);
+            setPedidos(response.data);
+        } catch (error) {
+            console.error('Error al cargar los pedidos', error);
+            toast.error('Error al cargar los pedidos');
+        }
     }, [auth.id]);
+
+    useEffect(() => {
+        cargarPedidos();
+    }, [cargarPedidos]);
 
     const generarUrl = (fileId) => {
         return `https://drive.google.com/thumbnail?id=${fileId}&sz=w1000`;
     }
 
+    const handleModalOpen = (id_pedido) => {
+        setPedidoId(id_pedido);
+        setShowModal(true);
+    }
+
+    const handleUpdateEstado = async () => {
+        if (estadoPedido && pedidoId) {
+            try {
+                setLoading(true);
+                await updateEstadoPedido(pedidoId, { estado_pedido: estadoPedido });
+                toast.success('Estado del pedido actualizado correctamente');
+                setLoading(false);
+                setShowModal(false);
+                cargarPedidos();
+            } catch (error) {
+                console.error('Error al actualizar el estado del pedido', error);
+                toast.error('Error al actualizar el estado del pedido');
+                setLoading(false);
+            }
+        } else {
+            toast.error('Por favor, selecciona un estado');
+        }
+        console.log(estadoPedido)
+    };
+
+    const handleCancelar = async () => {
+        setShowModal(false)
+        cargarPedidos();
+    }
 
     return (
         <div className='pedidos-emprendedor'>
@@ -92,12 +125,56 @@ const PedidosEmprendedor = () => {
                                 <td>Correo Electrónico</td>
                                 <td>{pedido.cliente.correo}</td>
                             </tr>
+                            <tr>
+                                <td></td>
+                                <td>
+                                <button
+                                    className='actualiza-estado'
+                                    onClick={() => handleModalOpen(pedido.id_pedido)}
+                                >
+                                    Actualizar Estado del Pedido
+                                </button>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>  
                 </div>
                 ))
             ) : (
                 <p>Na tienes pedidos registrados</p>
+            )}
+
+            {showModal && (
+                <div className="login-emprendedor-modal">
+                    <div className="login-emprendedor-modal-content">
+                        <h3>Actualizar estado del pedido</h3>
+                        <select 
+                            id="estado_pedido" 
+                            value={estadoPedido} 
+                            onChange={(e) => setEstadoPedido(e.target.value)} 
+                            required
+                        >
+                            <option value="">Seleccionar estado</option>
+                            <option value="Pendiente">Pendiente</option>
+                            <option value="En Proceso">En Proceso</option>
+                            <option value="Completado">Completado</option>
+                            <option value="Cancelado">Cancelado</option>
+                         </select>
+                        <button
+                            className="login-emprendedor-enviar-button"
+                            onClick={handleUpdateEstado}
+                            disabled={loading}
+                        >
+                            {loading ? 'Actualizando...' : 'Actualizar Estado'}
+                        </button>
+                        <button
+                            className="login-emprendedor-cancelar-button"
+                            onClick={handleCancelar}
+                        >
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
             )}
             
         </div>
