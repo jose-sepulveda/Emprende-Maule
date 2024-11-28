@@ -21,6 +21,7 @@ import { GestionClientes } from './pages/GestionClientes.js';
 import { GestionEmprendedores } from './pages/GestionEmprendedores.js';
 //cliente
 import LoginCliente from './components/LoginCliente.js';
+import {DetalleVentaCliente} from './pages/DetalleVentaCliente.js';
 
 
 //emprendedor
@@ -45,6 +46,8 @@ import ResetPasswordAdmin from './components/ResetPasswordAdmin.js';
 import ResetPasswordCliente from './components/ResetPasswordCliente.js';
 import ResetPasswordEmprendedor from './components/ResetPasswordEmprendedor.js';
 import { SolicitudesRegistro } from './pages/SolicitudesRegistro.js';
+
+import DetalleVentaC from './components/DetalleVentaC.js';
 
 function AuthProviderWithRouter({children}) {
   const { auth, logout } = useContext(AuthContext);
@@ -108,6 +111,8 @@ function App() {
 
             {/*Cliente*/}
             <Route path='/login-cliente' element={<LoginCliente/>}/>
+            <Route path="/detalle-venta/:id_cliente" element={<DetalleVentaC />} />
+            <Route path='/detalle-venta-cliente' element={<DetalleVentaCliente/>}/> 
 
 
             {/*Emprendedor*/}

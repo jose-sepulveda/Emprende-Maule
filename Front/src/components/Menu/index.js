@@ -40,6 +40,10 @@ function Menu(){
         //Cliente
         if (decodedToken.role === "cliente") {
             showCarrito = true;
+            routes.push(
+                { to: "/detalle-venta-cliente", text: "Ventas" }
+            );
+
         }
 
     } else {
@@ -123,6 +127,7 @@ routes.push({to:"/solicitudes-registro", text:"Solicitudes de Registro"})
 routes.push({to:"/adminPage", text:"Administrador"})
 routes.push({to:"/productoos", text:"Todos los productos"})
 routes.push({to:"/contacto", text: "Contactanos"})
+routes.push({to:"/detalle-venta-cliente", text: "Ventas"})
 
 export { Menu };
 
