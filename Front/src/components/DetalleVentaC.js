@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
-import { AuthContext } from '../Auth/AuthContext'; // Ajusta la ruta de importación según tu estructura
-import { getVentasCliente, deleteVenta } from '../services/ventas'; // Asegúrate de que la ruta de importación sea correcta
-import '../Styles/detalleVentaC.css'; // Importa el archivo CSS con las clases personalizadas
+import { AuthContext } from '../Auth/AuthContext';
+import { getVentasCliente, deleteVenta } from '../services/ventas'; 
+import '../Styles/detalleVentaC.css'; 
 
 const DetalleVentaC = () => {
-  const { auth } = useContext(AuthContext); // Obtienes el ID del cliente desde el contexto de autenticación
+  const { auth } = useContext(AuthContext); 
   const [ventas, setVentas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,25 +13,24 @@ const DetalleVentaC = () => {
     if (auth.id) {
       const fetchVentas = async () => {
         try {
-          const ventasData = await getVentasCliente(auth.id); // Llamamos a la API con el id del cliente
-          setVentas(ventasData); // Establecemos las ventas en el estado
+          const ventasData = await getVentasCliente(auth.id); 
+          setVentas(ventasData); 
         } catch (error) {
-          setError(error.message); // En caso de error, actualizamos el estado de error
+          setError(error.message); 
         } finally {
-          setLoading(false); // Terminamos el loading
+          setLoading(false); 
         }
       };
 
       fetchVentas();
     }
-  }, [auth.id]); // Solo se ejecuta cuando el id del cliente cambia
+  }, [auth.id]); 
 
   const handleDelete = async (id_venta) => {
     try {
-      // Llamamos a la función deleteVenta
       const response = await deleteVenta(id_venta);
-      alert(response.msg); // Mostrar un mensaje de éxito
-      setVentas(ventas.filter((venta) => venta.id_venta !== id_venta)); // Actualizamos la lista de ventas
+      alert(response.msg); 
+      setVentas(ventas.filter((venta) => venta.id_venta !== id_venta)); 
     } catch (error) {
       alert('Error al eliminar la venta: ' + error.message);
     }
@@ -59,7 +58,7 @@ const DetalleVentaC = () => {
                 <th>Total</th>
                 <th>Método de Pago</th>
                 <th>Estado</th>
-                <th>Acciones</th> {/* Nueva columna para las acciones */}
+                <th>Acciones</th> 
               </tr>
             </thead>
             <tbody>
@@ -76,11 +75,11 @@ const DetalleVentaC = () => {
                   <td>
                     <button
                       className="detalle-venta-delete-btn"
-                      onClick={() => handleDelete(venta.id_venta)} // Llamar a la función de eliminación
+                      onClick={() => handleDelete(venta.id_venta)} 
                     >
                       Eliminar
                     </button>
-                  </td> {/* Columna de acciones con el botón de eliminar */}
+                  </td> 
                 </tr>
               ))}
             </tbody>
