@@ -50,7 +50,19 @@ const getPedidoByCliente = (req, res) => __awaiter(void 0, void 0, void 0, funct
     const { id_cliente } = req.params;
     try {
         const pedidos = yield pedidos_1.Pedidos.findAll({
-            where: { id_cliente }, include: { model: ventas_1.Ventas, where: { id_cliente } }
+            where: { id_cliente },
+            include: [
+                {
+                    model: ventas_1.Ventas,
+                    where: { id_cliente },
+                    include: [
+                        {
+                            model: producto_1.Productos,
+                            attributes: ['nombre_producto', 'descripcion_producto', 'id_categoria']
+                        },
+                    ],
+                },
+            ],
         });
         res.json(pedidos);
     }

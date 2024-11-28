@@ -38,7 +38,20 @@ export const getPedidoByCliente = async(req: Request, res: Response) => {
     const { id_cliente } = req.params;
     try {
         const pedidos = await Pedidos.findAll({ 
-            where: { id_cliente }, include: { model: Ventas, where: { id_cliente } } });
+            where: { id_cliente },
+            include: [
+                { 
+                    model: Ventas,
+                    where: { id_cliente },
+                    include: [
+                        {
+                            model: Productos,
+                            attributes: ['nombre_producto', 'descripcion_producto', 'id_categoria']
+                        },
+                    ],
+                },
+            ],
+        });
         res.json(pedidos);
     } catch (error) {
         res.status(500).json({ msg: "Error al obtener los pedidos del cliente", error });
