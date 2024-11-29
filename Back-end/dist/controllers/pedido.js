@@ -55,12 +55,11 @@ const getPedidoByCliente = (req, res) => __awaiter(void 0, void 0, void 0, funct
                 {
                     model: ventas_1.Ventas,
                     where: { id_cliente },
-                    include: [
-                        {
-                            model: producto_1.Productos,
-                            attributes: ['nombre_producto', 'descripcion_producto', 'id_categoria']
-                        },
-                    ],
+                    attributes: ["id_venta", "fecha_venta", "total"],
+                },
+                {
+                    model: producto_1.Productos,
+                    attributes: ["cod_producto", "nombre_producto", "precio_producto", "imagen", "descripcion_producto"],
                 },
             ],
         });
