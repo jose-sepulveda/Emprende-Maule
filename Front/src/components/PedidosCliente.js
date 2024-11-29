@@ -17,6 +17,7 @@ const PedidosCliente = () => {
                 const response = await getPedidoByCliente(auth.id);
                 const listPedidos = response.data.sort ((a,b) => a.id_pedido - b.id_pedido)
                 setPedidos(listPedidos);   
+                toast.success("Pedidos cargados correctamente")
             } catch (error) {
                 console.error('Error al cargar los pedidos', error);
                 toast.error('Error al cargar los pedidos')
@@ -65,7 +66,7 @@ const PedidosCliente = () => {
                                 <td>{pedido.venta.metodo_de_pago}</td>
                             </tr>
                             <tr className='subtitulo'>
-                                <td>Productos</td>
+                                <td>Producto</td>
                                 <td></td>
                             </tr>
                             <tr>

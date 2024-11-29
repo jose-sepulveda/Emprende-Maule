@@ -19,6 +19,7 @@ const PedidosEmprendedor = () => {
         try {
             const response = await getPedidoByEmprendedor(auth.id);
             setPedidos(response.data);
+            toast.success("Pedidos cargados correctamente")
         } catch (error) {
             console.error('Error al cargar los pedidos', error);
             toast.error('Error al cargar los pedidos');
@@ -82,7 +83,7 @@ const PedidosEmprendedor = () => {
                                 <td>{pedido.estado_pedido}</td>
                             </tr>
                             <tr className='subtitulo'>
-                                <td>Productos</td>
+                                <td>Producto</td>
                                 <td></td>
                             </tr>
                             <tr>
