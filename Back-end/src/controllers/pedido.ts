@@ -34,21 +34,20 @@ export const getPedido = async(req: Request, res: Response) => {
     }
 };
 
-export const getPedidoByCliente = async(req: Request, res: Response) => {
+export const getPedidoByCliente = async (req: Request, res: Response) => {
     const { id_cliente } = req.params;
     try {
-        const pedidos = await Pedidos.findAll({ 
+        const pedidos = await Pedidos.findAll({
             where: { id_cliente },
             include: [
-                { 
+                {
                     model: Ventas,
                     where: { id_cliente },
-                    include: [
-                        {
-                            model: Productos,
-                            attributes: ['nombre_producto', 'descripcion_producto', 'id_categoria']
-                        },
-                    ],
+                    attributes: ["id_venta", "fecha_venta", "total"], 
+                },
+                {
+                    model: Productos, 
+                    attributes: ["cod_producto", "nombre_producto", "precio_producto", "imagen", "descripcion_producto"], 
                 },
             ],
         });
@@ -70,6 +69,8 @@ export const getPedidoByEmprendedor = async(req: Request, res: Response) => {
         res.status(500).json({ msg: "Error al obtener los pedidos del emprendedor", error });
     }
 };
+
+
 
 export const updateEstadoPedido = async(req: Request, res: Response) => {
     const {id_pedido} = req.params;
