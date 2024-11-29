@@ -10,12 +10,14 @@ const producto_1 = require("./producto");
 const ventas_1 = require("./ventas");
 const cliente_1 = require("./cliente");
 const emprendedor_1 = require("./emprendedor");
+const venta_productos_1 = require("./venta_productos");
 exports.Pedidos = connection_1.default.define('pedidos', {
     'id_pedido': { type: sequelize_1.DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     'cod_producto': { type: sequelize_1.DataTypes.INTEGER },
     'id_venta': { type: sequelize_1.DataTypes.INTEGER },
     'id_cliente': { type: sequelize_1.DataTypes.INTEGER },
     'id_emprendedor': { type: sequelize_1.DataTypes.INTEGER },
+    'id_venta_productos': { type: sequelize_1.DataTypes.INTEGER },
     'estado_pedido': { type: sequelize_1.DataTypes.STRING }
 }, {
     freezeTableName: true,
@@ -25,3 +27,4 @@ exports.Pedidos.belongsTo(producto_1.Productos, { foreignKey: 'cod_producto', on
 exports.Pedidos.belongsTo(ventas_1.Ventas, { foreignKey: 'id_venta', onDelete: 'SET NULL' });
 exports.Pedidos.belongsTo(cliente_1.Cliente, { foreignKey: 'id_cliente', onDelete: 'SET NULL' });
 exports.Pedidos.belongsTo(emprendedor_1.Emprendedor, { foreignKey: 'id_emprendedor', onDelete: 'SET NULL' });
+exports.Pedidos.belongsTo(venta_productos_1.Venta_productos, { foreignKey: 'id_venta_productos', onDelete: 'SET NULL' });

@@ -55,8 +55,14 @@ export const getVentaCliente = async(req: Request, res: Response) => {
 
 export const createVenta = async (req: Request, res: Response) => {
     const { id_cliente } = req.params;
+    const { metodo_de_pago } = req.body;
 
     try{
+        if (!metodo_de_pago || typeof metodo_de_pago !== "string" || metodo_de_pago.trim () === "") {
+            return res.status(400).json({ msg: "El método de pago es obligatorio" });
+            
+        }
+
         const idCliente = await Cliente.findOne({ where: { id_cliente }});
         if (!idCliente) {
             return res.status(400).json({ msg: `El cliente ${id_cliente} no existe`});
@@ -80,7 +86,7 @@ export const createVenta = async (req: Request, res: Response) => {
             iva: 0,
             descuentos: 0,
             total: 0,
-            metodo_de_pago: " "
+            metodo_de_pago: metodo_de_pago.trim()
         });
 
         const carroCliente = await Carro.findOne({where: { id_cliente }});
@@ -104,19 +110,25 @@ export const createVenta = async (req: Request, res: Response) => {
 
             const idEmprendendor = producto.dataValues.id_emprendedor;
 
-            await Pedidos.create({
+            const pedido =await Pedidos.create({
                 cod_producto,
                 id_venta: idVenta,
                 id_cliente: id_cliente,
                 id_emprendedor: idEmprendendor,
-                estado_pedido: "Pendiente"
+                estado_pedido: "Pendiente",
+                id_venta_productos: null
             });
 
-            await Venta_productos.create({
+            const ventaProducto = await Venta_productos.create({
                 id_venta: idVenta,
                 cod_producto,
                 cantidad,
                 subtotal
+            });
+
+            await pedido.update({
+                id_venta_productos: ventaProducto.dataValues.id_venta_productos
+
             });
 
             subtotalVenta += subtotal;
@@ -155,6 +167,7 @@ export const createVenta = async (req: Request, res: Response) => {
                 total: total,
                 subtotal: subtotalVenta,
                 iva: iva,
+                metodo_de_pago: metodo_de_pago.trim(),
                 fecha_venta: venta.dataValues.fecha_venta.toISOString().split('T')[0],
             }
         });

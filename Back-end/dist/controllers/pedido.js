@@ -15,6 +15,7 @@ const ventas_1 = require("../models/ventas");
 const producto_1 = require("../models/producto");
 const emprendedor_1 = require("../models/emprendedor");
 const cliente_1 = require("../models/cliente");
+const venta_productos_1 = require("../models/venta_productos");
 const getPedidos = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const pedidos = yield pedidos_1.Pedidos.findAll();
@@ -75,7 +76,24 @@ const getPedidoByEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, f
     try {
         const pedidos = yield pedidos_1.Pedidos.findAll({
             where: { id_emprendedor },
-            include: [{ model: producto_1.Productos }, { model: cliente_1.Cliente }]
+            include: [
+                {
+                    model: ventas_1.Ventas,
+                    attributes: ["id_venta", "fecha_venta", "total"],
+                },
+                {
+                    model: venta_productos_1.Venta_productos,
+                    attributes: ["id_venta_productos", "cantidad"],
+                },
+                {
+                    model: producto_1.Productos,
+                    attributes: ["cod_producto", "nombre_producto", "precio_producto", "imagen", "descripcion_producto"],
+                },
+                {
+                    model: cliente_1.Cliente,
+                    attributes: ["id_cliente", "nombre_cliente", "apellido1_cliente", "apellido2_cliente", "direccion", "telefono"],
+                },
+            ]
         });
         res.json(pedidos);
     }

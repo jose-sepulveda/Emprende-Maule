@@ -4,6 +4,7 @@ import { Ventas } from "../models/ventas";
 import { Productos } from "../models/producto";
 import { Emprendedor } from "../models/emprendedor";
 import { Cliente } from "../models/cliente";
+import { Venta_productos } from "../models/venta_productos";
 
 export const getPedidos = async(req: Request, res: Response) => {
     try {
@@ -62,7 +63,25 @@ export const getPedidoByEmprendedor = async(req: Request, res: Response) => {
     try {
         const pedidos = await Pedidos.findAll({
             where: { id_emprendedor },
-            include: [{ model: Productos }, { model: Cliente }]
+            include: [
+                { 
+                    model: Ventas,
+                    attributes: ["id_venta", "fecha_venta", "total"], 
+                },
+                { 
+                    model: Venta_productos,
+                    attributes: ["id_venta_productos", "cantidad"],
+                },
+                { 
+                    model: Productos, 
+                    attributes: ["cod_producto", "nombre_producto", "precio_producto", "imagen", "descripcion_producto"], 
+                },
+                { 
+                    model: Cliente, 
+                    attributes: ["id_cliente", "nombre_cliente", "apellido1_cliente", "apellido2_cliente", "direccion", "telefono"], 
+                },
+            ]
+                    
         });
         res.json(pedidos);
     } catch (error) {
