@@ -66,11 +66,11 @@ const getVentaCliente = (req, res) => __awaiter(void 0, void 0, void 0, function
 exports.getVentaCliente = getVentaCliente;
 const createVenta = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id_cliente } = req.params;
-    const { metodo_de_pago } = req.body;
+    //const { metodo_de_pago } = req.body;
     try {
-        if (!metodo_de_pago || typeof metodo_de_pago !== "string" || metodo_de_pago.trim() === "") {
-            return res.status(400).json({ msg: "El método de pago es obligatorio" });
-        }
+        //if (!metodo_de_pago || typeof metodo_de_pago !== "string" || metodo_de_pago.trim () === "") {
+        //return res.status(400).json({ msg: "El método de pago es obligatorio" });
+        //}
         const idCliente = yield cliente_1.Cliente.findOne({ where: { id_cliente } });
         if (!idCliente) {
             return res.status(400).json({ msg: `El cliente ${id_cliente} no existe` });
@@ -91,7 +91,7 @@ const createVenta = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             iva: 0,
             descuentos: 0,
             total: 0,
-            metodo_de_pago: metodo_de_pago.trim()
+            metodo_de_pago: " " //metodo_de_pago.trim()
         });
         const carroCliente = yield carro_1.Carro.findOne({ where: { id_cliente } });
         const idCarroCliente = carroCliente === null || carroCliente === void 0 ? void 0 : carroCliente.dataValues.id_carro;
@@ -152,7 +152,7 @@ const createVenta = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 total: total,
                 subtotal: subtotalVenta,
                 iva: iva,
-                metodo_de_pago: metodo_de_pago.trim(),
+                metodo_de_pago: " ", //metodo_de_pago.trim(),
                 fecha_venta: venta.dataValues.fecha_venta.toISOString().split('T')[0],
             }
         });
