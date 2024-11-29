@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { WebpayPlus, Options, Environment, IntegrationCommerceCodes, IntegrationApiKeys } from 'transbank-sdk';
+import { Environment, IntegrationApiKeys, IntegrationCommerceCodes, Options, WebpayPlus } from 'transbank-sdk';
 
 const options = new Options(IntegrationCommerceCodes.WEBPAY_PLUS, IntegrationApiKeys.WEBPAY, Environment.Integration);
 
@@ -38,9 +38,9 @@ export const commitTransaction = async (req: Request, res: Response) => {
 
         if (commitResponse.vci === 'TSY' && commitResponse.status === 'AUTHORIZED') {
 
-                res.redirect(`http://localhost:3001/#/exito`);
+                res.redirect(`http://localhost:3001/exito`);
         } else {
-                res.redirect(`http://localhost:3001/#/error`);
+                res.redirect(`http://localhost:3001/error`);
         }
 
     } catch (error) {

@@ -45,10 +45,10 @@ const commitTransaction = (req, res) => __awaiter(void 0, void 0, void 0, functi
         const transaction = new transbank_sdk_1.WebpayPlus.Transaction(options);
         const commitResponse = yield transaction.commit(token_ws.toString());
         if (commitResponse.vci === 'TSY' && commitResponse.status === 'AUTHORIZED') {
-            res.redirect(`http://localhost:3001/#/exito`);
+            res.redirect(`http://localhost:3001/exito`);
         }
         else {
-            res.redirect(`http://localhost:3001/#/error`);
+            res.redirect(`http://localhost:3001/error`);
         }
     }
     catch (error) {

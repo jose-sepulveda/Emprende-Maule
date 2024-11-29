@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { confirmWebpayTransaction } from '../services/ventas';  
 import { toast } from 'react-toastify';
+import { updateCliente } from '../services/crearCliente';
+import { confirmWebpayTransaction } from '../services/ventas';
 
 const ReturnUrlHandler = () => {
   const location = useLocation();
@@ -27,7 +28,7 @@ const ReturnUrlHandler = () => {
             await updateCliente(idCliente, { estado_pago: true });  
           }
 
-          navigate('/exito');
+          navigate("/exito");
         } else {
           const idCliente = localStorage.getItem('id'); 
           if (idCliente) {

@@ -53,8 +53,8 @@ import PedidosEmprendedor from './components/PedidosEmprendedor.js';
 import GestionPedidos from './pages/GestionPedidos.js';
 
 
-import Exito from './pages/exito.js';
 import Error from './pages/error.js';
+import Exito from './pages/exito.js';
 
 function AuthProviderWithRouter({children}) {
   const { auth, logout } = useContext(AuthContext);
@@ -122,9 +122,7 @@ function App() {
             <Route path="/detalle-venta/:id_cliente" element={<DetalleVentaC />} />
             <Route path='/detalle-venta-cliente' element={<DetalleVentaCliente/>}/> 
             <Route path='/pedidos-cliente' element= {<PedidosCliente/>}/>
-
-            
-            <Route path="/exito" element={<Exito />} />
+            <Route path="/exito" element={<Exito/>} />
             <Route path="/error" element={<Error/>} />
             
             {/*Emprendedor*/}
