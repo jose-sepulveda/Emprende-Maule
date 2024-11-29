@@ -76,7 +76,7 @@ const LoginEmprendedor = () => {
                 <h2>Iniciar Sesión Emprendedor</h2>
                 <input
                     className='login-emprendedor-input'
-                    type='text'
+                    type='email'
                     name='correo'
                     placeholder='Correo'
                     value={correo_electronico}

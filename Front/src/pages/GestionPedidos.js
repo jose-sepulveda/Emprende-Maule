@@ -17,12 +17,13 @@ const GestionPedidos = () => {
             
             const detallePedido = await Promise.all(
                 sortedPedidos.map(async (pedido) => {
-                    const detalleResponse = await getPedido(pedido.id_cliente);
+                    const detalleResponse = await getPedido(pedido.id_pedido);
                     const { id_pedido, ...detalle} = detalleResponse.data
                     return { ...pedido, ...detalle }
                 })
             )
             setPedidos(detallePedido);
+            toast.success("Pedidos cargados correctamente")
         } catch (error) {
             console.error('Error al cargar los pedidos', error);
             toast.error('Error al cargar los pedidos')
