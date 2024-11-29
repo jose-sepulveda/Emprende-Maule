@@ -9,7 +9,7 @@ const api = axios.create({
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`;  // Corregir la interpolación de la cadena
+    config.headers.Authorization = `Bearer ${token}`; 
   }
   return config;
 }, (error) => {
@@ -19,7 +19,7 @@ api.interceptors.request.use((config) => {
 // Función para crear una venta
 export const createVenta = async (id_cliente, productos) => {
   try {
-    const response = await axios.post(`${API_URL}/${id_cliente}`, { productos });  // Usar backticks
+    const response = await axios.post(`${API_URL}/${id_cliente}`, { productos }); 
     return response.data;
   } catch (error) {
     throw new Error('Error al crear la venta: ' + error.message);
@@ -29,7 +29,7 @@ export const createVenta = async (id_cliente, productos) => {
 // Función para obtener las ventas de un cliente
 export const getVentasCliente = async (id_cliente) => {
   try {
-    const response = await axios.get(`${API_URL}/cliente/${id_cliente}`);  // Usar backticks
+    const response = await axios.get(`${API_URL}/cliente/${id_cliente}`);  
     return response.data;
   } catch (error) {
     throw new Error('Error al obtener las ventas del cliente: ' + error.message);
@@ -39,7 +39,7 @@ export const getVentasCliente = async (id_cliente) => {
 // Función para eliminar una venta
 export const deleteVenta = async (id_venta) => {
   try {
-    const response = await api.delete(`${API_URL}/${id_venta}`);  // Usar backticks
+    const response = await api.delete(`${API_URL}/${id_venta}`);  
     return response.data;
   } catch (error) {
     throw new Error('Error al eliminar la venta: ' + error.message);
@@ -64,7 +64,7 @@ export const createWebpayTransaction = async (amount, sessionId, buyOrder, retur
 // Confirmar la transacción Webpay
 export const confirmWebpayTransaction = async (token_ws) => {
   try {
-    const response = await axios.get(`http://localhost:3000/api/webpay/commit?token_ws=${token_ws}`);  // Usar backticks
+    const response = await axios.get(`http://localhost:3000/api/webpay/commit?token_ws=${token_ws}`);  
     return response.data;
   } catch (error) {
     throw new Error('Error al confirmar la transacción con Webpay: ' + error.message);
@@ -74,7 +74,7 @@ export const confirmWebpayTransaction = async (token_ws) => {
 // Función para obtener una venta por id_venta
 export const getVenta = async (id_venta) => {
   try {
-    const response = await axios.get(`${API_URL}/${id_venta}`);  // Usar backticks
+    const response = await axios.get(`${API_URL}/${id_venta}`);  
     return response.data;
   } catch (error) {
     throw new Error('Error al obtener la venta: ' + error.message);

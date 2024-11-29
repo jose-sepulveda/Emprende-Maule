@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { deleteCarroProductos, getCarrosProductos, updateCarroProductos } from '../services/carrito_producto';
-import { createWebpayTransaction } from '../services/ventas';  // Importar la función de Webpay
+import { createWebpayTransaction } from '../services/ventas';  
 import "../Styles/carrito.css";
+import { updateCliente } from '../services/crearCliente';
 
 const Carrito = () => {
     const [carrosProductos, setCarrosProductos] = useState([]);
@@ -130,25 +131,18 @@ const Carrito = () => {
         }
     };
 
-    // Función para manejar la solicitud del pedido y realizar la transacción
     const handlePlaceOrder = async () => {
         try {
             const idCliente = localStorage.getItem('id');
-            if (!idCliente) {
-                toast.error('Debe estar logueado para realizar un pedido');
-                return;
-            }
-
-            // Calculamos el monto total a pagar
+            await updateCliente(idCliente, {estado_De_venta: true})
             const amount = setTotal();
             const sessionId = idCliente;
             const buyOrder = 'orden' + new Date().getTime();
-            const returnUrl = 'http://localhost:3000/api/webpay/commit'; // URL de retorno después del pago
+            const returnUrl = 'http://localhost:3000/api/webpay/commit'; 
 
-            // Creamos la transacción con Webpay
+ 
             const { url, token_ws } = await createWebpayTransaction(amount, sessionId, buyOrder, returnUrl);
 
-            // Redirigimos al usuario a Webpay para completar el pago
             window.location.href = `${url}?token_ws=${token_ws}`;
         } catch (error) {
             console.error('Error al crear la transacción', error);

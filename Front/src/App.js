@@ -52,6 +52,10 @@ import PedidosCliente from './components/PedidosCliente.js';
 import PedidosEmprendedor from './components/PedidosEmprendedor.js';
 import GestionPedidos from './pages/GestionPedidos.js';
 
+
+import Exito from './pages/exito.js';
+import Error from './pages/error.js';
+
 function AuthProviderWithRouter({children}) {
   const { auth, logout } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -119,6 +123,10 @@ function App() {
             <Route path='/detalle-venta-cliente' element={<DetalleVentaCliente/>}/> 
             <Route path='/pedidos-cliente' element= {<PedidosCliente/>}/>
 
+            
+            <Route path="/exito" element={<Exito />} />
+            <Route path="/error" element={<Error/>} />
+            
             {/*Emprendedor*/}
             <Route path='/login-emprendedor' element={<LoginEmprendedor/>}/>
             <Route path="/gestionProducto" element={<GestionProducto/>}/> {/*este era privado pero solo quiero probar cositas */}
