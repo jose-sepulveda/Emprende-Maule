@@ -1,20 +1,21 @@
 .detalle-emprendedor {
     background-color: white;
-    border: 2px solid black;
+    border: 2px solid rgb(255, 255, 255);
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 30px;
-    max-width: 900px;
+    max-width: 700px;
     margin: 10px auto;
     font-family: Arial, sans-serif;
+    margin-bottom: 30px;
 }
 
 /* Título principal */
 .detalle-emprendedor h2 {
     font-size: 2rem;
     color: #333;
-    margin-bottom: 20px;
     text-align: center;
+    margin-top: 1px;
 }
 
 /* Estilos para las secciones de información */

@@ -126,6 +126,7 @@
 
 .tabla-productos button.guardar-p {
   background-color: #4caf50; 
+  width: 150px;
 }
 
 .tabla-productos button.guardar-p:hover {
@@ -134,6 +135,7 @@
 
 .tabla-productos button.cancelar-p {
   background-color: #f44336; 
+  width: 100px;
 }
 
 .tabla-productos button.cancelar-p:hover {
