@@ -55,13 +55,13 @@ export const getVentaCliente = async(req: Request, res: Response) => {
 
 export const createVenta = async (req: Request, res: Response) => {
     const { id_cliente } = req.params;
-    const { metodo_de_pago } = req.body;
+    //const { metodo_de_pago } = req.body;
 
     try{
-        if (!metodo_de_pago || typeof metodo_de_pago !== "string" || metodo_de_pago.trim () === "") {
-            return res.status(400).json({ msg: "El método de pago es obligatorio" });
+        //if (!metodo_de_pago || typeof metodo_de_pago !== "string" || metodo_de_pago.trim () === "") {
+            //return res.status(400).json({ msg: "El método de pago es obligatorio" });
             
-        }
+        //}
 
         const idCliente = await Cliente.findOne({ where: { id_cliente }});
         if (!idCliente) {
@@ -86,7 +86,7 @@ export const createVenta = async (req: Request, res: Response) => {
             iva: 0,
             descuentos: 0,
             total: 0,
-            metodo_de_pago: metodo_de_pago.trim()
+            metodo_de_pago: " " //metodo_de_pago.trim()
         });
 
         const carroCliente = await Carro.findOne({where: { id_cliente }});
@@ -167,7 +167,7 @@ export const createVenta = async (req: Request, res: Response) => {
                 total: total,
                 subtotal: subtotalVenta,
                 iva: iva,
-                metodo_de_pago: metodo_de_pago.trim(),
+                metodo_de_pago: " ", //metodo_de_pago.trim(),
                 fecha_venta: venta.dataValues.fecha_venta.toISOString().split('T')[0],
             }
         });
