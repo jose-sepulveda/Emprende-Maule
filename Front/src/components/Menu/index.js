@@ -42,7 +42,7 @@ function Menu(){
         if (decodedToken.role === "cliente") {
             showCarrito = true;
             routes.push(
-                { to: "/detalle-venta-cliente", text: "Ventas" },
+                { to: "/detalle-venta-cliente", text: "Mis compras" },
                 { to: "/pedidos-cliente", text: "Pedidos" }
             );
 
@@ -129,7 +129,7 @@ routes.push({to:"/solicitudes-registro", text:"Solicitudes de Registro"})
 routes.push({to:"/adminPage", text:"Administrador"})
 routes.push({to:"/productoos", text:"Todos los productos"})
 routes.push({to:"/contacto", text: "Contactanos"})
-routes.push({to:"/detalle-venta-cliente", text: "Ventas"})
+routes.push({to:"/detalle-venta-cliente", text: "Mis compras"})
 routes.push({to:"/pedidos-cliente", text: "Pedidos"})
 routes.push({to:"/pedidos-emprendedor", text: "Pedidos"})
 

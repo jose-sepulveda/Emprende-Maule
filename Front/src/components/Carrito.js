@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { deleteCarroProductos, getCarrosProductos, updateCarroProductos } from '../services/carrito_producto';
-import { createWebpayTransaction } from '../services/ventas';  
+import { createWebpayTransaction } from '../services/ventas';
 import "../Styles/carrito.css";
 import { updateCliente } from '../services/crearCliente';
 
@@ -65,6 +65,20 @@ const Carrito = () => {
         );
         const totalConDescuento = setTotal();
         return subtotalSinDescuento - totalConDescuento;
+    };
+
+    const setDescuentoPorcentaje = () => {
+        const totalSinDescuento = setSubtotal();
+        const totalConDescuento = setTotal();
+        const descuentoTotal = totalSinDescuento - totalConDescuento;
+        const porcentajeDescuento = (descuentoTotal / totalSinDescuento) * 100;
+        return porcentajeDescuento.toFixed(2); 
+    };
+
+    const setIva = () => {
+        const totalConDescuento = setTotal();
+        const iva = totalConDescuento * 0.19; 
+        return iva;
     };
 
     const handleContinueShoping = () => {
@@ -135,12 +149,11 @@ const Carrito = () => {
         try {
             const idCliente = localStorage.getItem('id');
             await updateCliente(idCliente, {estado_De_venta: true})
-            const amount = setTotal();
+            const amount = setTotal() + setIva(); 
             const sessionId = idCliente;
             const buyOrder = 'orden' + new Date().getTime();
-            const returnUrl = 'http://localhost:3000/api/webpay/commit'; 
+            const returnUrl = 'http://localhost:3000/api/webpay/commit';
 
- 
             const { url, token_ws } = await createWebpayTransaction(amount, sessionId, buyOrder, returnUrl);
 
             window.location.href = `${url}?token_ws=${token_ws}`;
@@ -159,43 +172,58 @@ const Carrito = () => {
                         <th>Producto</th>
                         <th>Cantidad</th>
                         <th>Precio</th>
+                        <th>Descuento</th>
+                        <th>Precio con Descuento</th>
                         <th>Acción</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {carrosProductos.map((carroProductos, index) => (
-                        <tr key={carroProductos.id_carro_productos}>
-                            <td>{carroProductos.producto.nombre_producto}</td>
-                            <td>
-                                {editIndex === index ? (
-                                    <input
-                                        type="number"
-                                        value={editCantidad}
-                                        onChange={(e) => setEditCantidad(Number(e.target.value))}
-                                        min="1"
-                                    />
-                                ) : (
-                                    carroProductos.cantidad
-                                )}
-                            </td>
-                            <td>${carroProductos.producto.precio_producto.toFixed(2)}</td>
-                            <td>
-                                {editIndex === index ? (
-                                    <button onClick={() => handleUpdateProducto(carroProductos)}>Guardar</button>
-                                ) : (
-                                    <button className="save-button" onClick={() => handleEditProducto(index, carroProductos.cantidad)}>Editar</button>
-                                )}
-                                <button className="delete-button" onClick={() => handleDeleteProducto(carroProductos.id_carro_productos)}>Eliminar</button>
-                            </td>
-                        </tr>
-                    ))}
+                    {carrosProductos.map((carroProductos, index) => {
+                        const precio = carroProductos.producto.precio_producto;
+                        const descuento = carroProductos.producto.descuento || 0;
+                        const precioConDescuento = calcularPrecioConDescuento(precio, descuento);
+                        const descuentoAplicado = precio - precioConDescuento;
+                        const descuentoPorcentaje = descuentoAplicado / precio * 100;
+                        return (
+                            <tr key={carroProductos.id_carro_productos}>
+                                <td>{carroProductos.producto.nombre_producto}</td>
+                                <td>
+                                    {editIndex === index ? (
+                                        <input
+                                            type="number"
+                                            value={editCantidad}
+                                            onChange={(e) => setEditCantidad(Number(e.target.value))}
+                                            min="1"
+                                        />
+                                    ) : (
+                                        carroProductos.cantidad
+                                    )}
+                                </td>
+                                <td>${precio}</td>
+                                <td>{descuentoPorcentaje}%</td> 
+                                <td>${precioConDescuento}</td> 
+                                <td>
+                                    {editIndex === index ? (
+                                        <button onClick={() => handleUpdateProducto(carroProductos)}>Guardar</button>
+                                    ) : (
+                                        <button className="save-button" onClick={() => handleEditProducto(index, carroProductos.cantidad)}>Editar</button>
+                                    )}
+                                    <button className="delete-button" onClick={() => handleDeleteProducto(carroProductos.id_carro_productos)}>Eliminar</button>
+                                </td>
+                            </tr>
+                        );
+                    })}
                 </tbody>
             </table>
 
             <div className="total">
-                <p>Subtotal: ${setSubtotal().toFixed(2)}</p>
-                <p>Descuento: ${setDescuento().toFixed(2)}</p>
-                <p><strong>Total a Pagar: ${setTotal().toFixed(2)}</strong></p>
+                <p>Subtotal: ${setSubtotal()}</p>
+                <p>-</p>
+                <p>Descuento: ${setDescuento()}</p>
+                <p>+</p>
+                <p>IVA (19%): ${setIva()}</p>
+                <p>=</p>
+                <p><strong>Total a Pagar: ${setTotal() + setIva()}</strong></p> 
             </div>
             <div className="buttons">
                 <button className="continue-shopping" onClick={handleContinueShoping}>Continuar Comprando</button>

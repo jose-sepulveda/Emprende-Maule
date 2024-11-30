@@ -1,0 +1,45 @@
+.Error-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 50vh;
+    background-color: #ffffff;
+    color: #000000;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .Error-container h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  .Error-container p {
+    font-size: 1.2rem;
+    margin-top: 0;
+    color: #000000;
+  }
+  
+  .Error-container .message {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 20px;
+    color: #ff6600;
+    animation: fadeOut 6s ease-out forwards;
+  }
+  
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  

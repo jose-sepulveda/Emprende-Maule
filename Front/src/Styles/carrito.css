@@ -1,85 +1,92 @@
 .carrito-container {
-    padding: 20px;
-  }
-  
-  h2 {
-    text-align: center;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-  
-  th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
-  }
-  
-  th {
-    background-color: #f2f2f2;
-  }
-  
-  button {
-    margin: 0 5px;
-    padding: 5px 10px;
-  }
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
-  .save-button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
+h2 {
+  text-align: center;
+}
 
-  .save-button:hover{
-    background-color: #d3d3d3;
-  }
-  
-  .delete-button {
-    background-color:#f44336;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
+table {
+  width: 800px;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
 
-  .delete-button:hover {
-    background-color: #d3d3d3;
-  }
-  
-  .total {
-    text-align: right;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-  
-  .buttons {
-    text-align: center;
-  }
-  
-  .continue-shopping, .place-order {
-    padding: 10px 20px;
-    margin: 5px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .continue-shopping {
-    background-color:#f98511;
-    color: white;
-  }
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
 
-  .continue-shopping:hover {
-    background-color: #d3d3d3; 
-  }
-  
-  .place-order {
-    background-color: #f98511;
-    color: white;
-  }
+th {
+  background-color: #f2f2f2;
+}
 
-  .place-order:hover {
-    background-color: #d3d3d3; 
-  }
+button {
+  margin: 0 5px;
+  padding: 5px 10px;
+}
+
+.save-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.save-button:hover{
+  background-color: #d3d3d3;
+}
+
+.delete-button {
+  background-color:#f44336;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: #d3d3d3;
+}
+
+.total {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 20px;
+  gap:15px;
+}
+
+.buttons {
+  text-align: center;
+}
+
+.continue-shopping, .place-order {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.continue-shopping {
+  background-color:#f98511;
+  color: white;
+}
+
+.continue-shopping:hover {
+  background-color: #d3d3d3; 
+}
+
+.place-order {
+  background-color: #f98511;
+  color: white;
+}
+
+.place-order:hover {
+  background-color: #d3d3d3; 
+}

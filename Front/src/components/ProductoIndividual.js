@@ -250,9 +250,10 @@ const ProductoIndividual = () => {
                             />
                             <p>Stock disponible: {producto.cantidad_disponible}</p>
                         </div>
-                        <button className="btn-agregar-carrito" onClick={addToCart}>
-                            Añadir al carrito
-                        </button>
+                        {auth?.role !== 'admin' && auth?.role !== 'emprendedor' && (
+                            <button className="btn-agregar-carrito" onClick={addToCart}>
+                                Añadir al carrito
+                            </button>)}
 
                         <div className="linea-separadora"></div>
 

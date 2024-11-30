@@ -50,28 +50,22 @@ const DetalleVentaC = () => {
           <table className="detalle-venta-table">
             <thead>
               <tr>
-                <th>ID Venta</th>
                 <th>Fecha</th>
                 <th>Subtotal</th>
                 <th>IVA</th>
-                <th>Descuentos</th>
                 <th>Total</th>
                 <th>Método de Pago</th>
-                <th>Estado</th>
                 <th>Acciones</th> 
               </tr>
             </thead>
             <tbody>
               {ventas.map((venta) => (
                 <tr key={venta.id_venta}>
-                  <td>{venta.id_venta}</td>
                   <td>{new Date(venta.fecha_venta).toLocaleDateString()}</td>
                   <td>${venta.subtotal}</td>
                   <td>${venta.iva}</td>
-                  <td>${venta.descuentos}</td>
                   <td>${venta.total}</td>
                   <td>{venta.metodo_de_pago}</td>
-                  <td>{venta.estado_de_venta}</td>
                   <td>
                     <button
                       className="detalle-venta-delete-btn"

@@ -1,54 +1,73 @@
 /* DetalleVentaC.css */
 .detalle-venta-container {
-    display: flex;
-    justify-content: center; 
-    align-items: center; 
-    height: 35vh; 
-    padding: 20px; 
-  }
-  
-  .detalle-venta-table {
-    width: 100%; 
-    max-width: 1200px; 
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  
-  .detalle-venta-table th,
-  .detalle-venta-table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-  }
-  
-  .detalle-venta-table th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-  }
-  
-  .detalle-venta-table tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  
-  .detalle-venta-table tr:hover {
-    background-color: #f1f1f1;
-  }
-  
-  .detalle-venta-heading {
-    font-size: 1.8em;
-    margin-bottom: 20px;
-    text-align: center; /* Centra el encabezado */
-  }
-  
-  .detalle-venta-message {
-    font-size: 1.2em;
-    color: #666;
-    text-align: center; /* Centra el mensaje */
-  }
-  
-  .detalle-venta-error {
-    font-size: 1.2em;
-    color: red;
-    text-align: center; /* Centra el mensaje de error */
-  }
-  
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  height: 35vh; 
+  padding: 20px; 
+}
+
+.detalle-venta-table {
+  width: 100%; 
+  max-width: 1200px; 
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.detalle-venta-table th,
+.detalle-venta-table td {
+  border: 1px solid #dddddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.detalle-venta-table th {
+  background-color: #fc843a;
+  color:white;
+  font-weight: bold;
+}
+
+.detalle-venta-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.detalle-venta-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.detalle-venta-heading {
+  font-size: 1.8em;
+  margin-bottom: 20px;
+  text-align: center; 
+}
+
+.detalle-venta-message {
+  font-size: 1.2em;
+  color: #666;
+  text-align: center; 
+}
+
+.detalle-venta-error {
+  font-size: 1.2em;
+  color: red;
+  text-align: center; 
+}
+
+
+.detalle-venta-delete-btn {
+  background-color: #e63946; 
+  color: white; 
+  border: none; 
+  padding: 4px 15px; 
+  cursor: pointer; 
+  border-radius: 5px; 
+  transition: background-color 0.3s ease; 
+}
+
+.detalle-venta-delete-btn:hover {
+  background-color: #d62828; 
+}
+
+.detalle-venta-delete-btn:active {
+  background-color: #ba181b; 
+}

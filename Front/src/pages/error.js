@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../Styles/error.css'; 
 
 const Error = () => {
-    const navigate = useNavigate()
-    const handleContinuar = async () => {
-      navigate('/')
-    }
-    
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setTimeout(() => {
+      navigate('/carrito');
+    }, 8000); 
+  }, [navigate]);
+
   return (
     <div className="Error-container">
       <h2>Pago Fallido</h2>
-      <p>Lo sentimos, no hemos podido procesar su pago en este momento.</p>
-      <button onClick={handleContinuar}>Volver a Intentar</button>
+      <p>Serás redirigido al carrito en breve.</p>
+      <div className="message">Redirigiendo...</div>
     </div>
   );
 };
