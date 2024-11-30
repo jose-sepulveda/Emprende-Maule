@@ -78,7 +78,7 @@ export const getPedidoByEmprendedor = async(req: Request, res: Response) => {
                 },
                 { 
                     model: Cliente, 
-                    attributes: ["id_cliente", "nombre_cliente", "apellido1_cliente", "apellido2_cliente", "direccion", "telefono"], 
+                    attributes: ["id_cliente", "nombre_cliente", "apellido1_cliente", "apellido2_cliente", "direccion", "telefono", "correo"], 
                 },
             ]
                     

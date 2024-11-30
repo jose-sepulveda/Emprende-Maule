@@ -91,7 +91,7 @@ const getPedidoByEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, f
                 },
                 {
                     model: cliente_1.Cliente,
-                    attributes: ["id_cliente", "nombre_cliente", "apellido1_cliente", "apellido2_cliente", "direccion", "telefono"],
+                    attributes: ["id_cliente", "nombre_cliente", "apellido1_cliente", "apellido2_cliente", "direccion", "telefono", "correo"],
                 },
             ]
         });
