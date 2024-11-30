@@ -99,8 +99,8 @@ const PedidosEmprendedor = () => {
                                 <td>{pedido.producto.precio_producto}</td>
                             </tr>
                             <tr>
-                                <td>Decuentos</td>
-                                <td>{pedido.producto.precio_descuento}</td>
+                                <td>Cantidad</td>
+                                <td>{pedido.venta_producto.cantidad}</td>
                             </tr>
                             <tr>
                                 <td>Imagén</td>
@@ -127,10 +127,10 @@ const PedidosEmprendedor = () => {
                                 <td>{pedido.cliente.correo}</td>
                             </tr>
                             <tr>
-                                <td></td>
-                                <td>
+                                
+                                <td colSpan={2}>
                                 <button
-                                    className='actualiza-estado'
+                                    className='actualizar-button'
                                     onClick={() => handleModalOpen(pedido.id_pedido)}
                                 >
                                     Actualizar Estado del Pedido
@@ -146,8 +146,8 @@ const PedidosEmprendedor = () => {
             )}
 
             {showModal && (
-                <div className="login-emprendedor-modal">
-                    <div className="login-emprendedor-modal-content">
+                <div className="modal">
+                    <div className="modal-content">
                         <h3>Actualizar estado del pedido</h3>
                         <select 
                             id="estado_pedido" 
@@ -162,14 +162,14 @@ const PedidosEmprendedor = () => {
                             <option value="Cancelado">Cancelado</option>
                          </select>
                         <button
-                            className="login-emprendedor-enviar-button"
+                            className="enviar-button"
                             onClick={handleUpdateEstado}
                             disabled={loading}
                         >
                             {loading ? 'Actualizando...' : 'Actualizar Estado'}
                         </button>
                         <button
-                            className="login-emprendedor-cancelar-button"
+                            className="cancelar-button"
                             onClick={handleCancelar}
                         >
                             Cancelar
