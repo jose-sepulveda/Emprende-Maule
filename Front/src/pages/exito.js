@@ -6,10 +6,10 @@ import { createVenta } from '../services/ventas';
 
 const Exito = () => {
   const navigate = useNavigate();
-  console.log("Venta pagada")
 
   const handleContinuar = async () => {
     const idCliente = localStorage.getItem('id'); 
+    console.log(idCliente)
     if (!idCliente) {
       console.error('ID de cliente no encontrado en localStorage');
       return; 

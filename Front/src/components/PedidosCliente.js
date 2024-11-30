@@ -92,7 +92,7 @@ const PedidosCliente = () => {
                 </div>
                 ))
             ) : (
-                <p>Na tienes pedidos registrados</p>
+                <p>No tienes pedidos registrados</p>
             )}
             
         </div>

@@ -142,7 +142,7 @@ const PedidosEmprendedor = () => {
                 </div>
                 ))
             ) : (
-                <p>Na tienes pedidos registrados</p>
+                <p>No tienes pedidos registrados</p>
             )}
 
             {showModal && (
