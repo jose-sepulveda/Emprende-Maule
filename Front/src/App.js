@@ -55,6 +55,7 @@ import GestionPedidos from './pages/GestionPedidos.js';
 
 import Error from './pages/error.js';
 import Exito from './pages/exito.js';
+import GestionSoporte from './pages/GestionSoporte.js';
 
 function AuthProviderWithRouter({children}) {
   const { auth, logout } = useContext(AuthContext);
@@ -116,6 +117,7 @@ function App() {
             <Route path= "/detalle-solicitud/:rut_emprendedor" element= {<PrivateRoute><DetalleSolicitud/></PrivateRoute>}/>
             <Route path= "/adminPage" element= {<PrivateRoute><AdminPage/></PrivateRoute>}/>
             <Route path='/pedidos' element= {<PrivateRoute><GestionPedidos/></PrivateRoute>}/>
+            <Route path='/solicitudes-soporte' element= {<PrivateRoute><GestionSoporte/></PrivateRoute>}/>
 
             {/*Cliente*/}
             <Route path='/login-cliente' element={<LoginCliente/>}/>

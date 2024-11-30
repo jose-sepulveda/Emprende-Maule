@@ -16,3 +16,11 @@ export const sendContactRequest = async (contacto) => {
       throw new Error(error.response?.data?.message || 'No se pudo enviar tu solicitud de contacto.');
     }
   };
+
+export const getContactos = () => axios.get(`${API_URL}/list`);
+
+export const getOneContacto = (id_contacto) => axios.get(`${API_URL}/${id_contacto}`);
+
+export const updateEstadoSolicitud = (estadoData) => axios.put(`${API_URL}/estado`, estadoData);
+
+

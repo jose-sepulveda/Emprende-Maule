@@ -13,4 +13,7 @@ exports.Contacto = connection_1.default.define('contacto', {
     "categoria_consulta": { type: sequelize_1.DataTypes.STRING },
     "mensaje": { type: sequelize_1.DataTypes.STRING },
     "estado": { type: sequelize_1.DataTypes.STRING, defaultValue: 'Pendiente' },
+}, {
+    freezeTableName: true,
+    timestamps: false,
 });

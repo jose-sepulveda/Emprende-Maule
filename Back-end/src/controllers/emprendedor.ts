@@ -403,7 +403,6 @@ export const deleteEmprendedor = async(req: Request, res: Response) => {
 
 export const updateEstadoEmprendedor = async (req: Request, res: Response) => {
     const { rut_emprendedor, nuevoEstado} = req.body;
-    console.log("Nuevo estado: ", nuevoEstado);
 
     try {
         const emprendedor = await Emprendedor.findOne({ where: { rut_emprendedor}});

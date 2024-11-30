@@ -357,7 +357,6 @@ const deleteEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, functi
 exports.deleteEmprendedor = deleteEmprendedor;
 const updateEstadoEmprendedor = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { rut_emprendedor, nuevoEstado } = req.body;
-    console.log("Nuevo estado: ", nuevoEstado);
     try {
         const emprendedor = yield emprendedor_1.Emprendedor.findOne({ where: { rut_emprendedor } });
         if (!emprendedor) {

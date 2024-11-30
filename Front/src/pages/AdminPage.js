@@ -1,4 +1,4 @@
-import { faClipboardList, faCogs, faLayerGroup, faTruck, faUsers, faUserTie } from "@fortawesome/free-solid-svg-icons";
+import { faClipboardList, faCogs, faHeadset, faLayerGroup, faTruck, faUsers, faUserTie } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -11,7 +11,8 @@ function AdminPage() {
         { to: "/gestionEmprendedores", text: "Gestión Emprendedores", icon: faCogs },
         { to: "/gestionAdmin", text: "Gestión de Admin", icon: faUserTie },
         { to: "/solicitudes-registro", text: "Solicitudes de Registro", icon: faClipboardList },
-        { to: "/pedidos", text: "Pedidos", icon: faTruck}
+        { to: "/pedidos", text: "Pedidos", icon: faTruck},
+        { to: "/solicitudes-soporte", text: "Solicitudes de Soporte", icon: faHeadset}
     ];
 
     return (

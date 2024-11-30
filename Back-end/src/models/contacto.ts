@@ -9,4 +9,8 @@ export const Contacto = sequelize.define('contacto', {
     "categoria_consulta": {type: DataTypes.STRING},
     "mensaje": {type: DataTypes.STRING},
     "estado": {type: DataTypes.STRING, defaultValue: 'Pendiente'},
+},
+{
+    freezeTableName: true,
+    timestamps: false,
 });
