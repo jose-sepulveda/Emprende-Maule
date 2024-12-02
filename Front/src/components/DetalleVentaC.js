@@ -50,7 +50,6 @@ const DetalleVentaC = () => {
           <table className="detalle-venta-table">
             <thead>
               <tr>
-                <th>Fecha</th>
                 <th>Subtotal</th>
                 <th>IVA</th>
                 <th>Total</th>
@@ -60,7 +59,6 @@ const DetalleVentaC = () => {
             <tbody>
               {ventas.map((venta) => (
                 <tr key={venta.id_venta}>
-                  <td>{new Date(venta.fecha_venta).toLocaleDateString()}</td>
                   <td>${venta.subtotal}</td>
                   <td>${venta.iva}</td>
                   <td>${venta.total}</td>
