@@ -197,8 +197,9 @@ textarea:focus {
 }
 
 .tabla-reseñas th {
-    background-color: #f4f4f4;
+    background-color: #FF8C00;
     font-weight: bold;
+    color: white;
 }
 
 .tabla-reseñas td {
@@ -240,4 +241,14 @@ textarea:focus {
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.tabla-reseñas td .estrella {
+    font-size: 20px;
+    color: #d3d3d3;
+    cursor: default;
+}
+
+.tabla-reseñas td .estrella.seleccionada {
+    color: #ffcc00;
 }

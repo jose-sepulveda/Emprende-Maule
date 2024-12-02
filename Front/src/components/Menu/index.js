@@ -34,7 +34,8 @@ function Menu(){
                 {to:"/gestionProducto", text:"Crear producto"},
                 {to:"/tablaP", text:"Gestión Productos"},
                 {to:"/perfil-emprendedor", text:"Mis Datos"},
-                {to:"/pedidos-emprendedor", text: "Pedidos"}
+                {to:"/pedidos-emprendedor", text: "Pedidos"},
+                { to: "/reporteVentas", text: "Reporte de ventas"}
         );   
         }
 

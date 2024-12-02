@@ -25,10 +25,10 @@ const ContactForm = () => {
     };
   
     return (
-      <div className="form-container">
+      <div className="form-container-contacto">
         <h2>Contacto</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="form-group">
+          <div className="form-group-contacto">
             <label htmlFor="nombre">Nombre</label>
             <input
               id="nombre"
@@ -39,7 +39,7 @@ const ContactForm = () => {
             />
           </div>
   
-          <div className="form-group">
+          <div className="form-group-contacto">
             <label htmlFor="correo">Correo</label>
             <input
               id="correo"
@@ -50,7 +50,7 @@ const ContactForm = () => {
             />
           </div>
   
-          <div className="form-group">
+          <div className="form-group-contacto">
             <label htmlFor="categoria_consulta">Categoría de Consulta</label>
             <select id="categoria_consulta" required {...register('categoria_consulta')}>
               <option value="">Seleccionar categoría</option>
@@ -60,7 +60,7 @@ const ContactForm = () => {
             </select>
           </div>
   
-          <div className="form-group">
+          <div className="form-group-contacto">
             <label htmlFor="mensaje">Mensaje</label>
             <textarea
               id="mensaje"

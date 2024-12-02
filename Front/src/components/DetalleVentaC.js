@@ -54,7 +54,6 @@ const DetalleVentaC = () => {
                 <th>Subtotal</th>
                 <th>IVA</th>
                 <th>Total</th>
-                <th>Método de Pago</th>
                 <th>Acciones</th> 
               </tr>
             </thead>
@@ -65,7 +64,6 @@ const DetalleVentaC = () => {
                   <td>${venta.subtotal}</td>
                   <td>${venta.iva}</td>
                   <td>${venta.total}</td>
-                  <td>{venta.metodo_de_pago}</td>
                   <td>
                     <button
                       className="detalle-venta-delete-btn"

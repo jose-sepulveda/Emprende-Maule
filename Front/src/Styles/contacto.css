@@ -1,5 +1,5 @@
 /* Estilos generales */
-.form-container {
+.form-container-contacto {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
@@ -7,9 +7,10 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     font-family: Arial, sans-serif;
+    margin-top: 50px;
 }
 
-.form-container h2 {
+.form-container-contacto h2 {
     text-align: center;
     color: #333;
     margin-bottom: 20px;
@@ -22,21 +23,21 @@ form {
     gap: 15px;
 }
 
-.form-group {
+.form-group-contacto {
     display: flex;
     flex-direction: column;
 }
 
-.form-group label {
+.form-group-contacto label {
     font-size: 16px;
     color: #555;
     margin-bottom: 5px;
 }
 
-.form-group input,
-.form-group textarea,
-.form-group select {
-    width: 100%;
+.form-group-contacto input,
+.form-group-contacto textarea,
+.form-group-contacto select {
+    width: 96%;
     padding: 10px;
     border: 1px solid gray;
     border-radius: 4px;
@@ -44,15 +45,16 @@ form {
     background-color: #fff;
 }
 
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus {
+.form-group-contacto input:focus,
+.form-group-contacto textarea:focus,
+.form-group-contacto select:focus {
     outline: none;
     border-color: #007bff;
     box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+    
 }
 
-.form-group textarea {
+.form-group-contacto textarea {
     resize: vertical;
     min-height: 100px;
     font-family: Arial, sans-serif;

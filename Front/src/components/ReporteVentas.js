@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import { getVentaProductos } from "../services/ventaProductos";  
 import { getProductos } from "../services/producto";  
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import '../Styles/reporteVentas.css';
+import { AuthContext } from "../Auth/AuthContext"; 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -13,19 +14,28 @@ const ReporteVentas = () => {
   const [error, setError] = useState(null);
   const [graficoData, setGraficoData] = useState(null);
 
+  const { auth } = useContext(AuthContext); 
+
   const fetchVentaProductos = useCallback(async () => {
     try {
       const ventasData = await getVentaProductos();  
-      setVentas(ventasData);
-
       const productosData = await getProductos();  
-      setProductos(productosData);  
 
-      generarGrafico(ventasData, productosData);  
+      let filteredVentas = ventasData;
+      if (auth.role === "emprendedor") {
+        filteredVentas = ventasData.filter(venta => {
+          const producto = productosData.find(prod => prod.cod_producto === venta.cod_producto);
+          return producto && producto.id_emprendedor === auth.id; 
+        });
+      }
+
+      setVentas(filteredVentas);
+      setProductos(productosData);  
+      generarGrafico(filteredVentas, productosData);  
     } catch (err) {
       setError("Hubo un error al obtener las ventas o productos.");
     }
-  }, []); 
+  }, [auth]); 
 
   const generarGrafico = (ventasData, productosData) => {
     const productosVendidos = {};

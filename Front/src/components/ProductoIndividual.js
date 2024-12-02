@@ -298,7 +298,6 @@ const ProductoIndividual = () => {
                     <table className="tabla-reseñas">
                         <thead>
                             <tr>
-                                <th>ID Cliente</th>
                                 <th>Comentario</th>
                                 <th>Calificación</th>
                                 {auth?.id && auth?.role === 'cliente' && <th>Acciones</th>}
@@ -307,7 +306,6 @@ const ProductoIndividual = () => {
                         <tbody>
                             {reseñas.map((resena) => (
                                 <tr key={resena.id_resena}>
-                                    <td>{resena.id_cliente}</td>
                                     <td>
                                         {editandoResena?.id_resena === resena.id_resena ? (
                                             <textarea 
@@ -334,7 +332,7 @@ const ProductoIndividual = () => {
                                             </div>
                                         ) : (
                                             [1, 2, 3, 4, 5].map(star => (
-                                                <span key={star}>
+                                                <span span key={star} className={resena.calificación >= star ? 'estrella seleccionada' : 'estrella'}>
                                                     {resena.calificación >= star ? <FaStar /> : <FaRegStar />}
                                                 </span>
                                             ))
