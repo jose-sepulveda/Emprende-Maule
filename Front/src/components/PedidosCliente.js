@@ -54,10 +54,6 @@ const PedidosCliente = () => {
                                 <td></td>
                             </tr>
                             <tr>
-                                <td>Fecha de la Venta</td>
-                                <td>{new Date(pedido.venta.fecha_venta).toLocaleDateString('es-CL')}</td>
-                            </tr>
-                            <tr>
                                 <td>Total</td>
                                 <td>{pedido.venta.total}</td>
                             </tr>
