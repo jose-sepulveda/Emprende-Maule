@@ -1,0 +1,92 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4; 
+  }
+  
+  .reporte-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .reporte-title {
+    font-size: 2.5rem;
+    color: #000000;
+    text-align: start;
+    margin-bottom: 20px;
+    margin-left: 20px;
+  }
+  
+  .reporte-subtitle {
+    font-size: 1.75rem;
+    color: #000000;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  /* Error message styling */
+  .reporte-error {
+    color: red;
+    font-size: 1rem;
+    text-align: center;
+  }
+  
+  /* Table styles */
+  .reporte-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .reporte-table th, .reporte-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  .reporte-table th {
+    background-color: #f98511;
+    font-size: 1.1rem;
+    color: #ffffff;
+  }
+  
+  .reporte-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .reporte-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .reporte-table td[colspan="4"] {
+    text-align: center;
+    color: #777;
+    font-size: 1.2rem;
+  }
+  
+/* Contenedor del gráfico centrado */
+.reporte-chart-container {
+    width: 100%; 
+    max-width: 800px;
+    height: 400px; 
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Texto de carga */
+.reporte-loading-text {
+    font-size: 1.2rem;
+    text-align: center;
+    color: #000000;
+}

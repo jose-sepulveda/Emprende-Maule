@@ -43,7 +43,8 @@ function Menu(){
             showCarrito = true;
             routes.push(
                 { to: "/detalle-venta-cliente", text: "Mis compras" },
-                { to: "/pedidos-cliente", text: "Pedidos" }
+                { to: "/pedidos-cliente", text: "Pedidos" },
+                { to:"/perfil-cliente", text:"Mis Datos"},
             );
 
         }

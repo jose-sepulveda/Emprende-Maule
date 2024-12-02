@@ -15,12 +15,12 @@
     justify-content: center;
     gap: 20px; 
     margin-top: 20px;
-    max-width: 800px; 
+    max-width: 1000px; 
 }
 
 .menu-item {
-    flex-basis: calc(33.33% - 20px); 
-    max-width: calc(33.33% - 20px);
+    flex-basis: calc(25% - 20px); 
+    max-width: calc(25% - 20px);
     display: flex;
     flex-direction: column; 
     align-items: center;

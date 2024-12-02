@@ -80,3 +80,15 @@ export const getVenta = async (id_venta) => {
     throw new Error('Error al obtener la venta: ' + error.message);
   }
 };
+
+
+// Función para obtener todas las ventas
+export const getVentas = async () => {
+  try {
+    const response = await api.get('/list');
+    return response.data;
+  } catch (error) {
+    throw new Error('Error al obtener las ventas: ' + error.message);
+  }
+};
+

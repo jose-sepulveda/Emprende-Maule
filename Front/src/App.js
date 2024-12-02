@@ -19,6 +19,7 @@ import { GestionAdmin } from './pages/GestionAdmin.js';
 import { GestionCategorias } from './pages/GestionCategorias.js';
 import { GestionClientes } from './pages/GestionClientes.js';
 import { GestionEmprendedores } from './pages/GestionEmprendedores.js';
+import { ReporteV } from './pages/ReporteV.js';
 //cliente
 import LoginCliente from './components/LoginCliente.js';
 import { DetalleVentaCliente } from './pages/DetalleVentaCliente.js';
@@ -56,6 +57,7 @@ import GestionPedidos from './pages/GestionPedidos.js';
 import Error from './pages/error.js';
 import Exito from './pages/exito.js';
 import GestionSoporte from './pages/GestionSoporte.js';
+import PerfilCliente from './components/PerfilCliente.js';
 
 function AuthProviderWithRouter({children}) {
   const { auth, logout } = useContext(AuthContext);
@@ -118,6 +120,7 @@ function App() {
             <Route path= "/adminPage" element= {<PrivateRoute><AdminPage/></PrivateRoute>}/>
             <Route path='/pedidos' element= {<PrivateRoute><GestionPedidos/></PrivateRoute>}/>
             <Route path='/solicitudes-soporte' element= {<PrivateRoute><GestionSoporte/></PrivateRoute>}/>
+            <Route path='/reporteVentas' element={<ReporteV/>}/>
 
             {/*Cliente*/}
             <Route path='/login-cliente' element={<LoginCliente/>}/>
@@ -126,6 +129,7 @@ function App() {
             <Route path='/pedidos-cliente' element= {<PedidosCliente/>}/>
             <Route path="/exito" element={<Exito/>} />
             <Route path="/error" element={<Error/>} />
+            <Route path='/perfil-cliente' element={<PerfilCliente/>}/>
             
             {/*Emprendedor*/}
             <Route path='/login-emprendedor' element={<LoginEmprendedor/>}/>
