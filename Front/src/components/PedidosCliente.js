@@ -61,10 +61,6 @@ const PedidosCliente = () => {
                                 <td>Total</td>
                                 <td>{pedido.venta.total}</td>
                             </tr>
-                            <tr>
-                                <td>Metodo de pago</td>
-                                <td>{pedido.venta.metodo_de_pago}</td>
-                            </tr>
                             <tr className='subtitulo'>
                                 <td>Producto</td>
                                 <td></td>

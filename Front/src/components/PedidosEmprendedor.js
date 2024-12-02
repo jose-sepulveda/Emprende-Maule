@@ -18,7 +18,8 @@ const PedidosEmprendedor = () => {
         }
         try {
             const response = await getPedidoByEmprendedor(auth.id);
-            setPedidos(response.data);
+            const pedidosSort = response.data.sort((a,b) => a.id_pedido - b.id_pedido)
+            setPedidos(pedidosSort);
             toast.success("Pedidos cargados correctamente")
         } catch (error) {
             console.error('Error al cargar los pedidos', error);
