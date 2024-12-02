@@ -9,12 +9,20 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-family: 'Arial', sans-serif;
+    margin-bottom: 50px;
+}
+
+.perfil-cliente-icono {
+    margin-bottom: 20px;
+    color: #797b7d;
 }
 
 .perfil-cliente-title {
     text-align: center;
     font-size: 24px;
     font-weight: bold;
+    color: #000000;
     margin-bottom: 20px;
 }
 
@@ -22,34 +30,81 @@
     color: red;
     font-size: 14px;
     margin-bottom: 15px;
+    text-align: center;
 }
 
 .perfil-cliente-info {
+    width: 100%;
     margin-bottom: 20px;
 }
 
 .perfil-cliente-info p {
     font-size: 16px;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
+    line-height: 1.5;
 }
 
 .perfil-cliente-info strong {
-    color: #333;
+    color: #000000;
 }
 
-.perfil-cliente-edit-button {
+.perfil-cliente-info label {
     display: block;
-    margin: 20px auto;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
+    margin-bottom: 15px;
 }
 
-.perfil-cliente-edit-button:hover {
+.perfil-cliente-info input {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 5px;
+    background-color: #fff;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.perfil-cliente-info input:focus {
+    border-color: #f98511;
+    box-shadow: 0 0 5px #f98511af;
+    outline: none;
+}
+
+.perfil-cliente-actions {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.perfil-cliente-actions button {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.perfil-cliente-actions button:first-child {
     background-color: #0056b3;
+    color: white;
+}
+
+.perfil-cliente-actions button:first-child:hover {
+    background-color: #0056b3;
+}
+
+.perfil-cliente-actions button:last-child {
+    background-color: #2f8510;
+    color: white;
+}
+
+.perfil-cliente-actions button:last-child:hover {
+    background-color: #2f8510b4;
+}
+
+.perfil-cliente-actions button:active {
+    transform: scale(0.98);
 }
